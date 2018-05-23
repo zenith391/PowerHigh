@@ -1,6 +1,7 @@
 package org.lggl.graphics.objects;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import org.lggl.graphics.TextureAtlas;
 import org.lggl.graphics.TextureLoader;
 import org.lggl.graphics.Window;
 import org.lggl.input.Mouse;
+import org.lggl.ui.UISystem;
 
 public class Button extends GameObject {
 
@@ -26,14 +28,9 @@ public class Button extends GameObject {
 	
 	public Button() {
 		setSize(60, 60);
-		try {
-			normal = TextureAtlas.getFrom(TextureLoader.getTexture(new File("base/base_ui_skin.png")), 64, 64).getSubtexture(0, 0);
-			pressed = TextureAtlas.getFrom(TextureLoader.getTexture(new File("base/base_ui_skin.png")), 64, 64).getSubtexture(1, 0);
-			img = normal;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		normal = UISystem.getUI("button-normal");
+		pressed = UISystem.getUI("button-pressed");
+		img = normal;
 	}
 	
 	public Color getForeground() {
@@ -94,8 +91,9 @@ public class Button extends GameObject {
 		} else {
 			g.drawImage(img.getAWTImage(), x, y, getWidth(), getHeight(), null);
 		}
+		g.setFont(new Font("Calibri", Font.PLAIN, 13));
 		g.setColor(textColor);
-		g.drawString(buttonText, x + ((getWidth() / 2) - (g.getFontMetrics().stringWidth(buttonText) / 2)), y + ((getHeight() / 2) + (g.getFontMetrics().getHeight() / 2)));
+		g.drawString(buttonText, x + ((getWidth() / 2) - (g.getFontMetrics().stringWidth(buttonText) / 2)), y + ((getHeight() / 2) + (g.getFontMetrics().getHeight() / 3)));
 	}
 
 	public Color getPressColor() {

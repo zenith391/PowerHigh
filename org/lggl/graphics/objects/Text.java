@@ -13,7 +13,7 @@ public class Text extends GameObject {
 	String text;
 
 	public Text(int x, int y, String text, Color color) {
-		this(x, y, text, color, null);
+		this(x, y, text, color, new Font("Arial", Font.PLAIN, 12));
 	}
 	
 	public Text(String text) {
