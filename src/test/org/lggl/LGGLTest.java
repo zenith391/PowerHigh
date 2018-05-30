@@ -3,6 +3,7 @@ package test.org.lggl;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.SystemTray;
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -10,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
 import org.lggl.SizedViewport;
+import org.lggl.audio.AISSound;
 import org.lggl.game.FXContainer;
 import org.lggl.game.SimpleGame;
 import org.lggl.graphics.Window;
@@ -82,23 +84,29 @@ public class LGGLTest extends SimpleGame {
 			e.printStackTrace();
 		}
 	}
+	
+	public void dbgsound() {
+		AISSound sound = new AISSound(new File("Alonzo - Santana.wav"));
+		audio.playSound(sound);
+	}
 
 	@Override
 	public void init(Window win) {
-		win.setViewportManager(new SizedViewport(620, 480));
+		win.setViewportManager(new SizedViewport(1280, 720));
 		// Iziditor.main(new String[] {});
 		srv();
 		player = new Rectangle();
 		player.setRounded(true);
 		player.centerTo(win);
-		win.setBackground(Color.CYAN);
+		win.setBackground(Color.BLUE);
 		win.setTitle("Hello LGGL!");
 		win.add(player);
+		win.setSize(1280, 720);
 		SwingObject obj = new SwingObject();
 		JTabbedPane pane = new JTabbedPane();
 		JButton button = new JButton("Test");
 		Button bt = new Button();
-		bt.setText("Hello World!");
+		bt.setText("Musique !");
 		bt.setX(100);
 		bt.setY(200);
 		bt.setWidth(100);
@@ -114,6 +122,7 @@ public class LGGLTest extends SimpleGame {
 					bt.setSize(100, 60);
 					bt.setText("Hello World!");
 				}
+				dbgsound();
 			}
 
 		});
@@ -139,9 +148,7 @@ public class LGGLTest extends SimpleGame {
 
 	public static void main(String[] args) {
 		LGGLTest test = new LGGLTest();
-		FXContainer fx = new FXContainer(test);
-		fx.start();
-		//test.start();
+		test.start();
 	}
 
 }

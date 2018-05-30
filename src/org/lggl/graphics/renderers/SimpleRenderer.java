@@ -1,7 +1,9 @@
 package org.lggl.graphics.renderers;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
+import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.GameObject;
 
@@ -47,6 +49,18 @@ public class SimpleRenderer implements IRenderer {
 	@Override
 	public boolean isPaused() {
 		return pause;
+	}
+
+	@Override
+	public void addPostProcessor(PostProcessor processor) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<PostProcessor> getPostProcessors() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

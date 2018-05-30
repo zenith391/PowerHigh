@@ -1,7 +1,9 @@
 package org.lggl.graphics.renderers;
 
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
+import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.GameObject;
 
@@ -15,5 +17,7 @@ public interface IRenderer {
 	public void unpause(); public void pause();
 	
 	public boolean isPaused();
+	
+	public void addPostProcessor(PostProcessor processor); public ArrayList<PostProcessor> getPostProcessors();
 	
 }

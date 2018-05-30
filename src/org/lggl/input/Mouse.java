@@ -48,9 +48,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseExited(MouseEvent m) {
-		x = -1;
-		y = -1;
-		// Fix for buttons
+		
 	}
 
 	public void mousePressed(MouseEvent m) {

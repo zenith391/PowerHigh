@@ -21,7 +21,7 @@ class WindowPanel extends JPanel {
 	}
 
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		//super.paintComponent(g);
 		Window.getRenderer().render(win, (Graphics2D) g);
 	}
 }

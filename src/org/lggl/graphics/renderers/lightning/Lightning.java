@@ -4,8 +4,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.WeakHashMap;
 
+import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
@@ -14,16 +16,27 @@ import org.lggl.utils.debug.DebugLogger;
 public final class Lightning implements IRenderer {
 
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
-	private int acc;
 	private boolean paused;
 	private Window lastWin;
+	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
 	private void render(Window win, Graphics g, Rectangle rect) {
+		BufferedImage buff = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g2 = buff.createGraphics();
+		g2.setColor(win.getBackground());
+		g2.fillRect(0, 0, rect.width, rect.height);
 		for (GameObject obj : win.getObjects()) {
-			if (obj.isVisible()) {
-				obj.paint(g, win);
+			if (obj.getX() < rect.width && obj.getY() < rect.height) {
+				if (obj.isVisible()) {
+					obj.paint(g2, win);
+				}
 			}
 		}
+		for (PostProcessor pp : postProcessors) {
+			//buff = pp.process(buff);
+		}
+		g.fillRect(0, 0, rect.width, rect.height);
+		g.drawImage(buff, 0, 0, null);
 	}
 
 	@Override
@@ -34,16 +47,11 @@ public final class Lightning implements IRenderer {
 			if (!buffers.containsKey(win)) {
 				DebugLogger.logInfo("Allocating render buffer for game..");
 				buffers.put(win,
-						new LightningRenderBuffer(new BufferedImage(2000, 2000, BufferedImage.TYPE_3BYTE_BGR)));
+						new LightningRenderBuffer(new BufferedImage(1920, 1080, BufferedImage.TYPE_3BYTE_BGR)));
 				DebugLogger.logInfo("Sucefully allocated render buffer");
 
 			}
 			render(win, g, win.getViewport());
-//			acc++;
-//			if (acc >= 50) {
-//				acc = 0;
-//				drawOnBuffer(win); // ACTIVE BUFFER PAINTING GOT USELESS
-//			}
 		} else {
 			g.drawImage(buffers.get(win).getImage(), 0, 0, null);
 		}
@@ -83,6 +91,17 @@ public final class Lightning implements IRenderer {
 	@Override
 	public boolean isPaused() {
 		return paused;
+	}
+
+	@Override
+	public void addPostProcessor(PostProcessor processor) {
+		System.out.println("add");
+		postProcessors.add(processor);
+	}
+
+	@Override
+	public ArrayList<PostProcessor> getPostProcessors() {
+		return postProcessors;
 	}
 
 }

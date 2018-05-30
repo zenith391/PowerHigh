@@ -15,7 +15,7 @@ public class SizedViewport extends ViewportManager {
 
 	@Override
 	public Rectangle getViewport(Window win) {
-		return new Rectangle((win.getWidth() - w) / 2, (win.getHeight() - h), w, h);
+		return new Rectangle((win.getWidth() - w) / 2, (win.getHeight() - h) / 2, w, h);
 	}
 
 }

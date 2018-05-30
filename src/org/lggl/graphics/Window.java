@@ -19,6 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.lggl.ViewportManager;
+import org.lggl.game.SimpleGame;
 import org.lggl.graphics.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
@@ -41,6 +42,7 @@ public class Window {
 	public static final int DISPOSE_ON_CLOSE = 0;
 	public static final int EXIT_ON_CLOSE = 1;
 
+	private SimpleGame owner;
 	private Keyboard input = new Keyboard();
 	private Mouse mouse = new Mouse(-1, -1, this);
 	private int buffersNum = 1;
@@ -72,6 +74,7 @@ public class Window {
 
 	public static void setRenderer(IRenderer render) {
 		Window.render = render;
+		render.addPostProcessor(new DefaultPostProcessor());
 	}
 
 	static {
@@ -183,7 +186,7 @@ public class Window {
 
 	private void init() {
 		if (render == null)
-			render = new Lightning();
+			setRenderer(new Lightning());
 		win.setLayout(null);
 		win.add(panel);
 		win.getContentPane().setBackground(Color.BLACK);
