@@ -14,6 +14,7 @@ public abstract class SimpleGame {
 	protected Window window = new Window();
 	protected Audio audio;
 	protected Camera camera = null;
+	public static boolean enableLaunchDebug = true;
 
 	public abstract void update(Window win);
 
@@ -32,6 +33,8 @@ public abstract class SimpleGame {
 	protected void coreInit() {
 		try {
 			audio = new Audio();
+			if (enableLaunchDebug)
+				DebugLogger.logInfo("Audio ready !");
 		} catch (LGGLException e) {
 			System.err.println("Error when creating Audio system! Aborting.");
 			e.printStackTrace();
@@ -49,8 +52,10 @@ public abstract class SimpleGame {
 	public void start() {
 		try {
 			
-			DebugLogger.logInfo("Preparing game..");
-			dbg();
+			if (enableLaunchDebug) {
+				DebugLogger.logInfo("Preparing game..");
+				dbg();
+			}
 			coreInit();
 			init(window);
 			
@@ -60,7 +65,9 @@ public abstract class SimpleGame {
 				this.update(window);
 				Thread.sleep(1000 / 60);
 				if (!launched) {
-					DebugLogger.logInfo("Game launched");
+					if (enableLaunchDebug) {
+						DebugLogger.logInfo("Game launched");
+					}
 					launched = true;
 				}
 			}

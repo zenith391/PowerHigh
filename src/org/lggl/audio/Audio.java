@@ -15,10 +15,9 @@ public class Audio {
 	
 	/** 8-bit audio. Converts higher sample size to 8-bits **/ public static final int AUDIO_BIT_8  = 8;
 	/** 16-bit audio. Converts other sample size to 16-bit **/ public static final int AUDIO_BIT_16 = 16;
-	/** 24-bit audio. Converts other sample size to 24-bit **/ public static final int AUDIO_BIT_24 = 24;
 	
 	public Audio() throws LGGLException {
-		format = new AudioFormat(16000f, AUDIO_BIT_16, 1, true, false); // DVD Audio Quality
+		format = new AudioFormat(91000f, AUDIO_BIT_16, 1, true, false); // DVD Audio Quality
 		try {
 			line = AudioSystem.getSourceDataLine(format);
 		} catch (LineUnavailableException e) {
@@ -26,8 +25,6 @@ public class Audio {
 		}
 		if (!openLine())
 			throw new LGGLException("Could not open audio line");
-		else
-			DebugLogger.logInfo("Audio ready !");
 	}
 	
 	public void playSound(Sound sound) {
@@ -42,7 +39,6 @@ public class Audio {
 						}
 						offset = 0;
 					}
-						
 					line.write(buffer, 0, buffer.length);
 					offset += buffer.length;
 				}

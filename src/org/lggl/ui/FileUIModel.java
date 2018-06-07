@@ -3,7 +3,7 @@ package org.lggl.ui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.Properties;
 
@@ -19,6 +19,18 @@ public class FileUIModel extends UIModel {
 	
 	public FileUIModel(File file) throws FileNotFoundException {
 		this(new FileReader(file), file.getParent());
+	}
+	
+	public FileUIModel(Reader file, InputStream img) {
+		try {
+			prop = new Properties();
+			prop.load(file);
+			ver = Integer.parseInt(prop.getProperty("version", "1"));
+			atlas = TextureAtlas.getFrom(TextureLoader.getTexture(img), Integer.parseInt(prop.getProperty("tileWidth")), Integer.parseInt(prop.getProperty("tileHeight")));
+		} catch (Exception e) {
+			System.err.println("Error loading FileUIModel of " + file);
+			e.printStackTrace();
+		}
 	}
 	
 	public FileUIModel(Reader file, String parent) {

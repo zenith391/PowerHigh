@@ -17,6 +17,7 @@ public final class Lightning implements IRenderer {
 
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
 	private boolean paused;
+	private boolean debug;
 	private Window lastWin;
 	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
@@ -45,10 +46,12 @@ public final class Lightning implements IRenderer {
 			lastWin = win;
 
 			if (!buffers.containsKey(win)) {
-				DebugLogger.logInfo("Allocating render buffer for game..");
+				if (debug)
+					DebugLogger.logInfo("Allocating render buffer for game..");
 				buffers.put(win,
 						new LightningRenderBuffer(new BufferedImage(1920, 1080, BufferedImage.TYPE_3BYTE_BGR)));
-				DebugLogger.logInfo("Sucefully allocated render buffer");
+				if (debug)
+					DebugLogger.logInfo("Sucefully allocated render buffer");
 
 			}
 			render(win, g, win.getViewport());
@@ -80,6 +83,14 @@ public final class Lightning implements IRenderer {
 	@Override
 	public void unpause() {
 		paused = false;
+	}
+	
+	public void turnOffDebug() {
+		debug = false;
+	}
+	
+	public void turnOnDebug() {
+		debug = true;
 	}
 
 	@Override

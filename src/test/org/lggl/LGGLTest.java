@@ -79,6 +79,7 @@ public class LGGLTest extends SimpleGame {
 	public void srv() {
 		try {
 			PackageServer srv = PackageSystem.createServer(56552);
+			srv.setHandler(new Quest2Server());
 			srv.start();
 		} catch (LGGLException e) {
 			e.printStackTrace();
@@ -92,6 +93,9 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void init(Window win) {
+		
+		((Lightning) Window.getRenderer()).turnOffDebug();
+		
 		win.setViewportManager(new SizedViewport(1280, 720));
 		// Iziditor.main(new String[] {});
 		srv();
@@ -147,6 +151,7 @@ public class LGGLTest extends SimpleGame {
 	}
 
 	public static void main(String[] args) {
+		SimpleGame.enableLaunchDebug = false;
 		LGGLTest test = new LGGLTest();
 		test.start();
 	}
