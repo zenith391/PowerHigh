@@ -18,6 +18,7 @@ import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.Button;
 import org.lggl.graphics.objects.Rectangle;
 import org.lggl.graphics.objects.SwingObject;
+import org.lggl.graphics.objects.Text;
 import org.lggl.graphics.renderers.SimpleRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
 import org.lggl.input.Keyboard;
@@ -31,6 +32,7 @@ import org.lggl.utils.debug.DebugLogger;
 public class LGGLTest extends SimpleGame {
 
 	private Rectangle player;
+	private Text fps;
 
 	@Override
 	public void update(Window win) {
@@ -47,7 +49,7 @@ public class LGGLTest extends SimpleGame {
 
 	public void handleKeys(Window win) {
 		Keyboard keyboard = win.getKeyboard();
-		int speed = 2;
+		int speed = (int) (5d * win.getEventThread().getDelta());
 		if (keyboard.isKeyDown(Keyboard.KEY_D)) {
 			player.setX(player.getX() + speed);
 		}
@@ -72,6 +74,7 @@ public class LGGLTest extends SimpleGame {
 				Window.setRenderer(new Lightning());
 			}
 		}
+		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
 	}
 
 	private PackageSession sess;
@@ -100,6 +103,7 @@ public class LGGLTest extends SimpleGame {
 		// Iziditor.main(new String[] {});
 		srv();
 		player = new Rectangle();
+		fps = new Text();
 		player.setRounded(true);
 		player.centerTo(win);
 		win.setBackground(Color.BLUE);
@@ -113,6 +117,8 @@ public class LGGLTest extends SimpleGame {
 		bt.setText("Musique !");
 		bt.setX(100);
 		bt.setY(200);
+		fps.setY(24);
+		fps.setColor(Color.WHITE);
 		bt.setWidth(100);
 		bt.setHeight(60);
 		bt.addAction(new Runnable() {
@@ -133,6 +139,7 @@ public class LGGLTest extends SimpleGame {
 		win.add(bt);
 		obj.setContent(button);
 		win.add(obj);
+		win.add(fps);
 		win.setResizable(true);
 		obj.setX(100);
 		obj.setY(100);
@@ -144,6 +151,13 @@ public class LGGLTest extends SimpleGame {
 			e.printStackTrace();
 		}
 		sess.send("server.playerConnect", "Player1");
+		sess.sendPacket((short) 256, new byte[] {52, 47, 96, 32, 14, 58});
+		sess.send("server.playerDisconnect", "Player1");
+		try {
+			System.err.println("Online? " + sess.get("server.isPlayerOnline.Player1"));
+		} catch (LGGLException e) {
+			e.printStackTrace();
+		}
 		// for (Desktop.Action act : Desktop.Action.values()) {
 		// Desktop desk = Desktop.getDesktop();
 		// System.out.println(act + ": " + desk.isSupported(act));

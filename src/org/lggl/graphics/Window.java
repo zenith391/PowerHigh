@@ -91,6 +91,14 @@ public class Window {
 	public boolean shouldRender(GameObject obj) {
 		return render.shouldRender(this, obj);
 	}
+	
+	public int getFPS() {
+		return thread.getFPS();
+	}
+	
+	public float getSPF() {
+		return 1.0f / getFPS();
+	}
 
 	public boolean isFullscreen() {
 		return fullscreen;

@@ -7,6 +7,12 @@ public class WindowEventThread extends Thread {
 	private Window win;
 	private boolean arleadyVisible = false;
 	private short targetFPS = 60;
+	private short frames;
+	private short fps;
+	
+	private double delta;
+	
+	private long lastTick;
 
 	private Runnable runnable = null;
 	private Runnable arunnable = null;
@@ -14,9 +20,17 @@ public class WindowEventThread extends Thread {
 	public int getTargetFPS() {
 		return targetFPS;
 	}
+	
+	public double getDelta() {
+		return delta;
+	}
 
 	public void setTargetFPS(int fps) {
 		this.targetFPS = (short) fps;
+	}
+	
+	public int getFPS() {
+		return fps;
 	}
 
 	public WindowEventThread(Window w) {
@@ -36,6 +50,12 @@ public class WindowEventThread extends Thread {
 		Dimension lastSize = new Dimension(win.getWidth(), win.getHeight());
 		Dimension size = new Dimension(win.getWidth(), win.getHeight());
 		while (true) {
+			if (lastTick < System.currentTimeMillis()) {
+				lastTick = System.currentTimeMillis() + 1000;
+				fps = frames;
+				frames = 0;
+				delta = (double) fps / (double) targetFPS;
+			}
 			if (runnable != null) {
 				runnable.run();
 				runnable = null;
@@ -65,6 +85,7 @@ public class WindowEventThread extends Thread {
 				} catch (InterruptedException e) {
 				}
 			}
+			frames++;
 		}
 	}
 }

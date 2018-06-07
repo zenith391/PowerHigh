@@ -5,15 +5,24 @@ import org.lggl.multiplayer.ServerHandler;
 public class Quest2Server extends ServerHandler {
 
 	@Override
-	public void ProcessPacket(String name, String value) {
+	public void putValue(String name, String value) {
 		// TODO Auto-generated method stub
-		System.out.println("[QUEST2 SERVER] PUTTING" + name+":"+value);
+		System.out.println("[QUEST2 SERVER] PUTTING " + name+":"+value);
+		if (name.equals("server.playerConnect")) {
+			System.out.println("Welcome " + value + "!");
+		}
 	}
 
 	@Override
-	public String GetPacket(String name) {
+	public String getValue(String name) {
 		System.out.println("[QUEST2 SERVER] ASKING " + name);
-		return null;
+		return "nothing";
+	}
+
+	@Override
+	public void onPacket(short type, byte[] data) {
+		// TODO Auto-generated method stub
+		System.out.println("PACKET");
 	}
 
 }
