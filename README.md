@@ -3,6 +3,8 @@ LGGL stands for Low Graphics Game Library. It is a 2D game library using a compo
 
 ## Get it
 
+[![Build Status](https://travis-ci.org/zen1th391/LGGL.svg)](https://travis-ci.org/zen1th391/LGGL)
+
 ### Building it
 
 If not done, install a Java IDE then  
