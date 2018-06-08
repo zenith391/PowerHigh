@@ -150,14 +150,14 @@ public class LGGLTest extends SimpleGame {
 			System.out.println("Could not connect to .. virtual server");
 			e.printStackTrace();
 		}
-		sess.send("server.playerConnect", "Player1");
-		sess.sendPacket((short) 256, new byte[] {52, 47, 96, 32, 14, 58});
-		sess.send("server.playerDisconnect", "Player1");
-		try {
-			System.err.println("Online? " + sess.get("server.isPlayerOnline.Player1"));
-		} catch (LGGLException e) {
-			e.printStackTrace();
-		}
+//		sess.send("server.playerConnect", "Player1");
+//		sess.sendPacket((short) 256, new byte[] {52, 47, 96, 32, 14, 58});
+//		sess.send("server.playerDisconnect", "Player1");
+//		try {
+//			System.err.println("Online? " + sess.get("server.isPlayerOnline.Player1"));
+//		} catch (LGGLException e) {
+//			e.printStackTrace();
+//		}
 		// for (Desktop.Action act : Desktop.Action.values()) {
 		// Desktop desk = Desktop.getDesktop();
 		// System.out.println(act + ": " + desk.isSupported(act));

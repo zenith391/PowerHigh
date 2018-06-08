@@ -6,6 +6,7 @@ import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import org.lggl.input.Mouse;
 import org.lggl.utils.debug.DebugLogger;
@@ -19,62 +20,31 @@ public class DefaultPostProcessor extends PostProcessor {
 
 	}
 	
-	public static BufferedImage updateLightLevels(BufferedImage img, int x, int y, int Width, int Height, float light)
+	public static BufferedImage updateLightLevels(BufferedImage img, BufferedImage original, int x, int y, int width, int height, float light)
 	{
-	    BufferedImage brightnessBuffer = img;
-
-	    for(int i = x; i < x + Width; i++)
-	    {
-	        for(int a = y; a < y + Height; a++)
-	        {
-	        	
-	            //get the color at the pixel
-	        	int rgb = 0 ;
-	        	try {
-	            rgb = brightnessBuffer.getRGB(i, a);
-	        	} catch (Exception e) {
-	        		//DebugLogger.logInfo(i + ", " + a);
-	        	}
-
-	            //check to see if it is transparent
-	            int alpha = (rgb >> 24) & 0x000000FF;
-
-	            if(alpha != 0)
-	            {
-	                //make a new color
-	                Color rgbColor = new Color(rgb);
-
-	                //turn it into an hsb color
-	                float[] hsbCol = Color.RGBtoHSB(rgbColor.getRed(), rgbColor.getGreen(), rgbColor.getBlue(), null);
-
-	                //lower it by the certain amount
-	                //if the pixel is already darker then push it all the way to black
-	                if(hsbCol[2] <= light)
-	                    hsbCol[2] -= (hsbCol[2]) - .01f;
-	                else
-	                    hsbCol[2] -= light;
-
-	                //turn the hsb color into a rgb color
-	                int rgbNew = Color.HSBtoRGB(hsbCol[0], hsbCol[1], hsbCol[2]);
-
-	                //set the pixel to the new color
-	                brightnessBuffer.setRGB(i, a, rgbNew);
-	            }
-
-
-	        }
+	    Graphics2D g2d = img.createGraphics();
+	    try {
+	    	g2d.drawImage(original.getSubimage(x, y, width, height), x, y, null);
+	    } catch (Exception e) {
+	    	
 	    }
-
-	    return brightnessBuffer;
+	    return img;
 	}
-
+	
+	public static BufferedImage shadowImage(BufferedImage img) {
+		Graphics2D g2d = img.createGraphics();
+		g2d.setColor(new Color(0, 0, 0, .94f));
+		g2d.fillRect(0, 0, img.getWidth(), img.getHeight());
+		return img;
+	}
+	
 	@Override
 	public BufferedImage process(BufferedImage src) {
 		int x = Mouse.getX();
 		int y = Mouse.getY();
 		if (x < 0) x = 0;
 		if (y < 0) y = 0;
-		int radius = 500;
+		int radius = 100;
 
 		int x0 = x - radius;
 		int x1 = x + radius;
@@ -91,7 +61,11 @@ public class DefaultPostProcessor extends PostProcessor {
 			y1 = src.getHeight();
 
 		BufferedImage lighting = new BufferedImage(1280, 720, BufferedImage.TYPE_INT_RGB);
-		lighting = src;
+		BufferedImage clone = new BufferedImage(1280, 720, BufferedImage.TYPE_INT_RGB);
+		clone.createGraphics().drawImage(src, 0, 0, null);
+		lighting = clone;
+//		lighting = shadowImage(clone);
+//		lighting = updateLightLevels(lighting, src, x, y, radius, radius, 1.0f);
 
 //		Graphics2D gl = lighting.createGraphics();
 //		gl.setColor(new Color(0, 0, 0, 255));

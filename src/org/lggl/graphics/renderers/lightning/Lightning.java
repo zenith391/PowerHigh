@@ -34,7 +34,7 @@ public final class Lightning implements IRenderer {
 			}
 		}
 		for (PostProcessor pp : postProcessors) {
-			//buff = pp.process(buff);
+			buff = pp.process(buff);
 		}
 		g.fillRect(0, 0, rect.width, rect.height);
 		g.drawImage(buff, 0, 0, null);
