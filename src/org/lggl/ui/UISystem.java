@@ -1,9 +1,12 @@
 package org.lggl.ui;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.lggl.graphics.Texture;
+import org.lggl.utils.debug.DebugLogger;
 
 public class UISystem {
 
@@ -12,9 +15,14 @@ public class UISystem {
 	static {
 		if (uiModel == null) {
 			try {
-				uiModel = new FileUIModel(new InputStreamReader(UISystem.class.getClassLoader().getResource("org/lggl/ui/base/base_ui_skin.ui").openStream()), 
-						UISystem.class.getClassLoader().getResource("org/lggl/ui/base/base_ui_skin.png").openStream()); // Special case, inside .jar / project
-			} catch (IOException e) {
+				File base = new File("base");
+				if (base.exists()) {
+					uiModel = new FileUIModel(new InputStreamReader(new FileInputStream("base/base_ui_skin.ui")), 
+							"base/"); // Special case, inside .jar / project
+				} else {
+					DebugLogger.logError("No \"base\" folder!");
+				}
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

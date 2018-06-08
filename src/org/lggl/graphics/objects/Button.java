@@ -25,6 +25,7 @@ public class Button extends GameObject {
 	private Texture img;
 	private Texture pressed;
 	private Texture normal;
+	private boolean p;
 	
 	public Button() {
 		setSize(60, 60);
@@ -85,6 +86,9 @@ public class Button extends GameObject {
 		if (isInBounds(Mouse.getX(), Mouse.getY(), getX(), getY(), getWidth(), getHeight())) {
 			cl = hoverColor;
 		}
+		if (p == true) {
+			cl = pressColor;
+		}
 		if (img == null) {
 			g.setColor(cl);
 			g.fillRect(x, y, getWidth(), getHeight());
@@ -128,9 +132,11 @@ public class Button extends GameObject {
 		if (type.equals("mouseReleased")) {
 			img = normal;
 			exeRunnables();
+			p = false;
 		}
 		if (type.equals("mousePressed")) {
 			img = pressed;
+			p = true;
 		}
 	}
 

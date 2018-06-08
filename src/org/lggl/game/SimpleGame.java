@@ -19,6 +19,8 @@ public abstract class SimpleGame {
 	public abstract void update(Window win);
 
 	public abstract void init(Window win);
+	
+	public void exit(Window win) {}
 
 	private void dbg() {
 		String name = System.getProperty("os.name");
@@ -47,7 +49,7 @@ public abstract class SimpleGame {
 		return audio;
 	}
 
-	protected boolean launched;
+	protected boolean launched, a1;
 	
 	public void start() {
 		try {
@@ -62,6 +64,10 @@ public abstract class SimpleGame {
 			window.show();
 			
 			while (true) {
+				if (window.isClosed() && a1 == false) {
+					exit(window);
+					a1 = true;
+				}
 				this.update(window);
 				Thread.sleep(1000 / 60);
 				if (!launched) {
@@ -73,6 +79,7 @@ public abstract class SimpleGame {
 			}
 		} catch (Throwable t) {
 			Toolkit.getDefaultToolkit().beep();
+			t.printStackTrace();
 			ErrorBox.create()
 			.throwable(t)
 			.show(window.getJFrame().getContentPane());
