@@ -23,14 +23,14 @@ public class PackageSession {
 	}
 	
 	public synchronized void send(String packageName, String packageValue) {
-		out.println("SET "+packageName+":"+packageValue + "\0");
+		out.print("SET "+packageName+":"+packageValue + "\0");
 		out.flush();
 	}
 	
 	public synchronized String get(String packageName) throws LGGLException {
-		out.println("GET " + packageName);
+		out.print("GET " + packageName + "\0");
 		out.flush();
-		String pck = waitForEvent("return.value."+packageName + "\0");
+		String pck = waitForEvent("return.value."+packageName);
 		return pck;
 	}
 	
@@ -40,7 +40,7 @@ public class PackageSession {
 		for (byte by : data) {
 			b.append((char) by);
 		}
-		out.println(b.toString() + "\0");
+		out.print(b.toString() + "\0");
 		out.flush();
 	}
 	
@@ -89,8 +89,6 @@ public class PackageSession {
 						if (evt.startsWith("EVT ")) {
 							String[] evta = evt.split(" ");
 							events.put(evta[1], evt.replace("EVT " + evta[1], ""));
-							System.out.println(evt);
-							
 						}
 					} catch (LGGLException e) {
 						// TODO Auto-generated catch block

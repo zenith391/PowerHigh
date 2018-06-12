@@ -18,6 +18,7 @@ public class Sprite extends GameObject {
 	
 	public void setTexture(Texture texture) {
 		this.texture = texture;
+		setSize(texture.getWidth(), texture.getHeight());
 	}
 
 	public Texture getTexture() {

@@ -44,8 +44,8 @@ public abstract class GameObject {
 	}
 
 	public void centerTo(Window window) {
-		x = window.getWidth() / 2 - (width / 2);
-		y = window.getHeight() / 2 - (height / 2);
+		x = window.getViewport().width / 2 - (width / 2);
+		y = window.getViewport().height / 2 - (height / 2);
 	}
 
 	public String getName() {

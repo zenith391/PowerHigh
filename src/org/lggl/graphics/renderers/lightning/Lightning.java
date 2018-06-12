@@ -18,12 +18,17 @@ public final class Lightning implements IRenderer {
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
 	private boolean paused;
 	private boolean debug;
+	private boolean pp = true;
 	private Window lastWin;
 	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
 	private void render(Window win, Graphics g, Rectangle rect) {
-		BufferedImage buff = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
-		Graphics g2 = buff.createGraphics();
+		Graphics g2 = g;
+		BufferedImage buff = null;
+		if (pp) {
+			buff = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
+			g2 = buff.createGraphics();
+		}
 		g2.setColor(win.getBackground());
 		g2.fillRect(0, 0, rect.width, rect.height);
 		for (GameObject obj : win.getObjects()) {
@@ -33,11 +38,13 @@ public final class Lightning implements IRenderer {
 				}
 			}
 		}
-		for (PostProcessor pp : postProcessors) {
-			buff = pp.process(buff);
+		if (pp) {
+			for (PostProcessor pp : postProcessors) {
+				buff = pp.process(buff);
+			}
+			g.fillRect(0, 0, rect.width, rect.height);
+			g.drawImage(buff, 0, 0, null);
 		}
-		g.fillRect(0, 0, rect.width, rect.height);
-		g.drawImage(buff, 0, 0, null);
 	}
 
 	@Override
@@ -103,10 +110,13 @@ public final class Lightning implements IRenderer {
 	public boolean isPaused() {
 		return paused;
 	}
+	
+	public void setUsePostProcessing(boolean enable) {
+		pp = enable;
+	}
 
 	@Override
 	public void addPostProcessor(PostProcessor processor) {
-		System.out.println("add");
 		postProcessors.add(processor);
 	}
 

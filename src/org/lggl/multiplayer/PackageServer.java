@@ -65,7 +65,7 @@ public class PackageServer extends Thread {
 			while (!sock.isClosed()) {
 				try {
 					String msg = read();
-					String[] a = msg.split(" ");
+					String[] a = msg.split("\\s");
 					if (a[0].equals("SET")) {
 						String[] b = a[1].split(":");
 						String name = b[0];
@@ -100,9 +100,9 @@ public class PackageServer extends Thread {
 			char c = 1;
 			while (c != '\0') {
 				c = (char) is.read();
-				b.append(c);
+				if (c != '\0')
+					b.append(c);
 			}
-			System.out.println(b.toString());
 			return b.toString();
 		}
 		

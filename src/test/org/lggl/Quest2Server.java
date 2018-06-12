@@ -9,7 +9,7 @@ public class Quest2Server extends ServerHandler {
 		// TODO Auto-generated method stub
 		System.out.println("[QUEST2 SERVER] PUTTING " + name+":"+value);
 		if (name.equals("server.playerConnect")) {
-			System.out.println("Welcome " + value + "!");
+			System.out.println("[QUEST2 WELCOME] Welcome " + value + "!");
 		}
 	}
 
@@ -22,7 +22,7 @@ public class Quest2Server extends ServerHandler {
 	@Override
 	public void onPacket(short type, byte[] data) {
 		// TODO Auto-generated method stub
-		System.out.println("PACKET");
+		System.out.println("[QUEST2 DEBUG] PACKET");
 	}
 
 }

@@ -26,14 +26,14 @@ public class SwingObject extends GameObject {
 			if (Mouse.isClicking()) {
 				System.out.println("click");
 				for (MouseListener lis : content.getMouseListeners()) {
-					lis.mouseClicked(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, 10, 10, 1, false));
+					lis.mouseClicked(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), 10, 10, 1, false));
 				}
 			}
 			else if (Mouse.isPressed() && !hasPressed) {
 				hasPressed = true;
 				for (MouseListener lis : content.getMouseListeners()) {
 					System.out.println("press");
-					lis.mousePressed(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, Mouse.getX(), Mouse.getY(), 1, false));
+					lis.mousePressed(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), Mouse.getPressedButton(), Mouse.getX(), Mouse.getY(), 1, false));
 				}
 			}
 			else {

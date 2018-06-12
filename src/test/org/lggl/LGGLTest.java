@@ -14,6 +14,7 @@ import org.lggl.SizedViewport;
 import org.lggl.audio.AISSound;
 import org.lggl.game.FXContainer;
 import org.lggl.game.SimpleGame;
+import org.lggl.graphics.DefaultPostProcessor;
 import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.Button;
 import org.lggl.graphics.objects.Rectangle;
@@ -98,6 +99,8 @@ public class LGGLTest extends SimpleGame {
 	public void init(Window win) {
 		
 		((Lightning) Window.getRenderer()).turnOffDebug();
+		DefaultPostProcessor dpp = ((DefaultPostProcessor) Window.getRenderer().getPostProcessors().get(0));
+		dpp.enableLighting = true;
 		
 		win.setViewportManager(new SizedViewport(1280, 720));
 		// Iziditor.main(new String[] {});
@@ -150,14 +153,14 @@ public class LGGLTest extends SimpleGame {
 			System.out.println("Could not connect to .. virtual server");
 			e.printStackTrace();
 		}
-//		sess.send("server.playerConnect", "Player1");
-//		sess.sendPacket((short) 256, new byte[] {52, 47, 96, 32, 14, 58});
-//		sess.send("server.playerDisconnect", "Player1");
-//		try {
-//			System.err.println("Online? " + sess.get("server.isPlayerOnline.Player1"));
-//		} catch (LGGLException e) {
-//			e.printStackTrace();
-//		}
+		sess.send("server.playerConnect", "Player1");
+		sess.sendPacket((short) 256, new byte[] {52, 47, 96, 32, 14, 58});
+		sess.send("server.playerDisconnect", "Player1");
+		try {
+			System.err.println("Online? " + sess.get("server.isPlayerOnline.Player1"));
+		} catch (LGGLException e) {
+			e.printStackTrace();
+		}
 		// for (Desktop.Action act : Desktop.Action.values()) {
 		// Desktop desk = Desktop.getDesktop();
 		// System.out.println(act + ": " + desk.isSupported(act));
