@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import org.lggl.Material;
 import org.lggl.graphics.Window;
 
 public abstract class GameObject {
@@ -19,17 +20,28 @@ public abstract class GameObject {
 
 	protected int x;
 	protected int y;
+	protected int rotation;
 	protected int width = 15;
 	protected int height = 15;
 	private String name = Integer.toHexString(hashCode());
 	private boolean visible = true;
 	protected Rectangle hitbox = new Rectangle(0, 0, 15, 15);
 	protected Color color = Color.BLACK;
+	
+	protected Material material = new Material(); // default
+	
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
 
 	public abstract void paint(Graphics g, Window source);
-	
+
 	public void onEvent(String type, Object... args) {
-		
+
 	}
 
 	public GameObject() {
@@ -39,8 +51,17 @@ public abstract class GameObject {
 		return x;
 	}
 
+	public int getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation % 360;
+	}
+
 	public String toString() {
-		return getClass().getName() + "[type="+getClass().getSimpleName()+",x="+x+",y="+y+",width="+width+",height="+height+"]";
+		return getClass().getName() + "[type=" + getClass().getSimpleName() + ",x=" + x + ",y=" + y + ",width=" + width
+				+ ",height=" + height + "]";
 	}
 
 	public void centerTo(Window window) {
@@ -100,16 +121,16 @@ public abstract class GameObject {
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
-	
+
 	public void setSize(int w, int h) {
 		this.width = w;
 		this.height = h;
 	}
-	
+
 	public void setSize(Dimension dim) {
 		setSize(dim.width, dim.height);
 	}
-	
+
 	public Dimension getSize() {
 		return new Dimension(width, height);
 	}

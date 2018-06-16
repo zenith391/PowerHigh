@@ -30,11 +30,15 @@ public class Audio {
 	public void playSound(Sound sound) {
 		Thread th = new Thread() {
 			public void run() {
-				byte[] buffer = new byte[65536];
+				byte[] buffer = new byte[4096];
 				int offset = buffer.length;
 				while (sound.hasNextSample()) {
 					if (offset > buffer.length - 1) {
 						for (int i = 0; i < buffer.length; i++) {
+							if (!sound.hasNextSample()) {
+								DebugLogger.logInfo("Sound finished ! :D");
+								break;
+							}
 							buffer[i] = sound.getNextSample();
 						}
 						offset = 0;

@@ -7,6 +7,11 @@ import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.GameObject;
 
+/**
+ * Example renderer
+ * @author zenith391
+ *
+ */
 public class SimpleRenderer implements IRenderer {
 
 	private boolean pause;

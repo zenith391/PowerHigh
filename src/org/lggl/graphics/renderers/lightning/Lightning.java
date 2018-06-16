@@ -1,8 +1,10 @@
 package org.lggl.graphics.renderers.lightning;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
@@ -18,12 +20,12 @@ public final class Lightning implements IRenderer {
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
 	private boolean paused;
 	private boolean debug;
-	private boolean pp = true;
+	private boolean pp = false;
 	private Window lastWin;
 	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
 	private void render(Window win, Graphics g, Rectangle rect) {
-		Graphics g2 = g;
+		Graphics2D g2 = (Graphics2D) g;
 		BufferedImage buff = null;
 		if (pp) {
 			buff = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
@@ -34,7 +36,17 @@ public final class Lightning implements IRenderer {
 		for (GameObject obj : win.getObjects()) {
 			if (obj.getX() < rect.width && obj.getY() < rect.height) {
 				if (obj.isVisible()) {
+					AffineTransform old = g2.getTransform();
+					g2.rotate(Math.toRadians(obj.getRotation()), obj.getX(), obj.getY());
+					
 					obj.paint(g2, win);
+					
+					float a = obj.getMaterial().reflectance;
+					a /= 2;
+					g2.setColor(new Color(.0f, 0f, 0f, a));
+					//g2.fillRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
+					
+					g2.setTransform(old);
 				}
 			}
 		}

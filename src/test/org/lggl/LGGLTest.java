@@ -65,17 +65,18 @@ public class LGGLTest extends SimpleGame {
 		}
 		if (keyboard.isKeyDown(Keyboard.KEY_G)) {
 			if (!(Window.getRenderer() instanceof SimpleRenderer)) {
-				DebugLogger.logInfo("Changed Renderer to: Simple (Default)");
+				DebugLogger.logInfo("Changed Renderer to: Simple ()");
 				Window.setRenderer(new SimpleRenderer());
 			}
 		}
 		if (keyboard.isKeyDown(Keyboard.KEY_H)) {
 			if (!(Window.getRenderer() instanceof Lightning)) {
-				DebugLogger.logInfo("Changed Renderer to: Lightning (WIP)");
+				DebugLogger.logInfo("Changed Renderer to: Lightning");
 				Window.setRenderer(new Lightning());
 			}
 		}
 		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
+		player.setRotation(player.getRotation() + 1);
 	}
 
 	private PackageSession sess;

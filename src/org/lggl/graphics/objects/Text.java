@@ -53,6 +53,7 @@ public class Text extends GameObject {
 				txtY += 15;
 			}
 		}
+		
 		g.setFont(old0);
 	}
 
