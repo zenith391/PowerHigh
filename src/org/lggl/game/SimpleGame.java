@@ -16,7 +16,7 @@ public abstract class SimpleGame {
 	protected Camera camera = null;
 	public static boolean enableLaunchDebug = true;
 
-	public abstract void update(Window win);
+	public abstract void update(Window win, double delta);
 
 	public abstract void init(Window win);
 	
@@ -68,7 +68,7 @@ public abstract class SimpleGame {
 					exit(window);
 					a1 = true;
 				}
-				this.update(window);
+				this.update(window, window.getEventThread().getDelta());
 				Thread.sleep(1000 / 60);
 				if (!launched) {
 					if (enableLaunchDebug) {

@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.SystemTray;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
+import org.lggl.Material;
 import org.lggl.SizedViewport;
 import org.lggl.audio.AISSound;
 import org.lggl.game.FXContainer;
@@ -28,6 +31,7 @@ import org.lggl.multiplayer.PackageSession;
 import org.lggl.multiplayer.PackageSystem;
 import org.lggl.tools.Iziditor;
 import org.lggl.utils.LGGLException;
+import org.lggl.utils.PackOutputStream;
 import org.lggl.utils.debug.DebugLogger;
 
 public class LGGLTest extends SimpleGame {
@@ -36,16 +40,19 @@ public class LGGLTest extends SimpleGame {
 	private Text fps;
 
 	@Override
-	public void update(Window win) {
-		// win.setViewport(0, 0, win.getWidth(), win.getHeight());
-
+	public void update(Window win, double delta) {
 		handleKeys(win);
-
-		if (win.isClosed()) {
-			win.hide();
-			System.exit(0);
+	}
+	
+	public void exit(Window win) {
+		try {
+			PackOutputStream pos = new PackOutputStream(new FileOutputStream("data.pak"));
+			pos.write(player);
+			pos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
+		System.exit(0);
 	}
 
 	public void handleKeys(Window win) {
@@ -108,7 +115,10 @@ public class LGGLTest extends SimpleGame {
 		srv();
 		player = new Rectangle();
 		fps = new Text();
+		player.setSize(30, 30);
+		player.setColor(Color.yellow);
 		player.setRounded(true);
+		player.setMaterial(new Material(0.2f));
 		player.centerTo(win);
 		win.setBackground(Color.BLUE);
 		win.setTitle("Hello LGGL!");
