@@ -6,8 +6,10 @@ import java.awt.SystemTray;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.zip.DeflaterOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
@@ -18,9 +20,11 @@ import org.lggl.audio.AISSound;
 import org.lggl.game.FXContainer;
 import org.lggl.game.SimpleGame;
 import org.lggl.graphics.DefaultPostProcessor;
+import org.lggl.graphics.TextureLoader;
 import org.lggl.graphics.Window;
 import org.lggl.graphics.objects.Button;
 import org.lggl.graphics.objects.Rectangle;
+import org.lggl.graphics.objects.Sprite;
 import org.lggl.graphics.objects.SwingObject;
 import org.lggl.graphics.objects.Text;
 import org.lggl.graphics.renderers.SimpleRenderer;
@@ -36,17 +40,19 @@ import org.lggl.utils.debug.DebugLogger;
 
 public class LGGLTest extends SimpleGame {
 
-	private Rectangle player;
+	private Sprite player;
 	private Text fps;
 
 	@Override
 	public void update(Window win, double delta) {
+		
 		handleKeys(win);
+		throw new Error("Random error in random game.");
 	}
 	
 	public void exit(Window win) {
 		try {
-			PackOutputStream pos = new PackOutputStream(new FileOutputStream("data.pak"));
+			PackOutputStream pos = new PackOutputStream(new FileOutputStream("data.pak"), true);
 			pos.write(player);
 			pos.close();
 		} catch (Exception e) {
@@ -113,11 +119,14 @@ public class LGGLTest extends SimpleGame {
 		win.setViewportManager(new SizedViewport(1280, 720));
 		// Iziditor.main(new String[] {});
 		srv();
-		player = new Rectangle();
+		try {
+			player = new Sprite(TextureLoader.getTexture(new File("base/base_ui_skin.png")));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		fps = new Text();
-		player.setSize(30, 30);
+		player.setSize(64, 64);
 		player.setColor(Color.yellow);
-		player.setRounded(true);
 		player.setMaterial(new Material(0.2f));
 		player.centerTo(win);
 		win.setBackground(Color.BLUE);

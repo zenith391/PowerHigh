@@ -1,5 +1,6 @@
 package org.lggl.game;
 
+import java.awt.Component;
 import java.awt.Toolkit;
 
 import org.lggl.Camera;
@@ -78,11 +79,15 @@ public abstract class SimpleGame {
 				}
 			}
 		} catch (Throwable t) {
+			Component parent = window.getJFrame().getContentPane();
+			if (!window.isVisible()) {
+				parent = null;
+			}
 			Toolkit.getDefaultToolkit().beep();
 			t.printStackTrace();
 			ErrorBox.create()
-			.throwable(t)
-			.show(window.getJFrame().getContentPane());
+				.throwable(t)
+					.show(parent);
 			System.exit(1);
 		}
 	}

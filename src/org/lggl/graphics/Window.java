@@ -79,7 +79,7 @@ public class Window {
 
 	static {
 		try {
-			if (false)
+			if (true)
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
@@ -208,7 +208,6 @@ public class Window {
 				win.dispose();
 			}
 		});
-		win.setLocation(500, 500);
 		thread.start();
 	}
 
