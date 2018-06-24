@@ -4,9 +4,13 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -55,8 +59,17 @@ public class Window {
 	private ArrayList<Event> pendingEvents = new ArrayList<Event>();
 	private ViewportManager viewport;
 	private Graphics customGraphics;
-	
+
 	private int vW, vH;
+	private boolean legacyFullscreen = false;
+
+	public boolean isLegacyFullscreen() {
+		return legacyFullscreen;
+	}
+
+	public void setLegacyFullscreen(boolean legacyFullscreen) {
+		this.legacyFullscreen = legacyFullscreen;
+	}
 
 	public Graphics getCustomGraphics() {
 		return customGraphics;
@@ -91,11 +104,11 @@ public class Window {
 	public boolean shouldRender(GameObject obj) {
 		return render.shouldRender(this, obj);
 	}
-	
+
 	public int getFPS() {
 		return thread.getFPS();
 	}
-	
+
 	public float getSPF() {
 		return 1.0f / getFPS();
 	}
@@ -196,6 +209,7 @@ public class Window {
 		if (render == null)
 			setRenderer(new Lightning());
 		win.setLayout(null);
+		device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		win.add(panel);
 		win.getContentPane().setBackground(Color.BLACK);
 		win.addKeyListener(input);
@@ -226,26 +240,88 @@ public class Window {
 		return win;
 	}
 
+	private GraphicsDevice device;
+	private DisplayMode lastDisplayMode;
+
+	private int fullscreenWidth, fullscreenHeight;
+
+	/**
+	 * 
+	 * @return requested fullscreen width
+	 */
+	public int getFullscreenWidth() {
+		return fullscreenWidth;
+	}
+
+	/**
+	 * It is the wanted fullscreen width, LGGL will try to fit the window to that
+	 * width a maximum
+	 * 
+	 * @param fullscreenWidth
+	 */
+	public void setFullscreenWidth(int fullscreenWidth) {
+		this.fullscreenWidth = fullscreenWidth;
+	}
+
+	public int getFullscreenHeight() {
+		return fullscreenHeight;
+	}
+
+	/**
+	 * It is the wanted fullscreen height, LGGL will try to fit the window to that
+	 * height a maximum
+	 * 
+	 * @param fullscreenWidth
+	 */
+	public void setFullscreenHeight(int fullscreenHeight) {
+		this.fullscreenHeight = fullscreenHeight;
+	}
+
 	public void setFullscreen(boolean fullscreen) {
 		try {
 			if (fullscreen == true) {
-				win.dispose();
+				if (device.isFullScreenSupported() && !legacyFullscreen) {
+					device.setFullScreenWindow(win);
+					DisplayMode found = device.getDisplayMode();
+					lastDisplayMode = device.getDisplayMode();
+					if (fullscreenWidth != 0 && fullscreenHeight != 0) {
+						for (DisplayMode mode : device.getDisplayModes()) {
+							if ((mode.getWidth() >= fullscreenWidth && mode.getWidth() < found.getWidth())) {
+								if (mode.getHeight() >= fullscreenHeight && mode.getHeight() < found.getHeight()) {
+									found = mode;
+								}
+							}
+						}
+					}
+					if (!found.equals(device.getDisplayMode())) {
+						device.setDisplayMode(found);
+					}
 
-				win.setUndecorated(true);
-				win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				} else {
+					win.dispose();
 
-				show();
+					win.setUndecorated(true);
+					win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+					show();
+				}
 			} else {
-				win.dispose();
+				if (device.isFullScreenSupported() && !legacyFullscreen) {
+					device.setFullScreenWindow(null);
+				} else {
+					win.dispose();
 
-				win.setUndecorated(false);
-				win.setExtendedState(JFrame.NORMAL);
-				setSize(win.getWidth(), win.getHeight());
+					win.setUndecorated(false);
+					win.setExtendedState(JFrame.NORMAL);
+					setSize(win.getWidth(), win.getHeight());
 
-				show();
+					show();
+				}
 			}
 			this.fullscreen = fullscreen;
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -269,14 +345,10 @@ public class Window {
 	}
 
 	public void show() {
-		try {
-			canvas.createBufferStrategy(buffersNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		//showinit();
 		win.setVisible(true);
 	}
-	
+
 	public void showinit() {
 		try {
 			canvas.createBufferStrategy(buffersNum);
@@ -327,8 +399,10 @@ public class Window {
 			// Custom double-buffering
 			int w = vW;
 			int h = vH;
-			if (w < 1) w = 1;
-			if (h < 1) h = 1;
+			if (w < 1)
+				w = 1;
+			if (h < 1)
+				h = 1;
 			BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
 			panel.paint(img.createGraphics());
 			System.out.println(img);

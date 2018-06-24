@@ -29,6 +29,7 @@ public class AISSound extends Sound {
 					samples[i0 + (i * ais.getFormat().getFrameSize())] = sb[i0];
 				}
 			}
+			format = ais.getFormat();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

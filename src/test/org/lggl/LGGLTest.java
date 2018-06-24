@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.zip.DeflaterOutputStream;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
 import org.lggl.Material;
@@ -47,7 +48,7 @@ public class LGGLTest extends SimpleGame {
 	public void update(Window win, double delta) {
 		
 		handleKeys(win);
-		throw new Error("Random error in random game.");
+		//throw new Error("Random error in random game.");
 	}
 	
 	public void exit(Window win) {
@@ -75,6 +76,10 @@ public class LGGLTest extends SimpleGame {
 		}
 		if (keyboard.isKeyDown(Keyboard.KEY_S)) {
 			player.setY(player.getY() + speed);
+		}
+		if (keyboard.isKeyDown(Keyboard.KEY_F11)) {
+			win.setFullscreen(!win.isFullscreen());
+			keyboard.setKeyDown(Keyboard.KEY_F11, false);
 		}
 		if (keyboard.isKeyDown(Keyboard.KEY_G)) {
 			if (!(Window.getRenderer() instanceof SimpleRenderer)) {
@@ -132,10 +137,13 @@ public class LGGLTest extends SimpleGame {
 		win.setBackground(Color.BLUE);
 		win.setTitle("Hello LGGL!");
 		win.add(player);
+		
 		win.setSize(1280, 720);
 		SwingObject obj = new SwingObject();
 		JTabbedPane pane = new JTabbedPane();
 		JButton button = new JButton("Test");
+		pane.addTab("JButton", button);
+		pane.addTab("JLabel", new JLabel("Hi"));
 		Button bt = new Button();
 		bt.setText("Musique !");
 		bt.setX(100);
@@ -160,12 +168,14 @@ public class LGGLTest extends SimpleGame {
 
 		});
 		win.add(bt);
-		obj.setContent(button);
+		obj.setContent(pane);
 		win.add(obj);
 		win.add(fps);
 		win.setResizable(true);
 		obj.setX(100);
 		obj.setY(100);
+		win.setFullscreenWidth(1280);
+		win.setFullscreenHeight(720);
 		try {
 			sess = PackageSystem.connect(InetAddress.getLocalHost(), 56552);
 			System.out.println("Sucefully connected to .. virtual server");
@@ -185,6 +195,8 @@ public class LGGLTest extends SimpleGame {
 		// Desktop desk = Desktop.getDesktop();
 		// System.out.println(act + ": " + desk.isSupported(act));
 		// }
+		
+		//win.getEventThread().setTargetFPS(10);
 	}
 
 	public static void main(String[] args) {

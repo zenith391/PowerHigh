@@ -7,8 +7,8 @@ public class WindowEventThread extends Thread {
 	private Window win;
 	private boolean arleadyVisible = false;
 	private short targetFPS = 60;
-	private short frames;
-	private short fps;
+	private int frames;
+	private int fps;
 	
 	private double delta;
 	

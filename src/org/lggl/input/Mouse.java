@@ -11,6 +11,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	
 	private static int x = 0;
 	private static int y = 0;
+	
+	private static int screenX = 0;
+	private static int screenY = 0;
 	private static boolean clicked = false;
 	private static boolean dragged = false;
 	private static boolean[] pressedButtons = {false, false, false};
@@ -39,8 +42,20 @@ public class Mouse implements MouseListener, MouseMotionListener {
 				clicked = false;
 			}
 		});
-		t.setName("");
+		t.setName("Click4Thread");
 		t.start();
+		
+		if (m.getButton() == MouseEvent.BUTTON1) {
+			pressedButtons[0] = true;
+		}
+		if (m.getButton() == MouseEvent.BUTTON2) {
+			pressedButtons[1] = true;
+		}
+		if (m.getButton() == MouseEvent.BUTTON3) {
+			pressedButtons[2] = true;
+		}
+		
+		window.fireEvent("mouseClicked", m.getX(), m.getY());
 	}
 
 	public void mouseEntered(MouseEvent m) {
@@ -82,6 +97,8 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		dragged = true;
 		x = m.getX();
 		y = m.getY();
+		screenX = m.getXOnScreen();
+		screenY = m.getYOnScreen();
 		window.fireEvent("mouseDragged", x, y);
 		try {
 			Thread.sleep(10);
@@ -95,6 +112,10 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent m) {
 		x = m.getX();
 		y = m.getY();
+		screenX = m.getXOnScreen();
+		screenY = m.getYOnScreen();
+		
+		window.fireEvent("mouseMoved", x, y);
 	}
 
 	public static boolean isClicking() {
@@ -132,6 +153,14 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	
 	public static int getY() {
 		return y;
+	}
+
+	public static int getScreenX() {
+		return screenX;
+	}
+
+	public static int getScreenY() {
+		return screenY;
 	}
 
 	public static MouseMotionListener getListener() {
