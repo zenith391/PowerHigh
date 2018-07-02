@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.InflaterInputStream;
 
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 
 public class PackInputStream extends FilterInputStream {
 

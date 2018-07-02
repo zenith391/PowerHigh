@@ -1,30 +1,25 @@
 package org.lggl.graphics;
 
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.lggl.ViewportManager;
-import org.lggl.game.SimpleGame;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
 import org.lggl.input.Keyboard;
@@ -38,19 +33,12 @@ import org.lggl.utils.LGGLException;
  */
 public class Window {
 
-	private Canvas canvas;
 	private JFrame win = new JFrame();
 	private int width = 640, height = 480;
 	private String title;
-
-	public static final int DISPOSE_ON_CLOSE = 0;
-	public static final int EXIT_ON_CLOSE = 1;
-
-	private SimpleGame owner;
+	
 	private Keyboard input = new Keyboard();
 	private Mouse mouse = new Mouse(-1, -1, this);
-	private int buffersNum = 1;
-	private int closeOperation = 0;
 	private boolean fullscreen;
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private GameObject focusedObj;
@@ -87,7 +75,6 @@ public class Window {
 
 	public static void setRenderer(IRenderer render) {
 		Window.render = render;
-		render.addPostProcessor(new DefaultPostProcessor());
 	}
 
 	static {
@@ -138,7 +125,6 @@ public class Window {
 		init();
 		setTitle(title);
 		setSize(width, height);
-		canvas = new Canvas();
 	}
 
 	public ViewportManager getViewportManager() {
@@ -213,8 +199,9 @@ public class Window {
 		win.add(panel);
 		win.getContentPane().setBackground(Color.BLACK);
 		win.addKeyListener(input);
-		panel.addMouseMotionListener(Mouse.getListener());
-		panel.addMouseListener(Mouse.getListener2());
+		panel.addMouseMotionListener((MouseMotionListener) mouse);
+		panel.addMouseListener((MouseListener) mouse);
+		panel.addMouseWheelListener((MouseWheelListener) mouse);
 		win.setResizable(false);
 		win.addWindowListener(new WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
@@ -241,7 +228,6 @@ public class Window {
 	}
 
 	private GraphicsDevice device;
-	private DisplayMode lastDisplayMode;
 
 	private int fullscreenWidth, fullscreenHeight;
 
@@ -283,7 +269,6 @@ public class Window {
 				if (device.isFullScreenSupported() && !legacyFullscreen) {
 					device.setFullScreenWindow(win);
 					DisplayMode found = device.getDisplayMode();
-					lastDisplayMode = device.getDisplayMode();
 					if (fullscreenWidth != 0 && fullscreenHeight != 0) {
 						for (DisplayMode mode : device.getDisplayModes()) {
 							if ((mode.getWidth() >= fullscreenWidth && mode.getWidth() < found.getWidth())) {
@@ -326,14 +311,6 @@ public class Window {
 		}
 	}
 
-	public int getCloseOperation() {
-		return closeOperation;
-	}
-
-	public void setCloseOperation(int closeOperation) {
-		this.closeOperation = closeOperation;
-	}
-
 	public void setResizable(boolean resize) {
 		win.setResizable(resize);
 	}
@@ -348,15 +325,7 @@ public class Window {
 		//showinit();
 		win.setVisible(true);
 	}
-
-	public void showinit() {
-		try {
-			canvas.createBufferStrategy(buffersNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	public void hide() {
 		win.setVisible(false);
 	}
@@ -368,10 +337,6 @@ public class Window {
 
 	public Keyboard getKeyboard() {
 		return input;
-	}
-
-	public void setBufferQuantity(int buffers) {
-		buffersNum = buffers;
 	}
 
 	public boolean isClosed() {

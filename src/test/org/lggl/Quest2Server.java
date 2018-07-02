@@ -1,8 +1,13 @@
 package test.org.lggl;
 
+import org.lggl.multiplayer.PackageServer;
 import org.lggl.multiplayer.ServerHandler;
 
 public class Quest2Server extends ServerHandler {
+
+	public Quest2Server(PackageServer owner) {
+		super(owner);
+	}
 
 	@Override
 	public void putValue(String name, String value) {

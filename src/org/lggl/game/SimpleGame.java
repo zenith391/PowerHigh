@@ -7,14 +7,17 @@ import org.lggl.Camera;
 import org.lggl.audio.Audio;
 import org.lggl.graphics.ErrorBox;
 import org.lggl.graphics.Window;
+import org.lggl.input.Input;
 import org.lggl.utils.LGGLException;
 import org.lggl.utils.debug.DebugLogger;
 
 public abstract class SimpleGame {
 
-	protected Window window = new Window();
-	protected Audio audio;
+	protected Window window = null;
+	protected Audio audio = null;
 	protected Camera camera = null;
+	protected Input input = null;
+	
 	public static boolean enableLaunchDebug = true;
 
 	public abstract void update(Window win, double delta);
@@ -34,6 +37,7 @@ public abstract class SimpleGame {
 	 * <p><b>Note:</b> This method is called before init, it is like a pre-init</p>
 	 */
 	protected void coreInit() {
+		window = new Window();
 		try {
 			audio = new Audio();
 			if (enableLaunchDebug)
@@ -43,6 +47,7 @@ public abstract class SimpleGame {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		input = new Input(window);
 		camera = new Camera(0, 0);
 	}
 	
@@ -59,9 +64,15 @@ public abstract class SimpleGame {
 				DebugLogger.logInfo("Preparing game..");
 				dbg();
 			}
+			
 			coreInit();
 			init(window);
 			
+			window.getEventThread().addUpdateListener(new Runnable() {
+				public void run() {
+					update(window, window.getEventThread().getDelta());
+				}
+			});
 			window.show();
 			
 			while (true) {
@@ -69,7 +80,6 @@ public abstract class SimpleGame {
 					exit(window);
 					a1 = true;
 				}
-				this.update(window, window.getEventThread().getDelta());
 				Thread.sleep(1000 / 60);
 				if (!launched) {
 					if (enableLaunchDebug) {

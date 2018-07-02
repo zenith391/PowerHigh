@@ -1,14 +1,10 @@
 package org.lggl.graphics;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ConcurrentModificationException;
 
 import javax.swing.JPanel;
-
-import org.lggl.graphics.objects.GameObject;
 
 class WindowPanel extends JPanel {
 	

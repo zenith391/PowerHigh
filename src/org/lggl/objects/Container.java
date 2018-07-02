@@ -1,4 +1,4 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Graphics;
 import java.util.ArrayList;

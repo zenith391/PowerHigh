@@ -4,8 +4,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import org.lggl.utils.KeyCodes;
-
 public class Keyboard extends KeyCodes implements KeyListener {
 	
 	private ArrayList<Integer> downKeys = new ArrayList<Integer>();
@@ -36,6 +34,10 @@ public class Keyboard extends KeyCodes implements KeyListener {
 				downKeys.add(key);
 			}
 		}
+	}
+	
+	public Integer[] getDownKeys() {
+		return downKeys.toArray(new Integer[downKeys.size()]);
 	}
 
 	public boolean isKeyDown(int key) {

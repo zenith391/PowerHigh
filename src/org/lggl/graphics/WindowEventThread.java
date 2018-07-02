@@ -1,11 +1,12 @@
 package org.lggl.graphics;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WindowEventThread extends Thread {
 
 	private Window win;
-	private boolean arleadyVisible = false;
 	private short targetFPS = 60;
 	private int frames;
 	private int fps;
@@ -16,9 +17,15 @@ public class WindowEventThread extends Thread {
 
 	private Runnable runnable = null;
 	private Runnable arunnable = null;
+	
+	private List<Runnable> updateListeners = new ArrayList<Runnable>();
 
 	public int getTargetFPS() {
 		return targetFPS;
+	}
+	
+	public void addUpdateListener(Runnable r) {
+		updateListeners.add(r);
 	}
 	
 	public double getDelta() {
@@ -54,7 +61,7 @@ public class WindowEventThread extends Thread {
 				lastTick = System.currentTimeMillis() + 1000;
 				fps = frames;
 				frames = 0;
-				delta = (double) fps / (double) targetFPS;
+				delta = (double) targetFPS / (double) fps;
 			}
 			if (runnable != null) {
 				runnable.run();
@@ -63,17 +70,13 @@ public class WindowEventThread extends Thread {
 			if (arunnable != null) {
 				arunnable.run();
 			}
-			if (arleadyVisible) {
-				if (win.getCloseOperation() == Window.EXIT_ON_CLOSE) {
-					if (win.isClosed()) {
-						System.exit(0);
-					}
-				}
-			}
 
 			size = new Dimension(win.getWidth(), win.getHeight());
 			
-				win.update();
+			win.update();
+			for (Runnable r : updateListeners) {
+				r.run();
+			}
 			
 			if (!lastSize.equals(size)) {
 				win.throwEvent(new ResizeEvent(size));

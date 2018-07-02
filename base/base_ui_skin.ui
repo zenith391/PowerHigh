@@ -1,5 +1,4 @@
-#Base UI Skin by LGGL & for LGGL
-#No copyright on there, usable by everyone
+#Base UI Skin
 
 version = 1
 file = base_ui_skin.png
@@ -7,5 +6,6 @@ tileWidth = 64
 tileHeight = 64
 skin.button-normal = 0;0
 skin.button-pressed = 1;0
+skin.button-hover = 3;0
 skin.tile.no-texture = 2;0
 skin.tile.text-input = 0;1

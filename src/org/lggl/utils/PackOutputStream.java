@@ -11,7 +11,7 @@ import java.util.Base64;
 import java.util.zip.DeflaterOutputStream;
 
 import org.lggl.graphics.Texture;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 
 /**
  * Game object serialization.

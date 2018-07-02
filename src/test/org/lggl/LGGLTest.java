@@ -1,15 +1,11 @@
 package test.org.lggl;
 
 import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.SystemTray;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.zip.DeflaterOutputStream;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,23 +14,22 @@ import javax.swing.JTabbedPane;
 import org.lggl.Material;
 import org.lggl.SizedViewport;
 import org.lggl.audio.AISSound;
-import org.lggl.game.FXContainer;
 import org.lggl.game.SimpleGame;
-import org.lggl.graphics.DefaultPostProcessor;
+import org.lggl.graphics.ParticleBlueprint;
+import org.lggl.graphics.ParticleBox;
 import org.lggl.graphics.TextureLoader;
 import org.lggl.graphics.Window;
-import org.lggl.graphics.objects.Button;
-import org.lggl.graphics.objects.Rectangle;
-import org.lggl.graphics.objects.Sprite;
-import org.lggl.graphics.objects.SwingObject;
-import org.lggl.graphics.objects.Text;
+import org.lggl.objects.Button;
+import org.lggl.objects.Particle;
+import org.lggl.objects.Sprite;
+import org.lggl.objects.SwingObject;
+import org.lggl.objects.Text;
 import org.lggl.graphics.renderers.SimpleRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
 import org.lggl.input.Keyboard;
 import org.lggl.multiplayer.PackageServer;
 import org.lggl.multiplayer.PackageSession;
 import org.lggl.multiplayer.PackageSystem;
-import org.lggl.tools.Iziditor;
 import org.lggl.utils.LGGLException;
 import org.lggl.utils.PackOutputStream;
 import org.lggl.utils.debug.DebugLogger;
@@ -43,6 +38,8 @@ public class LGGLTest extends SimpleGame {
 
 	private Sprite player;
 	private Text fps;
+	private ParticleBox box;
+	private ParticleBlueprint damageBlueprint;
 
 	@Override
 	public void update(Window win, double delta) {
@@ -93,6 +90,9 @@ public class LGGLTest extends SimpleGame {
 				Window.setRenderer(new Lightning());
 			}
 		}
+		Particle p = new Particle(damageBlueprint, 600, 400);
+		box.addParticle(p);
+		box.windLeft(10, 5);
 		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
 		player.setRotation(player.getRotation() + 1);
 	}
@@ -102,7 +102,7 @@ public class LGGLTest extends SimpleGame {
 	public void srv() {
 		try {
 			PackageServer srv = PackageSystem.createServer(56552);
-			srv.setHandler(new Quest2Server());
+			srv.setHandler(new Quest2Server(srv));
 			srv.start();
 		} catch (LGGLException e) {
 			e.printStackTrace();
@@ -118,25 +118,28 @@ public class LGGLTest extends SimpleGame {
 	public void init(Window win) {
 		
 		((Lightning) Window.getRenderer()).turnOffDebug();
-		DefaultPostProcessor dpp = ((DefaultPostProcessor) Window.getRenderer().getPostProcessors().get(0));
-		dpp.enableLighting = true;
 		
 		win.setViewportManager(new SizedViewport(1280, 720));
 		// Iziditor.main(new String[] {});
-		srv();
 		try {
 			player = new Sprite(TextureLoader.getTexture(new File("base/base_ui_skin.png")));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		fps = new Text();
+		box = new ParticleBox(50);
+		box.setX(0);
+		box.setY(0);
+		box.setSize(1280, 720);
+		damageBlueprint = new ParticleBlueprint(Color.RED, 10, (short) 50);
 		player.setSize(64, 64);
 		player.setColor(Color.yellow);
 		player.setMaterial(new Material(0.2f));
 		player.centerTo(win);
-		win.setBackground(Color.BLUE);
+		win.setBackground(Color.BLACK);
 		win.setTitle("Hello LGGL!");
 		win.add(player);
+		win.add(box);
 		
 		win.setSize(1280, 720);
 		SwingObject obj = new SwingObject();
@@ -167,7 +170,13 @@ public class LGGLTest extends SimpleGame {
 			}
 
 		});
+		Button tbt = new Button();
+		tbt.setText("Test Button");
+		tbt.setX(400);
+		tbt.setY(100);
+		tbt.setSize(100, 60);
 		win.add(bt);
+		win.add(tbt);
 		obj.setContent(pane);
 		win.add(obj);
 		win.add(fps);
@@ -181,7 +190,12 @@ public class LGGLTest extends SimpleGame {
 			System.out.println("Sucefully connected to .. virtual server");
 		} catch (UnknownHostException | LGGLException e) {
 			System.out.println("Could not connect to .. virtual server");
-			e.printStackTrace();
+			srv();
+			try {
+				sess = PackageSystem.connect(InetAddress.getLocalHost(), 56552);
+			} catch (UnknownHostException | LGGLException e1) {
+				e1.printStackTrace();
+			}
 		}
 		sess.send("server.playerConnect", "Player1");
 		sess.sendPacket((short) 256, new byte[] {52, 47, 96, 32, 14, 58});
@@ -196,11 +210,10 @@ public class LGGLTest extends SimpleGame {
 		// System.out.println(act + ": " + desk.isSupported(act));
 		// }
 		
-		//win.getEventThread().setTargetFPS(10);
+		win.getEventThread().setTargetFPS(60);
 	}
 
 	public static void main(String[] args) {
-		SimpleGame.enableLaunchDebug = false;
 		LGGLTest test = new LGGLTest();
 		test.start();
 	}

@@ -11,7 +11,7 @@ import java.util.WeakHashMap;
 
 import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
 import org.lggl.utils.debug.DebugLogger;
 
@@ -19,8 +19,8 @@ public final class Lightning implements IRenderer {
 
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
 	private boolean paused;
-	private boolean debug;
-	private boolean pp = false;
+	private boolean debug = true;
+	private boolean pp = true;
 	private Window lastWin;
 	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
@@ -133,8 +133,13 @@ public final class Lightning implements IRenderer {
 	}
 
 	@Override
-	public ArrayList<PostProcessor> getPostProcessors() {
-		return postProcessors;
+	public PostProcessor[] getPostProcessors() {
+		return postProcessors.toArray(new PostProcessor[postProcessors.size()]);
+	}
+
+	@Override
+	public boolean isUsingPostProcessing() {
+		return pp;
 	}
 
 }

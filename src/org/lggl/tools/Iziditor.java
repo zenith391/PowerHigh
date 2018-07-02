@@ -7,10 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import org.lggl.graphics.objects.GameObject;
-import org.lggl.graphics.objects.Rectangle;
-import org.lggl.graphics.objects.Sprite;
-import org.lggl.graphics.objects.Text;
+import org.lggl.objects.GameObject;
+import org.lggl.objects.Rectangle;
+import org.lggl.objects.Sprite;
+import org.lggl.objects.Text;
 
 import java.awt.Window.Type;
 import javax.swing.JMenuBar;
@@ -22,6 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
+/**
+ * <h2>WARNING!</h2>
+ * Iziditor will move to another project (lggl-iziditor on github) in next release.
+ * @author zenith391
+ *
+ */
+
+@Deprecated(forRemoval = true)
 public class Iziditor extends JFrame {
 
 	private JPanel contentPane;

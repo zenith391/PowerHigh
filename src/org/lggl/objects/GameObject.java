@@ -1,9 +1,10 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import org.lggl.Material;
 import org.lggl.graphics.Window;
@@ -101,7 +102,7 @@ public abstract class GameObject {
 		x = nx;
 	}
 
-	public Rectangle getHitbox() {
+	public Rectangle2D getHitbox() {
 		hitbox.setBounds(x, y, width, height);
 		return hitbox;
 	}

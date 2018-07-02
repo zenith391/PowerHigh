@@ -1,4 +1,4 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -17,7 +17,6 @@ public class SwingObject extends GameObject {
 	private JComponent content;
 	private Point mouseLastPos;
 	private boolean hasEntered;
-	private boolean hasPressed;
 	
 	@Override
 	public void paint(Graphics g, Window source) {

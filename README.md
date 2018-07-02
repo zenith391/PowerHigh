@@ -15,6 +15,9 @@ Add theses dependencies:
 
 Export the project as jar
 
+**Or:**
+You can use Maven for building project using the pom.xml file.
+
 
 ### Download JAR
 

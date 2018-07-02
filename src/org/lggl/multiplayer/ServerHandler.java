@@ -2,6 +2,12 @@ package org.lggl.multiplayer;
 
 public abstract class ServerHandler {
 
+	protected PackageServer owner;
+	
+	public ServerHandler(PackageServer owner) {
+		this.owner = owner;
+	}
+	
 	public abstract void putValue(String name, String value);
 	
 	public abstract String getValue(String name);

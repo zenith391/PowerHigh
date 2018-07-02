@@ -1,4 +1,4 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
 import org.lggl.graphics.ErrorBox;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 import org.lggl.utils.LGGLException;
 
 import javax.swing.DefaultListModel;
@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
+@Deprecated(forRemoval = true)
 public class Izilib extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
