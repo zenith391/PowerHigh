@@ -44,7 +44,7 @@ public class Texture {
 	
 	/**
 	 * Private API constructor.<br/>
-	 * Please <b>do not use!</b>
+	 * Please <b>do not use!</b> Unless you're sure of this.
 	 */
 	public Texture(BufferedImage img) {
 		this.img = img;

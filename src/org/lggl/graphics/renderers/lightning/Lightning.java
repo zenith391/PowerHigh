@@ -33,11 +33,14 @@ public final class Lightning implements IRenderer {
 		}
 		g2.setColor(win.getBackground());
 		g2.fillRect(0, 0, rect.width, rect.height);
+		g2.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
+		g2.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
+		g2.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (obj.getX() < rect.width && obj.getY() < rect.height) {
 				if (obj.isVisible()) {
 					AffineTransform old = g2.getTransform();
-					g2.rotate(Math.toRadians(obj.getRotation()), obj.getX(), obj.getY());
+					g2.rotate(Math.toRadians(obj.getRotation()), obj.getX()+(obj.getWidth() / 2), obj.getY()+(obj.getHeight() / 2));
 					
 					obj.paint(g2, win);
 					

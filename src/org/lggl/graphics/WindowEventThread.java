@@ -79,7 +79,6 @@ public class WindowEventThread extends Thread {
 			}
 			
 			if (!lastSize.equals(size)) {
-				win.throwEvent(new ResizeEvent(size));
 				lastSize = size;
 			}
 			if (targetFPS > 0) {

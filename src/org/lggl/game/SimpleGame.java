@@ -70,7 +70,20 @@ public abstract class SimpleGame {
 			
 			window.getEventThread().addUpdateListener(new Runnable() {
 				public void run() {
-					update(window, window.getEventThread().getDelta());
+					try {
+						update(window, window.getEventThread().getDelta());
+					} catch (Throwable t) {
+						Component parent = window.getJFrame().getContentPane();
+						if (!window.isVisible()) {
+							parent = null;
+						}
+						Toolkit.getDefaultToolkit().beep();
+						t.printStackTrace();
+						ErrorBox.create()
+							.throwable(t)
+								.show(parent);
+						System.exit(1);
+					}
 				}
 			});
 			window.show();

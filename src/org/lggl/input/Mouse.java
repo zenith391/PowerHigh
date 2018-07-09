@@ -43,7 +43,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		t.setName("Click4Thread");
 		t.start();
 		
-		window.fireEvent("mouseClicked", m.getX(), m.getY());
+		window.fireEvent("mouseClicked", m.getX(), m.getY(), m.getButton() - 1);
 	}
 
 	public void mouseEntered(MouseEvent m) {
@@ -87,7 +87,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		y = m.getY();
 		screenX = m.getXOnScreen();
 		screenY = m.getYOnScreen();
-		window.fireEvent("mouseDragged", x, y);
+		window.fireEvent("mouseDragged", x, y, m.getButton() - 1);
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {

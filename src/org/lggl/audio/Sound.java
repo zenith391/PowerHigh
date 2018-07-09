@@ -10,6 +10,8 @@ public class Sound {
 	
 	protected AudioFormat format;
 	
+	protected float volume;
+	
 	public AudioFormat getFormat() {
 		return format;
 	}
@@ -18,7 +20,13 @@ public class Sound {
 		
 	}
 	
+	public float getVolume() {
+		return volume;
+	}
 	
+	public void setVolume(float volume) {
+		this.volume = volume;
+	}
 	
 	public byte getNextSample() {
 		pos++;

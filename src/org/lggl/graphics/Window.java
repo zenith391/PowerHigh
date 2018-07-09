@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -18,14 +19,14 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.lggl.Camera;
 import org.lggl.ViewportManager;
+import org.lggl.objects.Container;
 import org.lggl.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
 import org.lggl.input.Keyboard;
 import org.lggl.input.Mouse;
-import org.lggl.utils.Event;
-import org.lggl.utils.LGGLException;
 
 /**
  * 
@@ -36,23 +37,30 @@ public class Window {
 	private JFrame win = new JFrame();
 	private int width = 640, height = 480;
 	private String title;
-	
-	private Keyboard input = new Keyboard();
+
+	private Keyboard input = new Keyboard(this);
 	private Mouse mouse = new Mouse(-1, -1, this);
 	private boolean fullscreen;
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private GameObject focusedObj;
 	private WindowEventThread thread = new WindowEventThread(this);
 	private WindowPanel panel = new WindowPanel(this);
-	private ArrayList<Event> pendingEvents = new ArrayList<Event>();
 	private ViewportManager viewport;
 	private Graphics customGraphics;
+	
+	private Container objectContainer;
+	
+	private Camera camera;
 
 	private int vW, vH;
 	private boolean legacyFullscreen = false;
 
 	public boolean isLegacyFullscreen() {
 		return legacyFullscreen;
+	}
+	
+	public Container getObjectContainer() {
+		return objectContainer;
 	}
 
 	public void setLegacyFullscreen(boolean legacyFullscreen) {
@@ -102,10 +110,6 @@ public class Window {
 
 	public boolean isFullscreen() {
 		return fullscreen;
-	}
-
-	public boolean isEventAvailable() {
-		return !pendingEvents.isEmpty();
 	}
 
 	public void setBackground(Color bg) {
@@ -210,11 +214,14 @@ public class Window {
 			}
 		});
 		thread.start();
+		objectContainer = new Container();
+		camera = new Camera();
 	}
 
 	public void setViewport(int x, int y, int width, int height) {
 		panel.setLocation(x, y);
 		panel.setSize(width, height);
+		objectContainer.setSize(width, height);
 		vW = width;
 		vH = height;
 	}
@@ -282,6 +289,8 @@ public class Window {
 						device.setDisplayMode(found);
 					}
 
+					win.createBufferStrategy(1);
+
 				} else {
 					win.dispose();
 
@@ -293,6 +302,7 @@ public class Window {
 			} else {
 				if (device.isFullScreenSupported() && !legacyFullscreen) {
 					device.setFullScreenWindow(null);
+					fullscreen = false;
 				} else {
 					win.dispose();
 
@@ -304,9 +314,7 @@ public class Window {
 				}
 			}
 			this.fullscreen = fullscreen;
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -322,10 +330,10 @@ public class Window {
 	}
 
 	public void show() {
-		//showinit();
+		// showinit();
 		win.setVisible(true);
 	}
-	
+
 	public void hide() {
 		win.setVisible(false);
 	}
@@ -348,7 +356,15 @@ public class Window {
 	}
 
 	public void add(GameObject obj) {
-		objects.add(obj);
+		objectContainer.add(obj);
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+	
+	public void setCamera(Camera cam) {
+		camera = cam;
 	}
 
 	public void update() {
@@ -359,7 +375,18 @@ public class Window {
 			}
 		}
 		if (customGraphics == null) {
-			panel.repaint();
+			if (!isFullscreen()) {
+				win.setIgnoreRepaint(false);
+				panel.setIgnoreRepaint(false);
+				panel.repaint();
+			} else {
+				win.setIgnoreRepaint(true);
+				panel.setIgnoreRepaint(true);
+				BufferStrategy bs = win.getBufferStrategy();
+				Graphics g = bs.getDrawGraphics();
+				win.paint(g);
+				bs.show();
+			}
 		} else {
 			// Custom double-buffering
 			int w = vW;
@@ -376,12 +403,12 @@ public class Window {
 	}
 
 	public GameObject[] getObjects() {
-		return objects.toArray(new GameObject[objects.size()]);
+		return objectContainer.getObjects();
 	}
 
 	public void remove(GameObject obj) {
 		try {
-			objects.remove(obj);
+			objectContainer.remove(obj);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -397,10 +424,6 @@ public class Window {
 
 	public Mouse getMouse() {
 		return mouse;
-	}
-
-	public void throwEvent(Event e) {
-		pendingEvents.add(0, e);
 	}
 
 	public void fireEvent(String type, Object... args) {
@@ -419,16 +442,6 @@ public class Window {
 		}
 		if (focusedObj != null)
 			focusedObj.onEvent(type, args);
-	}
-
-	public Event dispatchEvent() throws LGGLException {
-		if (isEventAvailable()) {
-			Event evt = pendingEvents.get(pendingEvents.size() - 1);
-			pendingEvents.remove(pendingEvents.size() - 1);
-			return evt;
-		} else {
-			throw new LGGLException("No Event");
-		}
 	}
 
 	public void removeAll() {

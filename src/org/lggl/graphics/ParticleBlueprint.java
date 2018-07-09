@@ -1,6 +1,9 @@
 package org.lggl.graphics;
 
 import java.awt.Color;
+import java.awt.Graphics;
+
+import org.lggl.objects.Particle;
 
 public class ParticleBlueprint {
 
@@ -8,11 +11,28 @@ public class ParticleBlueprint {
 	private Texture texture;
 	private int size;
 	private short maxLife;
+	private ParticleRenderer r;
+	
+	public abstract static class ParticleRenderer {
+		
+		public abstract void render(Graphics g, Particle p);
+		
+	}
 	
 	public ParticleBlueprint(Color color, int size, short life) {
 		this.color = color;
 		this.size = size;
 		this.maxLife = life;
+	}
+	
+	public ParticleBlueprint(int size, short life, ParticleRenderer r) {
+		this.size = size;
+		this.maxLife = life;
+		this.r = r;
+	}
+	
+	public ParticleRenderer getParticleRenderer() {
+		return r;
 	}
 	
 	public ParticleBlueprint(Texture tex, int size, short life) {

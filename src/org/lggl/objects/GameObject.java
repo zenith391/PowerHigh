@@ -34,6 +34,18 @@ public abstract class GameObject {
 	public Material getMaterial() {
 		return material;
 	}
+	
+	/**
+	 * Disposing a GameObject will mostly set it's variables to null so they can be cleaned (this GameObject) via Garbage Collector<br/>
+	 * <b>Note:</b> For performance reasons, this don't call System.gc(), It must be manually did
+	 */
+	public void dispose() {
+		x = y = width = height = rotation = 0;
+		color = null;
+		material = null;
+		hitbox = null;
+		name = null;
+	}
 
 	public void setMaterial(Material material) {
 		this.material = material;

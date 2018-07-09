@@ -84,7 +84,7 @@ public class Button extends GameObject {
 		if (isInBounds(Mouse.getX(), Mouse.getY(), getX(), getY(), getWidth(), getHeight())) {
 			cl = hoverColor;
 			if (hover != null) {
-				if (img != hover) {
+				if (img != hover && img != pressed) {
 					img = hover;
 				}
 			}

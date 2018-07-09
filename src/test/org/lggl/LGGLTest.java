@@ -1,6 +1,7 @@
 package test.org.lggl;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,8 +15,11 @@ import javax.swing.JTabbedPane;
 import org.lggl.Material;
 import org.lggl.SizedViewport;
 import org.lggl.audio.AISSound;
+import org.lggl.audio.WavMusic;
 import org.lggl.game.SimpleGame;
+import org.lggl.graphics.Animation;
 import org.lggl.graphics.ParticleBlueprint;
+import org.lggl.graphics.ParticleBlueprint.ParticleRenderer;
 import org.lggl.graphics.ParticleBox;
 import org.lggl.graphics.TextureLoader;
 import org.lggl.graphics.Window;
@@ -27,6 +31,7 @@ import org.lggl.objects.Text;
 import org.lggl.graphics.renderers.SimpleRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
 import org.lggl.input.Keyboard;
+import org.lggl.input.Mouse;
 import org.lggl.multiplayer.PackageServer;
 import org.lggl.multiplayer.PackageSession;
 import org.lggl.multiplayer.PackageSystem;
@@ -40,28 +45,29 @@ public class LGGLTest extends SimpleGame {
 	private Text fps;
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
+	private boolean scaleUp;
 
 	@Override
 	public void update(Window win, double delta) {
 		
-		handleKeys(win);
+		handleKeys(win, delta);
 		//throw new Error("Random error in random game.");
 	}
 	
 	public void exit(Window win) {
-		try {
-			PackOutputStream pos = new PackOutputStream(new FileOutputStream("data.pak"), true);
-			pos.write(player);
-			pos.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try {
+//			PackOutputStream pos = new PackOutputStream(new FileOutputStream("data.pak"), true);
+//			pos.write(player);
+//			pos.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		System.exit(0);
 	}
 
-	public void handleKeys(Window win) {
+	public void handleKeys(Window win, double delta) {
 		Keyboard keyboard = win.getKeyboard();
-		int speed = (int) (5d * win.getEventThread().getDelta());
+		int speed = (int) (5d * delta);
 		if (keyboard.isKeyDown(Keyboard.KEY_D)) {
 			player.setX(player.getX() + speed);
 		}
@@ -90,11 +96,27 @@ public class LGGLTest extends SimpleGame {
 				Window.setRenderer(new Lightning());
 			}
 		}
-		Particle p = new Particle(damageBlueprint, 600, 400);
+		
+		Particle p = new Particle(damageBlueprint, Mouse.getX(), Mouse.getY());
 		box.addParticle(p);
-		box.windLeft(10, 5);
+		box.windRight((int)(10d*delta), (int)(5*delta));
 		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
 		player.setRotation(player.getRotation() + 1);
+//		if (scaleUp) {
+//			win.getCamera().setScale(win.getCamera().getScale() + 0.01d);
+//		} else {
+//			win.getCamera().setScale(win.getCamera().getScale() - 0.01d);
+//		}
+//		if (win.getCamera().getScale() > 3) {
+//			scaleUp = false;
+//		}
+//		if (win.getCamera().getScale() < 0.5d) {
+//			scaleUp = true;
+//		}
+//		win.getCamera().setRotation(win.getCamera().getRotation() + 1);
+//		if (win.getCamera().getRotation() > 360) {
+//			win.getCamera().setRotation(0);
+//		}
 	}
 
 	private PackageSession sess;
@@ -110,36 +132,64 @@ public class LGGLTest extends SimpleGame {
 	}
 	
 	public void dbgsound() {
-		AISSound sound = new AISSound(new File("Alonzo - Santana.wav"));
-		audio.playSound(sound);
+		WavMusic music = null;
+		try {
+			music = new WavMusic(new File("Alonzo - Santana.wav"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		audio.playMusic(music);
 	}
 
 	@Override
 	public void init(Window win) {
 		
 		((Lightning) Window.getRenderer()).turnOffDebug();
+		Window.getRenderer().setUsePostProcessing(true);
 		
 		win.setViewportManager(new SizedViewport(1280, 720));
 		// Iziditor.main(new String[] {});
-		try {
-			player = new Sprite(TextureLoader.getTexture(new File("base/base_ui_skin.png")));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		player = new Sprite();
 		fps = new Text();
-		box = new ParticleBox(50);
+		box = new ParticleBox(512);
 		box.setX(0);
 		box.setY(0);
-		box.setSize(1280, 720);
-		damageBlueprint = new ParticleBlueprint(Color.RED, 10, (short) 50);
+		box.setSize(1920, 1080);
+		damageBlueprint = new ParticleBlueprint(10, (short) 255, new ParticleRenderer() {
+
+			@Override
+			public void render(Graphics g, Particle p) {
+				int a = p.getLife() % 255;
+				if (a < 1) {
+					a = 1;
+				}
+				a -= 255;
+				a *= -1;
+				Color c = new Color(255, 255, 255, a);
+				g.setColor(c);
+				int size = p.getBlueprint().getSize();
+//				if (a != 0) {
+//					int d = a / 100;
+//					if (d<1)d=1;
+//					size /= d;
+//				}
+				g.fillRect(p.getX(), p.getY(), size, size);
+			}
+			
+		});
 		player.setSize(64, 64);
 		player.setColor(Color.yellow);
 		player.setMaterial(new Material(0.2f));
 		player.centerTo(win);
+		try {
+			player.setAnimation(new Animation(new File("player.gan")));
+		} catch (IOException e2) {
+			e2.printStackTrace();
+			player.setSize(128, 128);
+		}
 		win.setBackground(Color.BLACK);
 		win.setTitle("Hello LGGL!");
 		win.add(player);
-		win.add(box);
 		
 		win.setSize(1280, 720);
 		SwingObject obj = new SwingObject();
@@ -180,11 +230,13 @@ public class LGGLTest extends SimpleGame {
 		obj.setContent(pane);
 		win.add(obj);
 		win.add(fps);
+
+		win.add(box);
 		win.setResizable(true);
 		obj.setX(100);
 		obj.setY(100);
-		win.setFullscreenWidth(1280);
-		win.setFullscreenHeight(720);
+		win.setFullscreenWidth(1920);
+		win.setFullscreenHeight(1080);
 		try {
 			sess = PackageSystem.connect(InetAddress.getLocalHost(), 56552);
 			System.out.println("Sucefully connected to .. virtual server");
@@ -211,6 +263,8 @@ public class LGGLTest extends SimpleGame {
 		// }
 		
 		win.getEventThread().setTargetFPS(60);
+		
+		Mouse.setCursorHidden(true);
 	}
 
 	public static void main(String[] args) {
