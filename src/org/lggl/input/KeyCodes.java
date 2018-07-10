@@ -1,4 +1,4 @@
-package org.lggl.utils;
+package org.lggl.input;
 
 import java.awt.event.KeyEvent;
 
@@ -32,34 +32,40 @@ public class KeyCodes {
 	public static final int KEY_Z = KeyEvent.VK_Z;
 	
 	// F 1-12
-	public static final int KEY_F8 = KeyEvent.VK_F8;
-	public static final int KEY_F7 = KeyEvent.VK_F7;
-	public static final int KEY_F6 = KeyEvent.VK_F6;
-	public static final int KEY_F5 = KeyEvent.VK_F5;
-	public static final int KEY_F4 = KeyEvent.VK_F4;
-	public static final int KEY_F3 = KeyEvent.VK_F3;
-	public static final int KEY_F1 = KeyEvent.VK_F1;
-	public static final int KEY_F2 = KeyEvent.VK_F2;
-	public static final int KEY_F9 = KeyEvent.VK_F9;
-	public static final int KEY_F12 = KeyEvent.VK_F12;
-	public static final int KEY_F11 = KeyEvent.VK_F11;
-	public static final int KEY_F10 = KeyEvent.VK_F10;
+	public static final int KEY_F1 = 112;
+	public static final int KEY_F2 = 113;
+	public static final int KEY_F3 = 114;
+	public static final int KEY_F4 = 115;
+	public static final int KEY_F5 = 116;
+	public static final int KEY_F6 = 117;
+	public static final int KEY_F7 = 118;
+	public static final int KEY_F8 = 119;
+	public static final int KEY_F9 = 120;
+	public static final int KEY_F10 = 121;
+	public static final int KEY_F11 = 122;
+	public static final int KEY_F12 = 123;
+	
+	// Arrows
+	public static final int KEY_RIGHT = 39;
+	public static final int KEY_LEFT = 37;
+	public static final int KEY_DOWN = 40;
+	public static final int KEY_UP = 38;
 	
 	// Special characters
-	public static final int KEY_SPACE = KeyEvent.VK_SPACE;
-	public static final int KEY_ESCAPE = KeyEvent.VK_ESCAPE;
-	public static final int KEY_ENTER = KeyEvent.VK_ENTER;
+	public static final int KEY_SPACE = 32;
+	public static final int KEY_ESCAPE = 0x1b;
+	public static final int KEY_ENTER = 10;
 	
 	// Numbers
-	public static final int KEY_0 = KeyEvent.VK_0;
-	public static final int KEY_1 = KeyEvent.VK_1;
-	public static final int KEY_2 = KeyEvent.VK_2;
-	public static final int KEY_3 = KeyEvent.VK_3;
-	public static final int KEY_4 = KeyEvent.VK_0;
-	public static final int KEY_5 = KeyEvent.VK_0;
-	public static final int KEY_6 = KeyEvent.VK_0;
-	public static final int KEY_7 = KeyEvent.VK_0;
-	public static final int KEY_8 = KeyEvent.VK_0;
-	public static final int KEY_9 = KeyEvent.VK_0;
+	public static final int KEY_0 = 48;
+	public static final int KEY_1 = 49;
+	public static final int KEY_2 = 50;
+	public static final int KEY_3 = 51;
+	public static final int KEY_4 = 52;
+	public static final int KEY_5 = 53;
+	public static final int KEY_6 = 54;
+	public static final int KEY_7 = 55;
+	public static final int KEY_8 = 56;
+	public static final int KEY_9 = 57;
 	
 }

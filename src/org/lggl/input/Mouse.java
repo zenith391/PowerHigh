@@ -1,28 +1,29 @@
 package org.lggl.input;
 
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.lggl.graphics.Window;
 
-public class Mouse implements MouseListener, MouseMotionListener {
+public class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
 	
 	private static int x = 0;
 	private static int y = 0;
+	
+	private static int screenX = 0;
+	private static int screenY = 0;
 	private static boolean clicked = false;
 	private static boolean dragged = false;
 	private static boolean[] pressedButtons = {false, false, false};
 	static Window window;
-	static MouseMotionListener instance;
-	static MouseListener instance2;
 
 	public Mouse(int defaultX, int defaultY, Window win) {
 		x = defaultX;
 		y = defaultY;
-		instance = this;
-		instance2 = this;
 		window = win;
 	}
 
@@ -39,8 +40,10 @@ public class Mouse implements MouseListener, MouseMotionListener {
 				clicked = false;
 			}
 		});
-		t.setName("");
+		t.setName("Click4Thread");
 		t.start();
+		
+		window.fireEvent("mouseClicked", m.getX(), m.getY(), m.getButton() - 1);
 	}
 
 	public void mouseEntered(MouseEvent m) {
@@ -61,7 +64,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		if (m.getButton() == MouseEvent.BUTTON3) {
 			pressedButtons[2] = true;
 		}
-		window.fireEvent("mousePressed", m.getX(), m.getY());
+		window.fireEvent("mousePressed", m.getX(), m.getY(), m.getButton() - 1);
 	}
 
 	public void mouseReleased(MouseEvent m) {
@@ -74,7 +77,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		if (m.getButton() == MouseEvent.BUTTON3) {
 			pressedButtons[2] = false;
 		}
-		window.fireEvent("mouseReleased", m.getX(), m.getY());
+		window.fireEvent("mouseReleased", m.getX(), m.getY(), m.getButton() - 1);
 	}
 
 	@Override
@@ -82,7 +85,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		dragged = true;
 		x = m.getX();
 		y = m.getY();
-		window.fireEvent("mouseDragged", x, y);
+		screenX = m.getXOnScreen();
+		screenY = m.getYOnScreen();
+		window.fireEvent("mouseDragged", x, y, m.getButton() - 1);
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
@@ -95,6 +100,10 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	public void mouseMoved(MouseEvent m) {
 		x = m.getX();
 		y = m.getY();
+		screenX = m.getXOnScreen();
+		screenY = m.getYOnScreen();
+		
+		window.fireEvent("mouseMoved", x, y);
 	}
 
 	public static boolean isClicking() {
@@ -134,12 +143,12 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		return y;
 	}
 
-	public static MouseMotionListener getListener() {
-		return instance;
+	public static int getScreenX() {
+		return screenX;
 	}
 
-	public static MouseListener getListener2() {
-		return instance2;
+	public static int getScreenY() {
+		return screenY;
 	}
 
 	public static void setCursorHidden(boolean hidden) {
@@ -152,6 +161,12 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	public static void setCursor(Cursor cursor) {
 		window.getJFrame().setCursor(cursor);
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

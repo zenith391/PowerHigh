@@ -1,4 +1,4 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -17,31 +17,9 @@ public class SwingObject extends GameObject {
 	private JComponent content;
 	private Point mouseLastPos;
 	private boolean hasEntered;
-	private boolean hasPressed;
 	
 	@Override
 	public void paint(Graphics g, Window source) {
-		if (isInBounds(Mouse.getX(), Mouse.getY(), getX(), getY(), getWidth(), getHeight())) {
-			//System.out.println(hasPressed);
-			if (Mouse.isClicking()) {
-				System.out.println("click");
-				for (MouseListener lis : content.getMouseListeners()) {
-					lis.mouseClicked(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), 10, 10, 1, false));
-				}
-			}
-			else if (Mouse.isPressed() && !hasPressed) {
-				hasPressed = true;
-				for (MouseListener lis : content.getMouseListeners()) {
-					System.out.println("press");
-					lis.mousePressed(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), Mouse.getPressedButton(), Mouse.getX(), Mouse.getY(), 1, false));
-				}
-			}
-			else {
-				if (hasPressed) {
-					
-				}
-			}
-		}
 		if (Mouse.getX() != mouseLastPos.x || Mouse.getY() != mouseLastPos.y) {
 			mouseLastPos = new Point(Mouse.getX(), Mouse.getY());
 			for (MouseMotionListener lis : content.getMouseMotionListeners()) {
@@ -67,6 +45,38 @@ public class SwingObject extends GameObject {
 		BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		content.paint(img.createGraphics());
 		g.drawImage(img, x, y, null);
+	}
+	
+	public void onEvent(String name, Object... args) {
+		int x = 0;
+		int y = 0;
+		if (name.contains("mouse")) {
+			x = (int) args[0];
+			y = (int) args[1];
+		}
+		
+		if (name.equals("mousePressed")) {
+			System.out.println("press");
+			content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
+//			for (MouseListener lis : content.getMouseListeners()) {
+//				System.out.println("press");
+//				lis.mousePressed(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, 1, false));
+//			}
+		}
+		if (name.equals("mouseReleased")) {
+			for (MouseListener lis : content.getMouseListeners()) {
+				
+				lis.mouseReleased(new MouseEvent(content, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, 1, false));
+			}
+		}
+		if (name.equals("mouseClicked")) {
+			System.out.println("click" + MouseEvent.BUTTON1);
+			content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
+//			for (MouseListener lis : content.getMouseListeners()) {
+//				
+//				lis.mouseClicked(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
+//			}
+		}
 	}
 	
 	public void setContent(JComponent c) {

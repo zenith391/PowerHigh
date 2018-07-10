@@ -1,10 +1,7 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 
 import org.lggl.graphics.Window;
 

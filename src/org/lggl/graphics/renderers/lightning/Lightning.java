@@ -1,15 +1,17 @@
 package org.lggl.graphics.renderers.lightning;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
 import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
 import org.lggl.utils.debug.DebugLogger;
 
@@ -17,13 +19,13 @@ public final class Lightning implements IRenderer {
 
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
 	private boolean paused;
-	private boolean debug;
+	private boolean debug = true;
 	private boolean pp = true;
 	private Window lastWin;
 	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
 	private void render(Window win, Graphics g, Rectangle rect) {
-		Graphics g2 = g;
+		Graphics2D g2 = (Graphics2D) g;
 		BufferedImage buff = null;
 		if (pp) {
 			buff = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
@@ -31,10 +33,23 @@ public final class Lightning implements IRenderer {
 		}
 		g2.setColor(win.getBackground());
 		g2.fillRect(0, 0, rect.width, rect.height);
+		g2.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
+		g2.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
+		g2.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (obj.getX() < rect.width && obj.getY() < rect.height) {
 				if (obj.isVisible()) {
+					AffineTransform old = g2.getTransform();
+					g2.rotate(Math.toRadians(obj.getRotation()), obj.getX()+(obj.getWidth() / 2), obj.getY()+(obj.getHeight() / 2));
+					
 					obj.paint(g2, win);
+					
+					float a = obj.getMaterial().reflectance;
+					a /= 2;
+					g2.setColor(new Color(.0f, 0f, 0f, a));
+					//g2.fillRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
+					
+					g2.setTransform(old);
 				}
 			}
 		}
@@ -121,8 +136,13 @@ public final class Lightning implements IRenderer {
 	}
 
 	@Override
-	public ArrayList<PostProcessor> getPostProcessors() {
-		return postProcessors;
+	public PostProcessor[] getPostProcessors() {
+		return postProcessors.toArray(new PostProcessor[postProcessors.size()]);
+	}
+
+	@Override
+	public boolean isUsingPostProcessing() {
+		return pp;
 	}
 
 }

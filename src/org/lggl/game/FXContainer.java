@@ -1,14 +1,10 @@
 package org.lggl.game;
 
-import java.awt.Color;
-
 import javax.swing.SwingUtilities;
 
 import org.jfree.fx.FXGraphics2D;
 
 import javafx.application.Application;
-import javafx.embed.swing.JFXPanel;
-import javafx.embed.swing.SwingNode;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
@@ -16,7 +12,7 @@ import javafx.stage.Stage;
 
 /**
  * <h1>NOT READY FOR USAGE</h1>
- *
+ * (Will be suitable for usage on next release)
  */
 public class FXContainer extends Application {
 	

@@ -1,15 +1,11 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lggl.graphics.Texture;
-import org.lggl.graphics.TextureAtlas;
-import org.lggl.graphics.TextureLoader;
 import org.lggl.graphics.Window;
 import org.lggl.input.Mouse;
 import org.lggl.ui.UISystem;
@@ -25,12 +21,14 @@ public class Button extends GameObject {
 	private Texture img;
 	private Texture pressed;
 	private Texture normal;
+	private Texture hover;
 	private boolean p;
 	
 	public Button() {
 		setSize(60, 60);
 		normal = UISystem.getUI("button-normal");
 		pressed = UISystem.getUI("button-pressed");
+		hover = UISystem.getUI("button-hover");
 		img = normal;
 	}
 	
@@ -85,6 +83,17 @@ public class Button extends GameObject {
 		Color cl = buttonColor;
 		if (isInBounds(Mouse.getX(), Mouse.getY(), getX(), getY(), getWidth(), getHeight())) {
 			cl = hoverColor;
+			if (hover != null) {
+				if (img != hover && img != pressed) {
+					img = hover;
+				}
+			}
+		} else {
+			if (hover != null) {
+				if (img == hover) {
+					img = normal;
+				}
+			}
 		}
 		if (p == true) {
 			cl = pressColor;

@@ -1,4 +1,4 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -38,6 +38,15 @@ public class Container extends GameObject {
 		}
 		if (focusedObj != null)
 			focusedObj.onEvent(type, args);
+	}
+	
+	public void dispose() {
+		super.dispose();
+		for (GameObject obj : objects) {
+			obj.dispose();
+		}
+		objects = null;
+		focusedObj = null;
 	}
 	
 	public void setX(int x) {
@@ -85,8 +94,8 @@ public class Container extends GameObject {
 		}
 	}
 
-	public ArrayList<GameObject> getObjects() {
-		return objects;
+	public GameObject[] getObjects() {
+		return objects.toArray(new GameObject[objects.size()]);
 	}
 
 	public String toString() {

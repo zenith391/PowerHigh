@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lggl.utils.LGGLException;
@@ -17,9 +18,25 @@ public class PackageSession {
 	private boolean connected;
 	private HashMap<String, String> events = new HashMap<>();
 	
+	private ArrayList<ServerEventListener> seLis = new ArrayList<>();
+	
+	public static abstract class ServerEventListener {
+		
+		public abstract void onServerEvent(boolean isUser, String name, String value);
+		
+	}
+	
 	
 	PackageSession(Socket sock) {
 		socket = sock;
+	}
+	
+	public void addServerEventListener(ServerEventListener lis) {
+		seLis.add(lis);
+	}
+	
+	public void removeServerEventListener(ServerEventListener lis) {
+		seLis.remove(lis);
 	}
 	
 	public synchronized void send(String packageName, String packageValue) {
@@ -89,6 +106,16 @@ public class PackageSession {
 						if (evt.startsWith("EVT ")) {
 							String[] evta = evt.split(" ");
 							events.put(evta[1], evt.replace("EVT " + evta[1], ""));
+							for (ServerEventListener lis : seLis) {
+								lis.onServerEvent(false, evta[1], evt.replace("EVT " + evta[1], ""));
+							}
+						} else if (evt.startsWith("USREVT ")) {
+							String[] evta = evt.split(" ");
+							String name  = evta[1];
+							String value = evt.replace("USREVT " + evta[1], "");
+							for (ServerEventListener lis : seLis) {
+								lis.onServerEvent(true, name, value);
+							}
 						}
 					} catch (LGGLException e) {
 						// TODO Auto-generated catch block

@@ -1,32 +1,32 @@
 package org.lggl.graphics;
 
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.DisplayMode;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.lggl.Camera;
 import org.lggl.ViewportManager;
-import org.lggl.game.SimpleGame;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.Container;
+import org.lggl.objects.GameObject;
 import org.lggl.graphics.renderers.IRenderer;
 import org.lggl.graphics.renderers.lightning.Lightning;
 import org.lggl.input.Keyboard;
 import org.lggl.input.Mouse;
-import org.lggl.utils.Event;
-import org.lggl.utils.LGGLException;
 
 /**
  * 
@@ -34,29 +34,38 @@ import org.lggl.utils.LGGLException;
  */
 public class Window {
 
-	private Canvas canvas;
 	private JFrame win = new JFrame();
 	private int width = 640, height = 480;
 	private String title;
 
-	public static final int DISPOSE_ON_CLOSE = 0;
-	public static final int EXIT_ON_CLOSE = 1;
-
-	private SimpleGame owner;
-	private Keyboard input = new Keyboard();
+	private Keyboard input = new Keyboard(this);
 	private Mouse mouse = new Mouse(-1, -1, this);
-	private int buffersNum = 1;
-	private int closeOperation = 0;
 	private boolean fullscreen;
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private GameObject focusedObj;
 	private WindowEventThread thread = new WindowEventThread(this);
 	private WindowPanel panel = new WindowPanel(this);
-	private ArrayList<Event> pendingEvents = new ArrayList<Event>();
 	private ViewportManager viewport;
 	private Graphics customGraphics;
 	
+	private Container objectContainer;
+	
+	private Camera camera;
+
 	private int vW, vH;
+	private boolean legacyFullscreen = false;
+
+	public boolean isLegacyFullscreen() {
+		return legacyFullscreen;
+	}
+	
+	public Container getObjectContainer() {
+		return objectContainer;
+	}
+
+	public void setLegacyFullscreen(boolean legacyFullscreen) {
+		this.legacyFullscreen = legacyFullscreen;
+	}
 
 	public Graphics getCustomGraphics() {
 		return customGraphics;
@@ -74,12 +83,11 @@ public class Window {
 
 	public static void setRenderer(IRenderer render) {
 		Window.render = render;
-		render.addPostProcessor(new DefaultPostProcessor());
 	}
 
 	static {
 		try {
-			if (false)
+			if (true)
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
@@ -91,21 +99,17 @@ public class Window {
 	public boolean shouldRender(GameObject obj) {
 		return render.shouldRender(this, obj);
 	}
-	
+
 	public int getFPS() {
 		return thread.getFPS();
 	}
-	
+
 	public float getSPF() {
 		return 1.0f / getFPS();
 	}
 
 	public boolean isFullscreen() {
 		return fullscreen;
-	}
-
-	public boolean isEventAvailable() {
-		return !pendingEvents.isEmpty();
 	}
 
 	public void setBackground(Color bg) {
@@ -125,7 +129,6 @@ public class Window {
 		init();
 		setTitle(title);
 		setSize(width, height);
-		canvas = new Canvas();
 	}
 
 	public ViewportManager getViewportManager() {
@@ -196,11 +199,13 @@ public class Window {
 		if (render == null)
 			setRenderer(new Lightning());
 		win.setLayout(null);
+		device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		win.add(panel);
 		win.getContentPane().setBackground(Color.BLACK);
 		win.addKeyListener(input);
-		panel.addMouseMotionListener(Mouse.getListener());
-		panel.addMouseListener(Mouse.getListener2());
+		panel.addMouseMotionListener((MouseMotionListener) mouse);
+		panel.addMouseListener((MouseListener) mouse);
+		panel.addMouseWheelListener((MouseWheelListener) mouse);
 		win.setResizable(false);
 		win.addWindowListener(new WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
@@ -208,13 +213,15 @@ public class Window {
 				win.dispose();
 			}
 		});
-		win.setLocation(500, 500);
 		thread.start();
+		objectContainer = new Container();
+		camera = new Camera();
 	}
 
 	public void setViewport(int x, int y, int width, int height) {
 		panel.setLocation(x, y);
 		panel.setSize(width, height);
+		objectContainer.setSize(width, height);
 		vW = width;
 		vH = height;
 	}
@@ -227,36 +234,89 @@ public class Window {
 		return win;
 	}
 
+	private GraphicsDevice device;
+
+	private int fullscreenWidth, fullscreenHeight;
+
+	/**
+	 * 
+	 * @return requested fullscreen width
+	 */
+	public int getFullscreenWidth() {
+		return fullscreenWidth;
+	}
+
+	/**
+	 * It is the wanted fullscreen width, LGGL will try to fit the window to that
+	 * width a maximum
+	 * 
+	 * @param fullscreenWidth
+	 */
+	public void setFullscreenWidth(int fullscreenWidth) {
+		this.fullscreenWidth = fullscreenWidth;
+	}
+
+	public int getFullscreenHeight() {
+		return fullscreenHeight;
+	}
+
+	/**
+	 * It is the wanted fullscreen height, LGGL will try to fit the window to that
+	 * height a maximum
+	 * 
+	 * @param fullscreenWidth
+	 */
+	public void setFullscreenHeight(int fullscreenHeight) {
+		this.fullscreenHeight = fullscreenHeight;
+	}
+
 	public void setFullscreen(boolean fullscreen) {
 		try {
 			if (fullscreen == true) {
-				win.dispose();
+				if (device.isFullScreenSupported() && !legacyFullscreen) {
+					device.setFullScreenWindow(win);
+					DisplayMode found = device.getDisplayMode();
+					if (fullscreenWidth != 0 && fullscreenHeight != 0) {
+						for (DisplayMode mode : device.getDisplayModes()) {
+							if ((mode.getWidth() >= fullscreenWidth && mode.getWidth() < found.getWidth())) {
+								if (mode.getHeight() >= fullscreenHeight && mode.getHeight() < found.getHeight()) {
+									found = mode;
+								}
+							}
+						}
+					}
+					if (!found.equals(device.getDisplayMode())) {
+						device.setDisplayMode(found);
+					}
 
-				win.setUndecorated(true);
-				win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					win.createBufferStrategy(1);
 
-				show();
+				} else {
+					win.dispose();
+
+					win.setUndecorated(true);
+					win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+					show();
+				}
 			} else {
-				win.dispose();
+				if (device.isFullScreenSupported() && !legacyFullscreen) {
+					device.setFullScreenWindow(null);
+					fullscreen = false;
+				} else {
+					win.dispose();
 
-				win.setUndecorated(false);
-				win.setExtendedState(JFrame.NORMAL);
-				setSize(win.getWidth(), win.getHeight());
+					win.setUndecorated(false);
+					win.setExtendedState(JFrame.NORMAL);
+					setSize(win.getWidth(), win.getHeight());
 
-				show();
+					show();
+				}
 			}
 			this.fullscreen = fullscreen;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public int getCloseOperation() {
-		return closeOperation;
-	}
-
-	public void setCloseOperation(int closeOperation) {
-		this.closeOperation = closeOperation;
 	}
 
 	public void setResizable(boolean resize) {
@@ -270,20 +330,8 @@ public class Window {
 	}
 
 	public void show() {
-		try {
-			canvas.createBufferStrategy(buffersNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// showinit();
 		win.setVisible(true);
-	}
-	
-	public void showinit() {
-		try {
-			canvas.createBufferStrategy(buffersNum);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void hide() {
@@ -299,10 +347,6 @@ public class Window {
 		return input;
 	}
 
-	public void setBufferQuantity(int buffers) {
-		buffersNum = buffers;
-	}
-
 	public boolean isClosed() {
 		return !win.isVisible();
 	}
@@ -312,7 +356,15 @@ public class Window {
 	}
 
 	public void add(GameObject obj) {
-		objects.add(obj);
+		objectContainer.add(obj);
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+	
+	public void setCamera(Camera cam) {
+		camera = cam;
 	}
 
 	public void update() {
@@ -323,13 +375,26 @@ public class Window {
 			}
 		}
 		if (customGraphics == null) {
-			panel.repaint();
+			if (!isFullscreen()) {
+				win.setIgnoreRepaint(false);
+				panel.setIgnoreRepaint(false);
+				panel.repaint();
+			} else {
+				win.setIgnoreRepaint(true);
+				panel.setIgnoreRepaint(true);
+				BufferStrategy bs = win.getBufferStrategy();
+				Graphics g = bs.getDrawGraphics();
+				win.paint(g);
+				bs.show();
+			}
 		} else {
 			// Custom double-buffering
 			int w = vW;
 			int h = vH;
-			if (w < 1) w = 1;
-			if (h < 1) h = 1;
+			if (w < 1)
+				w = 1;
+			if (h < 1)
+				h = 1;
 			BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
 			panel.paint(img.createGraphics());
 			System.out.println(img);
@@ -338,12 +403,12 @@ public class Window {
 	}
 
 	public GameObject[] getObjects() {
-		return objects.toArray(new GameObject[objects.size()]);
+		return objectContainer.getObjects();
 	}
 
 	public void remove(GameObject obj) {
 		try {
-			objects.remove(obj);
+			objectContainer.remove(obj);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -359,10 +424,6 @@ public class Window {
 
 	public Mouse getMouse() {
 		return mouse;
-	}
-
-	public void throwEvent(Event e) {
-		pendingEvents.add(0, e);
 	}
 
 	public void fireEvent(String type, Object... args) {
@@ -381,16 +442,6 @@ public class Window {
 		}
 		if (focusedObj != null)
 			focusedObj.onEvent(type, args);
-	}
-
-	public Event dispatchEvent() throws LGGLException {
-		if (isEventAvailable()) {
-			Event evt = pendingEvents.get(pendingEvents.size() - 1);
-			pendingEvents.remove(pendingEvents.size() - 1);
-			return evt;
-		} else {
-			throw new LGGLException("No Event");
-		}
 	}
 
 	public void removeAll() {

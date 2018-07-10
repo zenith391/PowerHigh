@@ -20,7 +20,7 @@ public class AISSound extends Sound {
 			e.printStackTrace();
 		}
 		try {
-			samples = ais.readAllBytes();
+			samples = new byte[90001];
 			System.out.println(ais.getFrameLength());
 			for (int i = 0; i < 90000; i++) {
 				byte[] sb = new byte[ais.getFormat().getFrameSize()];
@@ -29,6 +29,7 @@ public class AISSound extends Sound {
 					samples[i0 + (i * ais.getFormat().getFrameSize())] = sb[i0];
 				}
 			}
+			format = ais.getFormat();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

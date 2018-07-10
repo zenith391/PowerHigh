@@ -31,10 +31,19 @@ public class ErrorBox {
 		StringWriter sw = new StringWriter();
 		if (t != null)
 			t.printStackTrace(new PrintWriter(sw));
-		int result = JOptionPane.showConfirmDialog(parent, "Error happened in the JVM.\nWould you like to send an error feedback ?\nError:\n"+sw.toString(), "Error!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		int result = 0;
+		if (parent == null) {
+			result = JOptionPane.showConfirmDialog(parent, "Error happened in the JVM.\nWould you like to send an error feedback ?\nError:\n"+sw.toString(), "Error!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		} else {
+			result = JOptionPane.showInternalConfirmDialog(parent, "Error happened in the JVM.\nWould you like to send an error feedback ?\nError:\n"+sw.toString(), "Error!", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+		}
 		if (result == JOptionPane.YES_OPTION) {
-			String url = "https://example.com/examplefeedback/examplegame/exempleerror.php";
-			JOptionPane.showMessageDialog(parent, "The following procedure will open " + url, "Error Feedback", JOptionPane.INFORMATION_MESSAGE);
+			String url = "https://example.com/";
+			if (parent == null) {
+				JOptionPane.showMessageDialog(parent, "The following procedure will open " + url, "Error Feedback", JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showInternalMessageDialog(parent, "The following procedure will open " + url, "Error Feedback", JOptionPane.INFORMATION_MESSAGE);
+			}
 			try {
 				Desktop.getDesktop().browse(new URL(url).toURI());
 			} catch (IOException | URISyntaxException e) {

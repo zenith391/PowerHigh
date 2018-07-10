@@ -1,38 +1,34 @@
 package org.lggl.graphics.renderers;
 
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
-import org.lggl.graphics.objects.GameObject;
+import org.lggl.objects.GameObject;
 
+/**
+ * Yet it is the most simplest renderer. This renderer is a template for people
+ * who would wish to create a custom renderer for LGGL.<br/>
+ * But this renderer does not have any optimizations. Not even for GameObjects not visible
+ * to user space. And it don't even support post-processors, i let you do this <i>^_^</i>
+ * @author zenith391
+ * @see <code>org.lggl.graphics.renderers.IRenderer</code>
+ */
 public class SimpleRenderer implements IRenderer {
 
 	private boolean pause;
-	
-	public SimpleRenderer() {
-		
-	}
 
 	@Override
 	public void render(Window win, Graphics2D g) {
 		for (GameObject obj : win.getObjects()) {
-			if (obj.isVisible()) {
+			if (shouldRender(win, obj)) {
 				obj.paint(g, win);
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 		}
 	}
 
 	@Override
 	public boolean shouldRender(Window w, GameObject obj) {
-		
 		return true;
 	}
 
@@ -52,15 +48,19 @@ public class SimpleRenderer implements IRenderer {
 	}
 
 	@Override
-	public void addPostProcessor(PostProcessor processor) {
-		// TODO Auto-generated method stub
-		
+	public void addPostProcessor(PostProcessor processor) {}
+
+	@Override
+	public PostProcessor[] getPostProcessors() {
+		return null;
 	}
 
 	@Override
-	public ArrayList<PostProcessor> getPostProcessors() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setUsePostProcessing(boolean use) {}
+
+	@Override
+	public boolean isUsingPostProcessing() {
+		return false;
 	}
 
 }

@@ -1,8 +1,10 @@
-package org.lggl.graphics.objects;
+package org.lggl.objects;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import org.lggl.graphics.Window;
 
@@ -38,22 +40,26 @@ public class Text extends GameObject {
 
 	@Override
 	public void paint(Graphics g, Window source) {
-		Font old0 = g.getFont();
+		BufferedImage canvas = new BufferedImage(width > 0 ? width : 100, height > 0 ? height : 100, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = canvas.createGraphics();
 		if (font != null)
-			g.setFont(font);
-		width = g.getFontMetrics().stringWidth(text);
-		height = g.getFontMetrics().getHeight();
-		g.setColor(color);
+			g2d.setFont(font);
+		width = g2d.getFontMetrics().stringWidth(text);
+		g2d.setColor(color);
 		if (!text.contains("\n")) {
-			g.drawString(text, x, y);
+			g2d.drawString(text, 0, g2d.getFontMetrics().getHeight());
+			height = g2d.getFontMetrics().getHeight();
 		} else {
-			int txtY = y;
+			int txtY = g2d.getFontMetrics().getHeight();
+			height = g2d.getFontMetrics().getHeight() * text.split("\n").length;
 			for (String str : text.split("\n")) {
-				g.drawString(str, x, txtY);
-				txtY += 15;
+				g2d.drawString(str, 0, txtY);
+				txtY += g2d.getFontMetrics().getHeight();
 			}
 		}
-		g.setFont(old0);
+		g.drawImage(canvas, x, y - g2d.getFontMetrics().getHeight(), null);
+		
+		// Using canvas for rotation support
 	}
 
 	public void setText(String txt) {
