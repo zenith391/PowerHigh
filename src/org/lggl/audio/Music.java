@@ -4,12 +4,15 @@ import javax.sound.sampled.AudioFormat;
 
 public abstract class Music {
 
-	protected int position = -1;
-	protected int length = Integer.MAX_VALUE;
+	protected long position = -1;
+	protected long length = Integer.MAX_VALUE;
 	protected byte[] sampleBuffer;
-	protected int sampleBufferSize = 4096;
+	protected int sampleBufferSize = 65536;
 	protected AudioFormat format;
 	protected float volume;
+	
+	private byte[] s;
+	private int j;
 	
 	public byte getNextSample() {
 		position++;
@@ -19,16 +22,23 @@ public abstract class Music {
 			}
 			int i = 0;
 			while (i < sampleBufferSize-1) {
-				byte[] s = readNextSamples();
-				for (int j = 0; j < s.length; j++) {
-					sampleBuffer[i + j] = s[j];
+				if (s == null || j >= s.length) {
+					s = readNextSamples();
+					j = 0;
 				}
-				i += s.length;
+				for (j = j; j < s.length; j++) {
+					try {
+						sampleBuffer[i + j] = s[j];
+					} catch (ArrayIndexOutOfBoundsException e) {
+						break;
+					}
+				}
+				i += j;
 			}
 		}
 
 		//System.out.println(position % sampleBufferSize);
-		return sampleBuffer[position % sampleBufferSize];
+		return sampleBuffer[(int) (position % sampleBufferSize)];
 	}
 	
 	public byte[] getNextSampleBuffer() {
@@ -47,7 +57,7 @@ public abstract class Music {
 		this.volume = volume;
 	}
 	
-	public int getLength() {
+	public long getLength() {
 		return length;
 	}
 	
@@ -55,7 +65,7 @@ public abstract class Music {
 		return getPosition() < getLength();
 	}
 	
-	public int getPosition() {
+	public long getPosition() {
 		return position;
 	}
 	

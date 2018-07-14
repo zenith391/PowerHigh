@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import javax.swing.JTabbedPane;
 
 import org.lggl.Material;
 import org.lggl.SizedViewport;
+import org.lggl.StretchViewport;
 import org.lggl.audio.AISSound;
 import org.lggl.audio.WavMusic;
 import org.lggl.game.SimpleGame;
@@ -140,14 +142,24 @@ public class LGGLTest extends SimpleGame {
 		}
 		audio.playMusic(music);
 	}
+	
+	public byte[] fromu16(int x) {
+		byte b2 = (byte) ((x % 256));
+		x = (x - x % 256)/256;
+		byte b1 = (byte) ((x % 256));
+		return new byte[] {b1, b2};
+	}
 
 	@Override
 	public void init(Window win) {
-		
+		//Scanner sc = new Scanner(System.in);
+		//int num = sc.nextInt();
+		//System.out.println(Integer.toHexString((fromu16(num)[0]&0xFF)) + " - " + Integer.toHexString((fromu16(num)[1]&0xFF)));
+		//System.exit(0);
 		((Lightning) Window.getRenderer()).turnOffDebug();
 		Window.getRenderer().setUsePostProcessing(true);
 		
-		win.setViewportManager(new SizedViewport(1280, 720));
+		win.setViewportManager(new StretchViewport(1280, 720));
 		// Iziditor.main(new String[] {});
 		player = new Sprite();
 		fps = new Text();
@@ -177,17 +189,18 @@ public class LGGLTest extends SimpleGame {
 			}
 			
 		});
-		player.setSize(64, 64);
+		player.setSize(128, 128);
 		player.setColor(Color.yellow);
 		player.setMaterial(new Material(0.2f));
 		player.centerTo(win);
 		try {
-			player.setAnimation(new Animation(new File("player.gan")));
+			player.setAnimation(new Animation(new File("Dumb Man.gan")));
+			player.getAnimation().start();
 		} catch (IOException e2) {
 			e2.printStackTrace();
 			player.setSize(128, 128);
 		}
-		win.setBackground(Color.BLACK);
+		win.setBackground(Color.CYAN);
 		win.setTitle("Hello LGGL!");
 		win.add(player);
 		
@@ -211,7 +224,7 @@ public class LGGLTest extends SimpleGame {
 			public void run() {
 				if (bt.getText().equals("Hello World!")) {
 					bt.setSize(200, 80);
-					bt.setText("Don't Hug Me I'm Scared");
+					bt.setText("Test, again");
 				} else {
 					bt.setSize(100, 60);
 					bt.setText("Hello World!");

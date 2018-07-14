@@ -18,6 +18,8 @@ public class Animation {
 	private int tick, mTick;
 	private static Thread animThread;
 	private static List<Animation> activeAnimations = new ArrayList<>();
+	private ZipFile file;
+	private String fileName;
 	
 	/**
 	 * Accepts *.GAN (Game ANimation)
@@ -35,7 +37,14 @@ public class Animation {
 						if (anim.tick >= anim.mTick) {
 							anim.tick = 0;
 							anim.frame++;
-							if (anim.frame > anim.maxFrame) {
+							String name = anim.fileName.replace("{%FRAME%}", String.valueOf(anim.frame-1));
+							ZipEntry entry = anim.file.getEntry(name);
+							try {
+								anim.img = TextureLoader.getTexture(anim.file.getInputStream(entry));
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							if (anim.frame >= anim.maxFrame) {
 								anim.frame = 0;
 							}
 						}
@@ -52,24 +61,21 @@ public class Animation {
 			animThread.start();
 		}
 		
-		ZipFile f = new ZipFile(ani);
-		ZipEntry spritesheet = f.getEntry("spritesheet.png");
-		ZipEntry desc = f.getEntry("spritesheet.properties");
+		file = new ZipFile(ani);
+		ZipEntry desc = file.getEntry("spritesheet.properties");
 		
 		p = new Properties();
-		p.load(f.getInputStream(desc));
+		p.load(file.getInputStream(desc));
 		
 		try {
 			mTick = Integer.parseInt(p.getProperty("millisPerFrame"));
 			maxFrame = Integer.parseInt(p.getProperty("totalNumberOfFrames"));
+			fileName = p.getProperty("image_name", "{%FRAME%}");
 		} catch (Exception e) {
-			f.close();
+			file.close();
 			throw new IOException(ani + " is missing required properties.");
 		}
 		
-		img = TextureLoader.getTexture(f.getInputStream(spritesheet));
-		
-		f.close();
 	}
 	
 	public boolean toNextFrame() {
@@ -92,10 +98,15 @@ public class Animation {
 	
 	public void dispose() {
 		stop();
+		try {
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Texture getCurrentSprite() {
-		return null;
+		return img;
 	}
 
 }

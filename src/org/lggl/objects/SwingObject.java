@@ -23,7 +23,7 @@ public class SwingObject extends GameObject {
 		if (Mouse.getX() != mouseLastPos.x || Mouse.getY() != mouseLastPos.y) {
 			mouseLastPos = new Point(Mouse.getX(), Mouse.getY());
 			for (MouseMotionListener lis : content.getMouseMotionListeners()) {
-				lis.mouseMoved(new MouseEvent(content, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, Mouse.getX(), Mouse.getY(), 1, false));
+				lis.mouseMoved(new MouseEvent(content, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, Mouse.getX() - x, Mouse.getY() - y, 1, false));
 			}
 		}
 		if (hasEntered) {
@@ -56,27 +56,22 @@ public class SwingObject extends GameObject {
 		}
 		
 		if (name.equals("mousePressed")) {
-			System.out.println("press");
-			content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
-//			for (MouseListener lis : content.getMouseListeners()) {
-//				System.out.println("press");
-//				lis.mousePressed(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, 1, false));
-//			}
+			content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, x - this.x, y - this.y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
 		}
 		if (name.equals("mouseReleased")) {
 			for (MouseListener lis : content.getMouseListeners()) {
 				
-				lis.mouseReleased(new MouseEvent(content, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, 1, false));
+				lis.mouseReleased(new MouseEvent(content, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), Mouse.getPressedButton(), x - this.x, y - this.y, 1, false));
+				content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x - this.x, y - this.y, 1, false));
 			}
 		}
-		if (name.equals("mouseClicked")) {
-			System.out.println("click" + MouseEvent.BUTTON1);
-			content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
-//			for (MouseListener lis : content.getMouseListeners()) {
-//				
-//				lis.mouseClicked(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
-//			}
-		}
+//		if (name.equals("mouseClicked")) {
+//			content.dispatchEvent(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
+////			for (MouseListener lis : content.getMouseListeners()) {
+////				
+////				lis.mouseClicked(new MouseEvent(content, MouseEvent.MOUSE_CLICKED, System.currentTimeMillis(), Mouse.getPressedButton(), x, y, Mouse.getScreenX(), Mouse.getScreenY(), 1, false, Mouse.getPressedButton()));
+////			}
+//		}
 	}
 	
 	public void setContent(JComponent c) {

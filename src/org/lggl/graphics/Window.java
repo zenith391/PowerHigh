@@ -35,7 +35,6 @@ import org.lggl.input.Mouse;
 public class Window {
 
 	private JFrame win = new JFrame();
-	private int width = 640, height = 480;
 	private String title;
 
 	private Keyboard input = new Keyboard(this);
@@ -126,6 +125,10 @@ public class Window {
 	}
 
 	public Window(String title) {
+		this(title, 620, 480);
+	}
+	
+	public Window(String title, int width, int height) {
 		init();
 		setTitle(title);
 		setSize(width, height);
@@ -172,7 +175,7 @@ public class Window {
 	 * to "Visible" or "True" Or, it's will execute <code>setVisible(false)</code>
 	 * if visible is equals ignore case to "Invisible" or "False" If visible is
 	 * equals to nothing of these, it will execute <code>setVisible(false)</code>.
-	 * 
+	 * @category useless things
 	 * @param visible
 	 */
 	public void setVisible(String visible) {
@@ -183,12 +186,6 @@ public class Window {
 		} else {
 			setVisible(Boolean.valueOf(visible));
 		}
-	}
-
-	public Window(String title, int width, int height) {
-		init();
-		setTitle(title);
-		setSize(width, height);
 	}
 
 	public Window(int width, int height) {
@@ -272,6 +269,9 @@ public class Window {
 
 	public void setFullscreen(boolean fullscreen) {
 		try {
+			if (System.getProperty("sun.java2d.opengl", "false").equals("true")) {
+				legacyFullscreen = true;
+			}
 			if (fullscreen == true) {
 				if (device.isFullScreenSupported() && !legacyFullscreen) {
 					device.setFullScreenWindow(win);
@@ -308,7 +308,6 @@ public class Window {
 
 					win.setUndecorated(false);
 					win.setExtendedState(JFrame.NORMAL);
-					setSize(win.getWidth(), win.getHeight());
 
 					show();
 				}
@@ -324,8 +323,6 @@ public class Window {
 	}
 
 	public void setSize(int w, int h) {
-		width = w;
-		height = h;
 		win.setSize(w, h);
 	}
 
@@ -370,12 +367,23 @@ public class Window {
 	public void update() {
 		if (viewport != null) {
 			Rectangle view = viewport.getViewport(this);
+			if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
+				view = new Rectangle(getWidth(), getHeight());
+			}
 			if (!view.equals(panel.getBounds())) {
-				setViewport(view.x, view.y, view.width, view.height);
+				if (!viewport.getSpecialProperties().containsKey("stretchToWindow")) {
+					setViewport(view.x, view.y, view.width, view.height);
+					panel.setStretch(false);
+				} else {
+					if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
+						setViewport(view.x, view.y, getWidth(), getHeight());
+						panel.setStretch(true);
+					}
+				}
 			}
 		}
 		if (customGraphics == null) {
-			if (!isFullscreen()) {
+			if (!isFullscreen() || legacyFullscreen) {
 				win.setIgnoreRepaint(false);
 				panel.setIgnoreRepaint(false);
 				panel.repaint();
@@ -383,9 +391,11 @@ public class Window {
 				win.setIgnoreRepaint(true);
 				panel.setIgnoreRepaint(true);
 				BufferStrategy bs = win.getBufferStrategy();
-				Graphics g = bs.getDrawGraphics();
-				win.paint(g);
-				bs.show();
+				if (bs != null) {
+					Graphics g = bs.getDrawGraphics();
+					win.paint(g);
+					bs.show();
+				}
 			}
 		} else {
 			// Custom double-buffering

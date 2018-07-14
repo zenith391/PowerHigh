@@ -3,6 +3,7 @@ package org.lggl.graphics.renderers.lightning;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -28,7 +29,7 @@ public final class Lightning implements IRenderer {
 		Graphics2D g2 = (Graphics2D) g;
 		BufferedImage buff = null;
 		if (pp) {
-			buff = new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB);
+			buff = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(rect.width, rect.height);
 			g2 = buff.createGraphics();
 		}
 		g2.setColor(win.getBackground());

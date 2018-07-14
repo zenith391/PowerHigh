@@ -22,12 +22,5 @@ public class LGGL {
 	public BitmapFont createBitmapFont(InputStream img, InputStream desc) {
 		return null;
 	}
-	
-	public Addon createAddon(File path) throws Exception {
-		URLClassLoader loader = new URLClassLoader(new URL[] {path.toURI().toURL()});
-		Addon a = null;
-		loader.close();
-		return a;
-	}
 
 }

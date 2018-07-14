@@ -26,6 +26,10 @@ public class Sprite extends GameObject {
 	public void setAnimation(Animation anim) {
 		this.animation = anim;
 	}
+	
+	public Animation getAnimation() {
+		return animation;
+	}
 
 	public Texture getTexture() {
 		return texture;
@@ -44,6 +48,13 @@ public class Sprite extends GameObject {
 		setAnimation(anim);
 	}
 	
+	@Override
+	public void dispose() {
+		super.dispose();
+		animation.dispose();
+		animation = null;
+	}
+	
 
 	@Override
 	public void paint(Graphics g, Window source) {
@@ -51,7 +62,8 @@ public class Sprite extends GameObject {
 			g.drawImage(texture.getAWTImage(), x, y, width, height, null);
 		}
 		else if (animation != null) {
-			g.drawImage(animation.getCurrentSprite().getAWTImage(), x, y, width, height, null);
+			if (animation.getCurrentSprite() != null)
+				g.drawImage(animation.getCurrentSprite().getAWTImage(), x, y, width, height, null);
 		}
 		else {
 			g.setColor(Color.BLUE);

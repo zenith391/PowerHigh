@@ -31,6 +31,7 @@ public class WavMusic extends Music {
 		try {
 			ais = AudioSystem.getAudioInputStream(f);
 			format = ais.getFormat();
+			length = ais.getFrameLength()*format.getFrameSize();
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 			throw new IOException(f + " is not supported", e);

@@ -67,11 +67,16 @@ public abstract class SimpleGame {
 			
 			coreInit();
 			init(window);
+			window.show();
 			
 			window.getEventThread().addUpdateListener(new Runnable() {
 				public void run() {
 					try {
 						update(window, window.getEventThread().getDelta());
+						if (window.isClosed() && !window.isFullscreen() && a1 == false) {
+							exit(window);
+							a1 = true;
+						}
 					} catch (Throwable t) {
 						Component parent = window.getJFrame().getContentPane();
 						if (!window.isVisible()) {
@@ -86,13 +91,8 @@ public abstract class SimpleGame {
 					}
 				}
 			});
-			window.show();
 			
 			while (true) {
-				if (window.isClosed() && a1 == false) {
-					exit(window);
-					a1 = true;
-				}
 				Thread.sleep(1000 / 60);
 				if (!launched) {
 					if (enableLaunchDebug) {
