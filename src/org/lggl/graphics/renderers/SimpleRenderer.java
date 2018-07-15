@@ -1,6 +1,8 @@
 package org.lggl.graphics.renderers;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 import org.lggl.graphics.PostProcessor;
 import org.lggl.graphics.Window;
@@ -20,16 +22,26 @@ public class SimpleRenderer implements IRenderer {
 
 	@Override
 	public void render(Window win, Graphics2D g) {
+		g.setColor(win.getBackground());
+		g.fillRect(0, 0, win.getViewport().width, win.getViewport().height);
+		g.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
+		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
+		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (shouldRender(win, obj)) {
+				AffineTransform old = g.getTransform();
+				g.rotate(Math.toRadians(obj.getRotation()), obj.getX()+(obj.getWidth() / 2), obj.getY()+(obj.getHeight() / 2));
 				obj.paint(g, win);
+				g.setColor(Color.RED);
+				g.drawRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
+				g.setTransform(old);
 			}
 		}
 	}
 
 	@Override
 	public boolean shouldRender(Window w, GameObject obj) {
-		return true;
+		return obj.isVisible();
 	}
 
 	@Override

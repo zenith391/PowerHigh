@@ -54,6 +54,12 @@ public abstract class SimpleGame {
 	public Audio getAudio() {
 		return audio;
 	}
+	
+	public void setFrameRate(int frames) {
+		if (window != null) {
+			window.getEventThread().setFrameRate(frames);
+		}
+	}
 
 	protected boolean launched, a1;
 	

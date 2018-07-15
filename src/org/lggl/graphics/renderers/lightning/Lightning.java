@@ -20,7 +20,7 @@ public final class Lightning implements IRenderer {
 
 	private WeakHashMap<Window, LightningRenderBuffer> buffers = new WeakHashMap<>();
 	private boolean paused;
-	private boolean debug = true;
+	private boolean debug = false;
 	private boolean pp = true;
 	private Window lastWin;
 	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();

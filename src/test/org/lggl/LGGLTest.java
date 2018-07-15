@@ -98,12 +98,23 @@ public class LGGLTest extends SimpleGame {
 				Window.setRenderer(new Lightning());
 			}
 		}
+		if (keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+			Mouse.setGrabbed(false);
+			Mouse.setCursorHidden(false);
+		}
+		if (keyboard.isKeyDown(Keyboard.KEY_E)) {
+			Mouse.setGrabbed(true);
+			Mouse.setCursorHidden(true);
+		}
 		
 		Particle p = new Particle(damageBlueprint, Mouse.getX(), Mouse.getY());
 		box.addParticle(p);
 		box.windRight((int)(10d*delta), (int)(5*delta));
 		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
 		player.setRotation(player.getRotation() + 1);
+		win.getCamera().setXOffset(win.getCamera().getXOffset() + Mouse.getDX());
+		win.getCamera().setYOffset(win.getCamera().getYOffset() + Mouse.getDY());
+		Mouse.clearMouseVelocity();
 //		if (scaleUp) {
 //			win.getCamera().setScale(win.getCamera().getScale() + 0.01d);
 //		} else {
@@ -275,9 +286,9 @@ public class LGGLTest extends SimpleGame {
 		// System.out.println(act + ": " + desk.isSupported(act));
 		// }
 		
-		win.getEventThread().setTargetFPS(60);
+		setFrameRate(60);
 		
-		Mouse.setCursorHidden(true);
+		Mouse.setGrabbed(true);
 	}
 
 	public static void main(String[] args) {

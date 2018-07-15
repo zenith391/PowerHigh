@@ -3,7 +3,9 @@ package org.lggl.input;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.AWTException;
 import java.awt.Cursor;
+import java.awt.Robot;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -13,6 +15,9 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	
 	private static int x = 0;
 	private static int y = 0;
+	private static int dx, dy;
+	private static Robot grabRobot;
+	private static boolean grab;
 	
 	private static int screenX = 0;
 	private static int screenY = 0;
@@ -96,6 +101,15 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		dragged = false;
 	}
 
+	public static void clearMouseVelocity() {
+		dx = 0;
+		dy = 0;
+	}
+	
+	private static int osx;
+	private static int osy;
+	private int sdx;
+	private int sdy;
 	@Override
 	public void mouseMoved(MouseEvent m) {
 		x = m.getX();
@@ -104,6 +118,28 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		screenY = m.getYOnScreen();
 		
 		window.fireEvent("mouseMoved", x, y);
+		
+		if (grab) {
+			if (osx == 0) {
+				osx = window.getJFrame().getX() + (window.getJFrame().getWidth() / 2);
+				osy = window.getJFrame().getY() + (window.getJFrame().getHeight() / 2);
+			}
+			if (dx == 0) {
+				dx = (m.getXOnScreen() - osx) -  window.getJFrame().getX();
+			}
+			if (dy == 0) {
+				dy = (m.getYOnScreen() - osy) - window.getJFrame().getY();
+			}
+			grabRobot.mouseMove(osx, osy);
+		}
+	}
+
+	public static int getDX() {
+		return dx;
+	}
+
+	public static int getDY() {
+		return dy;
 	}
 
 	public static boolean isClicking() {
@@ -156,6 +192,23 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 			Mouse.setCursor(Cursors.HIDDEN_CURSOR);
 		} else {
 			Mouse.setCursor(Cursors.DEFAULT_CURSOR);
+		}
+	}
+	
+	public static void setGrabbed(boolean grab) {
+		if (grab) {
+			try {
+				if (grabRobot == null) {
+					grabRobot = new Robot();
+					grabRobot.mouseMove(osx, osy);
+				}
+				Mouse.grab = grab;
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}
+		} else {
+			grabRobot = null;
+			Mouse.grab = false;
 		}
 	}
 
