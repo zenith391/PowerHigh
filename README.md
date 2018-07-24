@@ -1,5 +1,5 @@
-# PixEngine
-PixEngine is a 2D game library using a component-system, it is also very customizable via various drawing calls. And custom-doublebuffering, with (at next version) Android support.
+# PowerHigh
+PowerHigh is a 2D game library using a component-system, it is also very customizable via various drawing calls. And custom-doublebuffering, with (at next version) Android support.
 
 ## Get it
 
