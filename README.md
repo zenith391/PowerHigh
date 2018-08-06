@@ -3,7 +3,7 @@ PowerHigh is a 2D game library using a component-system, it is also very customi
 
 ## Getting started
 
-[![Build Status](https://travis-ci.org/zenith391/LGGL.svg)](https://travis-ci.org/zenith391/PowerHigh)
+[![Build Status](https://travis-ci.org/zenith391/PowerHigh.svg)](https://travis-ci.org/zenith391/PowerHigh)
 
 ### Prerequisites
 You must atleast have Java 9 installed, or a more recent version (Java 10 / 11)
