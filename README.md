@@ -7,8 +7,9 @@ PowerHigh is a 2D game library using a component-system, it is also very customi
 
 ### Prerequisites
 You must atleast have Java 9 installed, or a more recent version (Java 10 / 11)
-1. Download the latest PowerHigh releases on the [Releases](https://github.com/zenith391/PowerHigh/releases) tab.
-2. Add the JAR as a dependency to a project, using your favorite IDE.
+1. Go to PowerHigh releases on the [Releases](https://github.com/zenith391/PowerHigh/releases) tab.
+2. Download powerhigh-core.jar and, since you're on PC, powerhigh-swing.jar (powerhigh-opengl.jar might be available for 1.0)
+2. Add the JARs as dependencies to your project, using your favorite IDE.
 
 ### Running the test.
 To run the test and ensure PowerHigh works goodly,
