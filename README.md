@@ -13,13 +13,13 @@ You must atleast have Java 9 installed, or a more recent version (Java 10 / 11)
 ### Running the test.
 To run the test and ensure PowerHigh works goodly,
 open a terminal and write following commands:
-
+```sh
 cd <directory where you installed PowerHigh>
-java -cp powerhigh-core.jar test.org.lggl.LGGLTest
-  
-If you see a window opened, everything works and the JAR is ready to be used.
+java -cp powerhigh-core.jar test.org.powerhigh.MainTest
+```
+If you see a window opened with stuff on it, everything works and the JAR is ready to be used.
 
-PowerHigh is built with Maven to handle dependency management.
+PowerHigh is built with Maven.
 
 ## Contributing
 
