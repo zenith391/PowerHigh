@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+C:\Users\UserPC\Documents\GitHub\LGGL\.metadata\.plugins\org.eclipse.jdt.core
+1761536414.index
+2911839021.index
+3330162159.index
+1114420616.index

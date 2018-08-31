@@ -1,0 +1,379 @@
+package org.powerhigh.graphics;
+
+import java.awt.Color;
+import java.awt.DisplayMode;
+import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowAdapter;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import org.powerhigh.Camera;
+import org.powerhigh.ViewportManager;
+import org.powerhigh.graphics.renderers.IRenderer;
+import org.powerhigh.graphics.renderers.lightning.Lightning;
+import org.powerhigh.input.Keyboard;
+import org.powerhigh.input.Mouse;
+import org.powerhigh.objects.Container;
+import org.powerhigh.objects.GameObject;
+
+/**
+ * 
+ *
+ */
+public abstract class Interface {
+
+	protected Keyboard input = new Keyboard(this);
+	protected Mouse mouse = new Mouse(-1, -1, this);
+	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	private GameObject focusedObj;
+	private WindowEventThread thread = new WindowEventThread(this);
+	private ViewportManager viewport;
+	private Graphics customGraphics;
+	
+	private Container objectContainer;
+	
+	private Camera camera;
+
+	private int vW, vH;
+	
+	public Container getObjectContainer() {
+		return objectContainer;
+	}
+
+	public Graphics getCustomGraphics() {
+		return customGraphics;
+	}
+
+	public void setCustomGraphics(Graphics customGraphics) {
+		this.customGraphics = customGraphics;
+	}
+
+	private static IRenderer render;
+
+	public static IRenderer getRenderer() {
+		return render;
+	}
+
+	public static void setRenderer(IRenderer render) {
+		Interface.render = render;
+	}
+
+	static {
+		try {
+			if (true)
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public boolean shouldRender(GameObject obj) {
+		return render.shouldRender(this, obj);
+	}
+
+	public int getFPS() {
+		return thread.getFPS();
+	}
+
+	public float getSPF() {
+		return 1.0f / getFPS();
+	}
+
+	public abstract void setBackground(Color color);
+	public abstract Color getBackground();
+
+	public ViewportManager getViewportManager() {
+		return viewport;
+	}
+
+	public void setViewportManager(ViewportManager manager) {
+		viewport = manager;
+	}
+	
+	public WindowEventThread getEventThread() {
+		return thread;
+	}
+
+	/**
+	 * Set whether or not if the Window is visible. If visible equals to true, it's
+	 * will execute <code>show()</code>. If visible equals to false, it's will
+	 * execute <code>hide()</code>.
+	 * 
+	 * @param visible
+	 */
+	public void setVisible(boolean visible) {
+		if (visible == true) {
+			show();
+		}
+		if (visible == false) {
+			hide();
+		}
+	}
+
+	protected void init() {
+		if (render == null)
+			setRenderer(new Lightning());
+		thread.start();
+		objectContainer = new Container();
+		camera = new Camera();
+	}
+
+	public void setViewport(int x, int y, int width, int height) {
+		panel.setLocation(x, y);
+		panel.setSize(width, height);
+		objectContainer.setSize(width, height);
+		vW = width;
+		vH = height;
+	}
+
+	public Rectangle getViewport() {
+		return new Rectangle(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight());
+	}
+
+	public JFrame getJFrame() {
+		return win;
+	}
+
+	private GraphicsDevice device;
+
+	private int fullscreenWidth, fullscreenHeight;
+
+	/**
+	 * 
+	 * @return requested fullscreen width
+	 */
+	public int getFullscreenWidth() {
+		return fullscreenWidth;
+	}
+
+	/**
+	 * It is the wanted fullscreen width, LGGL will try to fit the window to that
+	 * width a maximum
+	 * 
+	 * @param fullscreenWidth
+	 */
+	public void setFullscreenWidth(int fullscreenWidth) {
+		this.fullscreenWidth = fullscreenWidth;
+	}
+
+	public int getFullscreenHeight() {
+		return fullscreenHeight;
+	}
+
+	/**
+	 * It is the wanted fullscreen height, LGGL will try to fit the window to that
+	 * height a maximum
+	 * 
+	 * @param fullscreenWidth
+	 */
+	public void setFullscreenHeight(int fullscreenHeight) {
+		this.fullscreenHeight = fullscreenHeight;
+	}
+
+	public void setFullscreen(boolean fullscreen) {
+		try {
+			if (System.getProperty("sun.java2d.opengl", "false").equals("true")) {
+				legacyFullscreen = true;
+			}
+			if (fullscreen == true) {
+				if (device.isFullScreenSupported() && !legacyFullscreen) {
+					device.setFullScreenWindow(win);
+					DisplayMode found = device.getDisplayMode();
+					if (fullscreenWidth != 0 && fullscreenHeight != 0) {
+						for (DisplayMode mode : device.getDisplayModes()) {
+							if ((mode.getWidth() >= fullscreenWidth && mode.getWidth() < found.getWidth())) {
+								if (mode.getHeight() >= fullscreenHeight && mode.getHeight() < found.getHeight()) {
+									found = mode;
+								}
+							}
+						}
+					}
+					if (!found.equals(device.getDisplayMode())) {
+						device.setDisplayMode(found);
+					}
+
+					win.createBufferStrategy(1);
+
+				} else {
+					win.dispose();
+
+					win.setUndecorated(true);
+					win.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+					show();
+				}
+			} else {
+				if (device.isFullScreenSupported() && !legacyFullscreen) {
+					device.setFullScreenWindow(null);
+					fullscreen = false;
+				} else {
+					win.dispose();
+
+					win.setUndecorated(false);
+					win.setExtendedState(JFrame.NORMAL);
+
+					show();
+				}
+			}
+			this.fullscreen = fullscreen;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setResizable(boolean resize) {
+		win.setResizable(resize);
+	}
+
+	public void setSize(int w, int h) {
+		win.setSize(w, h);
+	}
+
+	public void show() {
+		// showinit();
+		win.setVisible(true);
+	}
+
+	public void hide() {
+		win.setVisible(false);
+	}
+
+	public void setTitle(String newTitle) {
+		title = newTitle;
+		win.setTitle(title);
+	}
+
+	public Keyboard getKeyboard() {
+		return input;
+	}
+
+	public boolean isClosed() {
+		return !win.isVisible();
+	}
+
+	public boolean isVisible() {
+		return win.isVisible();
+	}
+
+	public void add(GameObject obj) {
+		objectContainer.add(obj);
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+	
+	public void setCamera(Camera cam) {
+		camera = cam;
+	}
+
+	public void update() {
+		if (viewport != null) {
+			Rectangle view = viewport.getViewport(this);
+			if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
+				view = new Rectangle(getWidth(), getHeight());
+			}
+			if (!view.equals(panel.getBounds())) {
+				if (!viewport.getSpecialProperties().containsKey("stretchToWindow")) {
+					setViewport(view.x, view.y, view.width, view.height);
+					panel.setStretch(false);
+				} else {
+					if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
+						setViewport(view.x, view.y, getWidth(), getHeight());
+						panel.setStretch(true);
+					}
+				}
+			}
+		}
+		if (customGraphics == null) {
+			if (!isFullscreen() || legacyFullscreen) {
+				win.setIgnoreRepaint(false);
+				panel.setIgnoreRepaint(false);
+				panel.repaint();
+			} else {
+				win.setIgnoreRepaint(true);
+				panel.setIgnoreRepaint(true);
+				BufferStrategy bs = win.getBufferStrategy();
+				if (bs != null) {
+					Graphics g = bs.getDrawGraphics();
+					win.paint(g);
+					bs.show();
+				}
+			}
+		} else {
+			// Custom double-buffering
+			int w = vW;
+			int h = vH;
+			if (w < 1)
+				w = 1;
+			if (h < 1)
+				h = 1;
+			BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR);
+			panel.paint(img.createGraphics());
+			System.out.println(img);
+			customGraphics.drawImage(img, panel.getX(), panel.getY(), null);
+		}
+	}
+
+	public GameObject[] getObjects() {
+		return objectContainer.getObjects();
+	}
+
+	public void remove(GameObject obj) {
+		try {
+			objectContainer.remove(obj);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	public int getWidth() {
+		return win.getWidth();
+	}
+
+	public int getHeight() {
+		return win.getHeight();
+	}
+
+	public Mouse getMouse() {
+		return mouse;
+	}
+
+	public void fireEvent(String type, Object... args) {
+		if (type.equals("mousePressed")) {
+			GameObject[] a = getObjects();
+			int mx = (int) args[0];
+			int my = (int) args[1];
+			focusedObj = null;
+			for (GameObject b : a) {
+
+				if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
+					focusedObj = b;
+					break;
+				}
+			}
+		}
+		if (focusedObj != null)
+			focusedObj.onEvent(type, args);
+	}
+
+	public void removeAll() {
+		for (GameObject obj : objects) {
+			remove(obj);
+		}
+	}
+}

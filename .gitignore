@@ -1,7 +1,11 @@
-/bin/
-/.project
-/.classpath
-/target/
-/Alonzo - Santana.wav
-/calm1.ogg
-/cat.ogg
+*/bin/
+*/.project
+*/.classpath
+*/target/
+
+# Test files (temporary)
+powerhigh-core/Alonzo - Santana.wav
+powerhigh-core/calm1.ogg
+powerhigh-core/cat.ogg
+
+.recommenders
