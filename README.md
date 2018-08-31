@@ -32,4 +32,4 @@ this library has been made for 3D.
 Also, if you're posting an bug issue and think you can be able to post a little pull request / commits to fix it, it would be very nice to do it.
 
 ## License
-The project is released under MIT license - more details in [LICENSE](https://github.com/zenith391/PowerHigh/LICENSE) file.
+The project is released under MIT license - more details in [LICENSE](https://github.com/DigitalSnakeSoftware/PowerHigh/blob/master/LICENSE) file.
