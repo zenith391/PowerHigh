@@ -4,4 +4,6 @@
     <fullyQualifiedTypeName name="org.powerhigh.game.SimpleGame.ImplementationSettings.Audio"/>
     <fullyQualifiedTypeName name="org.powerhigh.game.SimpleGame.ImplementationSettings.Interface"/>
     <fullyQualifiedTypeName name="org.powerhigh.graphics.Interface"/>
+    <fullyQualifiedTypeName name="java.awt.GraphicsDevice"/>
+    <fullyQualifiedTypeName name="java.awt.GraphicsEnvironment"/>
 </qualifiedTypeNameHistroy>

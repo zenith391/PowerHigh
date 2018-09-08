@@ -1,14 +1,9 @@
 package org.powerhigh.game;
 
-import java.awt.Component;
-import java.awt.Toolkit;
-
 import org.powerhigh.Camera;
 import org.powerhigh.audio.Audio;
-import org.powerhigh.graphics.ErrorBox;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Input;
-import org.powerhigh.utils.LGGLException;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public abstract class SimpleGame {
@@ -100,7 +95,7 @@ public abstract class SimpleGame {
 			throw new UnsupportedOperationException("Android");
 		}
 		try {
-			Class cl = Class.forName(wcl);
+			Class<?> cl = Class.forName(wcl);
 		} catch (ClassNotFoundException e1) {
 			throw new IllegalArgumentException(is.getInterfaceType().toString() + " jar is not in dependencies");
 		}

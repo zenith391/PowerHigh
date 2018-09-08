@@ -70,17 +70,6 @@ public abstract class Interface {
 		Interface.render = render;
 	}
 
-	static {
-		try {
-			if (true)
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 	public boolean shouldRender(GameObject obj) {
 		return render.shouldRender(this, obj);
 	}

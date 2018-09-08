@@ -16,5 +16,4 @@ module powerhigh.core {
 	exports org.powerhigh.input;
 
 	requires java.desktop;
-	requires java.xml;
 }
