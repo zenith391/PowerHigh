@@ -1,11 +1,12 @@
 package org.powerhigh.objects;
 
-import java.awt.Color;
+import org.powerhigh.utils.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 import org.powerhigh.graphics.Texture;
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.ui.UISystem;
@@ -79,7 +80,7 @@ public class Button extends GameObject {
 	}
 
 	@Override
-	public void paint(Graphics g, Interface source) {
+	public void paint(Drawer g, Interface source) {
 		Color cl = buttonColor;
 		if (isInBounds(Mouse.getX(), Mouse.getY(), getX(), getY(), getWidth(), getHeight())) {
 			cl = hoverColor;

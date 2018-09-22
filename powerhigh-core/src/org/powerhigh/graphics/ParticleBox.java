@@ -58,7 +58,7 @@ public class ParticleBox extends GameObject {
 	}
 
 	@Override
-	public void paint(Graphics g, Interface source) {
+	public void paint(Drawer g, Interface source) {
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
 			if (particle != null) {

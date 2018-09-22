@@ -1,0 +1,7 @@
+package org.powerhigh.swing;
+
+import org.powerhigh.graphics.Drawer;
+
+public class JDrawer2D extends Drawer {
+
+}

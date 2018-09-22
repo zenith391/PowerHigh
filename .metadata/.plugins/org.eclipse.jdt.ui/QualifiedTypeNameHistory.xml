@@ -6,4 +6,6 @@
     <fullyQualifiedTypeName name="org.powerhigh.graphics.Interface"/>
     <fullyQualifiedTypeName name="java.awt.GraphicsDevice"/>
     <fullyQualifiedTypeName name="java.awt.GraphicsEnvironment"/>
+    <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
+    <fullyQualifiedTypeName name="org.powerhigh.utils.Color"/>
 </qualifiedTypeNameHistroy>

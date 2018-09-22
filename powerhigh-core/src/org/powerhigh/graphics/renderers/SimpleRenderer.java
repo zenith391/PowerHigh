@@ -1,10 +1,11 @@
 package org.powerhigh.graphics.renderers;
 
-import java.awt.Color;
+import org.powerhigh.utils.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 import org.powerhigh.graphics.PostProcessor;
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.objects.GameObject;
 
@@ -21,7 +22,7 @@ public class SimpleRenderer implements IRenderer {
 	private boolean pause;
 
 	@Override
-	public void render(Interface win, Graphics2D g) {
+	public void render(Interface win, Drawer g) {
 		g.setColor(win.getBackground());
 		g.fillRect(0, 0, win.getViewport().width, win.getViewport().height);
 		g.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
@@ -42,21 +43,6 @@ public class SimpleRenderer implements IRenderer {
 	@Override
 	public boolean shouldRender(Interface w, GameObject obj) {
 		return obj.isVisible();
-	}
-
-	@Override
-	public void unpause() {
-		pause = false;
-	}
-
-	@Override
-	public void pause() {
-		pause = true;
-	}
-
-	@Override
-	public boolean isPaused() {
-		return pause;
 	}
 
 	@Override

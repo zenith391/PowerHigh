@@ -1,6 +1,6 @@
 package org.powerhigh.swing;
 
-import java.awt.Color;
+import org.powerhigh.utils.Color;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -32,12 +32,12 @@ public class SwingInterfaceImpl extends Interface {
 	
 	@Override
 	public void setBackground(Color color) {
-		win.setBackground(color);
+		win.setBackground(new java.awt.Color(color.getRed(), color.getGreen(), color.getBlue()));
 	}
 
 	@Override
 	public Color getBackground() {
-		return win.getBackground();
+		return new Color(win.getBackground().getRed(), win.getBackground().getGreen(), win.getBackground().getBlue());
 	}
 	
 	public void setFullscreen(boolean fullscreen) {

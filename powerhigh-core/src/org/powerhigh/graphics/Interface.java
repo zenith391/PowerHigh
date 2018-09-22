@@ -1,24 +1,5 @@
 package org.powerhigh.graphics;
 
-import java.awt.Color;
-import java.awt.DisplayMode;
-import java.awt.Graphics;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.WindowAdapter;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
 import org.powerhigh.graphics.renderers.IRenderer;
@@ -27,6 +8,8 @@ import org.powerhigh.input.Keyboard;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.objects.Container;
 import org.powerhigh.objects.GameObject;
+import org.powerhigh.utils.Area;
+import org.powerhigh.utils.Color;
 
 /**
  * 
@@ -36,28 +19,17 @@ public abstract class Interface {
 
 	protected Keyboard input = new Keyboard(this);
 	protected Mouse mouse = new Mouse(-1, -1, this);
-	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
-	private GameObject focusedObj;
-	private WindowEventThread thread = new WindowEventThread(this);
-	private ViewportManager viewport;
-	private Graphics customGraphics;
+	protected GameObject focusedObj;
+	protected WindowEventThread thread = new WindowEventThread(this);
+	protected ViewportManager viewportManager;
+	protected Area viewport;
 	
 	private Container objectContainer;
 	
 	private Camera camera;
-
-	private int vW, vH;
 	
 	public Container getObjectContainer() {
 		return objectContainer;
-	}
-
-	public Graphics getCustomGraphics() {
-		return customGraphics;
-	}
-
-	public void setCustomGraphics(Graphics customGraphics) {
-		this.customGraphics = customGraphics;
 	}
 
 	private static IRenderer render;
@@ -86,11 +58,11 @@ public abstract class Interface {
 	public abstract Color getBackground();
 
 	public ViewportManager getViewportManager() {
-		return viewport;
+		return viewportManager;
 	}
 
 	public void setViewportManager(ViewportManager manager) {
-		viewport = manager;
+		viewportManager = manager;
 	}
 	
 	public WindowEventThread getEventThread() {
@@ -123,12 +95,15 @@ public abstract class Interface {
 
 	public void setViewport(int x, int y, int width, int height) {
 		objectContainer.setSize(width, height);
-		vW = width;
-		vH = height;
+		
 	}
 
-	public Rectangle getViewport() {
-		return new Rectangle(0, 0, vW, vH);
+	/**
+	 * Return a clone (editing values will not have effect) of the current viewport
+	 * @return current viewport clone
+	 */
+	public Area getViewport() {
+		return new Area(viewport);
 	}
 
 	public abstract void show();
@@ -202,7 +177,6 @@ public abstract class Interface {
 			int my = (int) args[1];
 			focusedObj = null;
 			for (GameObject b : a) {
-
 				if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
 					focusedObj = b;
 					break;
@@ -214,8 +188,6 @@ public abstract class Interface {
 	}
 
 	public void removeAll() {
-		for (GameObject obj : objects) {
-			remove(obj);
-		}
+		objectContainer.removeAll();
 	}
 }

@@ -1,7 +1,6 @@
 package org.powerhigh.graphics;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import org.powerhigh.utils.Color;
 
 import org.powerhigh.objects.Particle;
 
@@ -15,7 +14,7 @@ public class ParticleBlueprint {
 	
 	public abstract static class ParticleRenderer {
 		
-		public abstract void render(Graphics g, Particle p);
+		public abstract void render(Drawer drawer, Particle p);
 		
 	}
 	

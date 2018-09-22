@@ -1,6 +1,6 @@
 package org.powerhigh.objects;
 
-import java.awt.Color;
+import org.powerhigh.utils.Color;
 import java.awt.Graphics;
 
 import org.powerhigh.graphics.Interface;

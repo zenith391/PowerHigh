@@ -97,6 +97,11 @@ public class Container extends GameObject {
 	public GameObject[] getObjects() {
 		return objects.toArray(new GameObject[objects.size()]);
 	}
+	
+	public void removeAll() {
+		objects = new ArrayList<GameObject>();
+		System.gc();
+	}
 
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

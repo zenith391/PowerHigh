@@ -1,6 +1,5 @@
 package org.powerhigh.swing;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -9,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.objects.GameObject;
@@ -20,7 +20,7 @@ public class SwingObject extends GameObject {
 	private boolean hasEntered;
 	
 	@Override
-	public void paint(Graphics g, Interface source) {
+	public void paint(Drawer g, Interface source) {
 		if (Mouse.getX() != mouseLastPos.x || Mouse.getY() != mouseLastPos.y) {
 			mouseLastPos = new Point(Mouse.getX(), Mouse.getY());
 			for (MouseMotionListener lis : content.getMouseMotionListeners()) {

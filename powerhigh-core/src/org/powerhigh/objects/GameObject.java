@@ -1,12 +1,14 @@
 package org.powerhigh.objects;
 
-import java.awt.Color;
+import org.powerhigh.utils.Area;
+import org.powerhigh.utils.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import org.powerhigh.Material;
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 
 public abstract class GameObject {
@@ -26,7 +28,7 @@ public abstract class GameObject {
 	protected int height = 15;
 	private String name = Integer.toHexString(hashCode());
 	private boolean visible = true;
-	protected Rectangle hitbox = new Rectangle(0, 0, 15, 15);
+	protected Rectangle hitbox = new Rectangle(x, y, width, height);
 	protected Color color = Color.BLACK;
 	
 	protected Material material = new Material(); // default
@@ -51,7 +53,7 @@ public abstract class GameObject {
 		this.material = material;
 	}
 
-	public abstract void paint(Graphics g, Interface source);
+	public abstract void paint(Drawer drawer, Interface source);
 
 	public void onEvent(String type, Object... args) {
 
@@ -73,13 +75,13 @@ public abstract class GameObject {
 	}
 
 	public String toString() {
-		return getClass().getName() + "[type=" + getClass().getSimpleName() + ",x=" + x + ",y=" + y + ",width=" + width
-				+ ",height=" + height + "]";
+		return getClass().getName() + "x=" + x + ", y=" + y + ", width=" + width
+				+ ", height=" + height + "]";
 	}
 
 	public void centerTo(Interface window) {
-		x = window.getViewport().width / 2 - (width / 2);
-		y = window.getViewport().height / 2 - (height / 2);
+		x = window.getViewport().getWidth() / 2 - (width / 2);
+		y = window.getViewport().getHeight() / 2 - (height / 2);
 	}
 
 	public String getName() {
@@ -140,11 +142,11 @@ public abstract class GameObject {
 		this.height = h;
 	}
 
-	public void setSize(Dimension dim) {
-		setSize(dim.width, dim.height);
+	public void setSize(Area dim) {
+		setSize(dim.getWidth(), dim.getHeight());
 	}
 
-	public Dimension getSize() {
-		return new Dimension(width, height);
+	public Area getSize() {
+		return new Area(width, height);
 	}
 }
