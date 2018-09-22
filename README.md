@@ -28,7 +28,7 @@ If you want to contribute, first of all, thanks you! I can't work on this librar
 are really helpful and keep knowing that people uses and help me on this project is motivating.
 But there is some rules/tips for contributing:
 First of all, the issue/pull request must have things that goes with the library. For example, i will not accept 3D because
-this library has been made for 3D.
+this library has been made for 2D.
 Also, if you're posting an bug issue and think you can be able to post a little pull request / commits to fix it, it would be very nice to do it.
 
 ## License
