@@ -1,38 +1,34 @@
 package org.powerhigh.input;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import org.powerhigh.graphics.Interface;
 
-public class Keyboard extends KeyCodes implements KeyListener {
+public abstract class AbstractKeyboard extends KeyCodes {
 	
 	private ArrayList<Integer> downKeys = new ArrayList<Integer>();
 	private Interface win;
 	
-	public Keyboard(Interface win) {
+	public AbstractKeyboard(Interface win) {
 		this.win = win;
 	}
 
-	public void keyPressed(KeyEvent e) {
-		int key = e.getKeyCode();
+	protected void pressKey(int key) {
 		if (downKeys.indexOf(key) == -1) {
 			downKeys.add(key);
 		}
-		win.fireEvent("keyPressed", e.getKeyChar(), e.getKeyCode());
+		win.fireEvent("keyPressed", key, key);
 	}
 
-	public void keyReleased(KeyEvent e) {
-		int key = e.getKeyCode();
+	protected void releaseKey(int key) {
 		if (downKeys.indexOf(key) != -1) {
 			downKeys.remove(downKeys.indexOf(key));
 		}
-		win.fireEvent("keyReleased", e.getKeyChar(), e.getKeyCode());
+		win.fireEvent("keyReleased", key, key);
 	}
 
-	public void keyTyped(KeyEvent e) {
-		win.fireEvent("keyTyped", e.getKeyChar(), e.getKeyCode());
+	protected void typeKey(int key) {
+		win.fireEvent("keyTyped", key, key);
 	}
 	
 	public void setKeyDown(int key, boolean press) {

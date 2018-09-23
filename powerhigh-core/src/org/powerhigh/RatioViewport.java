@@ -1,8 +1,7 @@
 package org.powerhigh;
 
-import java.awt.Rectangle;
-
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.utils.Area;
 
 public class RatioViewport extends ViewportManager {
 
@@ -14,8 +13,8 @@ public class RatioViewport extends ViewportManager {
 	}
 	
 	@Override
-	public Rectangle getViewport(Interface win) {
-		return new Rectangle((win.getWidth() / rW) * rW, (win.getHeight() / rH) * rH);
+	public Area getViewport(Interface win) {
+		return new Area((win.getWidth() / rW) * rW, (win.getHeight() / rH) * rH);
 	}
 	
 }

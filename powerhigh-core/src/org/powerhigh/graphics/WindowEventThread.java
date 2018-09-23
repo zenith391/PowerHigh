@@ -1,6 +1,5 @@
 package org.powerhigh.graphics;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +49,6 @@ public class WindowEventThread extends Thread {
 
 	public void run() {
 		setName("Update Thread");
-		Dimension lastSize = new Dimension(win.getWidth(), win.getHeight());
-		Dimension size = new Dimension(win.getWidth(), win.getHeight());
 		long sleepTime = 1000 / 60;
 		while (true) {
 			long estimatedTime = 0;
@@ -68,16 +65,10 @@ public class WindowEventThread extends Thread {
 				runnable.run();
 				runnable = null;
 			}
-
-			size = new Dimension(win.getWidth(), win.getHeight());
 			long start = System.currentTimeMillis();
 			win.update();
 			for (Runnable r : updateListeners) {
 				r.run();
-			}
-
-			if (!lastSize.equals(size)) {
-				lastSize = size;
 			}
 			long end = System.currentTimeMillis();
 			estimatedTime = end - start;

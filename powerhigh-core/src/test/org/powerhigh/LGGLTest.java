@@ -14,7 +14,8 @@ import org.powerhigh.graphics.ParticleBox;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
 import org.powerhigh.graphics.renderers.lightning.Lightning;
-import org.powerhigh.input.Keyboard;
+import org.powerhigh.input.AbstractKeyboard;
+import org.powerhigh.input.KeyCodes;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.objects.Button;
 import org.powerhigh.objects.Sprite;
@@ -31,44 +32,36 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void update(Interface win, double delta) {
-		
 		handleKeys(win, delta);
-		//throw new Error("Random error in random game.");
+//		throw new Error("Random error in random game.");
 	}
 	
 	public void exit(Interface win) {
-//		try {
-//			PackOutputStream pos = new PackOutputStream(new FileOutputStream("data.pak"), true);
-//			pos.write(player);
-//			pos.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 		System.exit(0);
 	}
 
 	public void handleKeys(Interface win, double delta) {
-		Keyboard keyboard = win.getKeyboard();
+		AbstractKeyboard keyboard = win.getInput().getKeyboard();
 		int speed = (int) (5d * delta);
 		player.setX((int) (player.getX() + (input.getAxis("hor") * speed)));
 		player.setY((int) (player.getY() + (input.getAxis("ver") * speed)));
-		if (keyboard.isKeyDown(Keyboard.KEY_G)) {
+		if (keyboard.isKeyDown(KeyCodes.KEY_G)) {
 			if (!(Interface.getRenderer() instanceof SimpleRenderer)) {
 				DebugLogger.logInfo("Changed Renderer to: Simple ()");
 				Interface.setRenderer(new SimpleRenderer());
 			}
 		}
-		if (keyboard.isKeyDown(Keyboard.KEY_H)) {
+		if (keyboard.isKeyDown(KeyCodes.KEY_H)) {
 			if (!(Interface.getRenderer() instanceof Lightning)) {
 				DebugLogger.logInfo("Changed Renderer to: Lightning");
 				Interface.setRenderer(new Lightning());
 			}
 		}
-		if (keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+		if (keyboard.isKeyDown(KeyCodes.KEY_ESCAPE)) {
 			Mouse.setGrabbed(false);
 			Mouse.setCursorHidden(false);
 		}
-		if (keyboard.isKeyDown(Keyboard.KEY_E)) {
+		if (keyboard.isKeyDown(KeyCodes.KEY_E)) {
 			Mouse.setGrabbed(true);
 			Mouse.setCursorHidden(true);
 		}

@@ -8,9 +8,23 @@ import org.powerhigh.graphics.Interface;
 public class Input {
 
 	private Interface win;
-	private Keyboard key;
-	private Mouse mouse;
+	private static AbstractKeyboard key;
+	private static Mouse mouse;
 	
+	public static void setKeyboardImpl(AbstractKeyboard keyboard) {
+		Input.key = keyboard;
+	}
+	
+	private int lastUserX, lastUserY;
+	
+	public int getLastUserX() {
+		return lastUserX;
+	}
+
+	public int getLastUserY() {
+		return lastUserY;
+	}
+
 	private boolean useDelta = true;
 	
 	private Map<Integer, Float> keysAxisHorizental = null;
@@ -18,7 +32,6 @@ public class Input {
 	
 	public Input(Interface win) {
 		this.win = win;
-		key = win.getKeyboard();
 		mouse = win.getMouse();
 		keysAxisHorizental = new HashMap<>();
 		keysAxisVertical = new HashMap<>();
@@ -28,16 +41,20 @@ public class Input {
 		keysAxisVertical.put(KeyCodes.KEY_S, 1.0f);
 	}
 	
+	public AbstractKeyboard getKeyboard() {
+		return key;
+	}
+	
 	public float getAxis(String axis) {
 		float ax = 0.0f;
-		if (axis.equals("hor")) {
+		if (axis.equals("Horizental")) {
 			for (int i : keysAxisHorizental.keySet()) {
 				if (key.isKeyDown(i)) {
 					ax = keysAxisHorizental.get((Integer) i);
 				}
 			}
 		}
-		if (axis.equals("ver")) {
+		if (axis.equals("Vertical")) {
 			for (int i : keysAxisVertical.keySet()) {
 				if (key.isKeyDown(i)) {
 					ax = keysAxisVertical.get((Integer) i);

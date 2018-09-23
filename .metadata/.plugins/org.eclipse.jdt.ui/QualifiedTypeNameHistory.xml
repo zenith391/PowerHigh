@@ -8,4 +8,13 @@
     <fullyQualifiedTypeName name="java.awt.GraphicsEnvironment"/>
     <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
     <fullyQualifiedTypeName name="org.powerhigh.utils.Color"/>
+    <fullyQualifiedTypeName name="java.awt.Cursor"/>
+    <fullyQualifiedTypeName name="java.awt.Toolkit"/>
+    <fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
+    <fullyQualifiedTypeName name="java.awt.Point"/>
+    <fullyQualifiedTypeName name="org.powerhigh.utils.Area"/>
+    <fullyQualifiedTypeName name="org.powerhigh.input.Input"/>
+    <fullyQualifiedTypeName name="org.powerhigh.graphics.Drawer"/>
+    <fullyQualifiedTypeName name="org.powerhigh.input.AbstractKeyboard"/>
+    <fullyQualifiedTypeName name="org.powerhigh.input.KeyCodes"/>
 </qualifiedTypeNameHistroy>

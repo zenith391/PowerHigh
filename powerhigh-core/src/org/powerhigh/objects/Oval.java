@@ -1,8 +1,8 @@
 package org.powerhigh.objects;
 
 import org.powerhigh.utils.Color;
-import java.awt.Graphics;
 
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 
 public class Oval extends GameObject {
@@ -27,11 +27,10 @@ public class Oval extends GameObject {
 		this.width = width;
 		this.height = height;
 		color = c;
-		hitbox = new java.awt.Rectangle(x, y, width, height);
 	}
 	
 	@Override
-	public void paint(Graphics g, Interface source) {
+	public void paint(Drawer g, Interface source) {
 		g.setColor(getColor());
 		if (!filled)
 			g.drawOval(x, y, width, height);

@@ -1,8 +1,7 @@
 package org.powerhigh.objects;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
+import org.powerhigh.utils.Color;
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 
 public class Rectangle extends GameObject {
@@ -27,13 +26,12 @@ public class Rectangle extends GameObject {
 		this.width = width;
 		this.height = height;
 		color = c;
-		hitbox = new java.awt.Rectangle(x, y, width, height);
 	}
 	
 	@Override
-	public void paint(Graphics g, Interface source) {
-		g.setColor(color);
-		g.fillRect(x, y, getWidth(), getHeight());
+	public void paint(Drawer drawer, Interface source) {
+		drawer.setColor(color);
+		drawer.fillRect(x, y, getWidth(), getHeight());
 	}
 
 }

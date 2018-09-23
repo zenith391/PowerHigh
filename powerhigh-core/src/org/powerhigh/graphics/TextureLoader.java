@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 
 public class TextureLoader {
 
+	
+	
 	public static Texture getTexture(File file) throws IOException {
 		return getTexture(new FileInputStream(file));
 	}

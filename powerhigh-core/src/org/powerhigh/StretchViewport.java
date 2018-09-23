@@ -1,8 +1,7 @@
 package org.powerhigh;
 
-import java.awt.Rectangle;
-
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.utils.Area;
 
 public class StretchViewport extends ViewportManager {
 
@@ -15,8 +14,8 @@ public class StretchViewport extends ViewportManager {
 	}
 	
 	@Override
-	public Rectangle getViewport(Interface win) {
-		return new Rectangle(0, 0, w, h);
+	public Area getViewport(Interface win) {
+		return new Area(0, 0, w, h);
 	}
 
 }

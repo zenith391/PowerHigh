@@ -1,6 +1,5 @@
 package org.powerhigh.graphics;
 
-import java.awt.Graphics;
 import java.util.Random;
 
 import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
@@ -69,8 +68,8 @@ public class ParticleBox extends GameObject {
 								particle.getBlueprint().getSize());
 
 					} else {
-						g.drawImage(particle.getBlueprint().getTexture().getAWTImage(), particle.getX() + x,
-								particle.getY() + y, null);
+						//g.drawImage(particle.getBlueprint().getTexture().getAWTImage(), particle.getX() + x,
+						//		particle.getY() + y, null);
 					}
 				} else {
 					ParticleRenderer r = particle.getBlueprint().getParticleRenderer();

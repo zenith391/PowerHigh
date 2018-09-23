@@ -19,7 +19,6 @@ module powerhigh.core {
 	exports org.powerhigh.utils.debug;
 	exports org.powerhigh.graphics.renderers.lightning;
 	exports org.powerhigh.input;
-
-	requires java.desktop;
+	
 	requires java.xml;
 }

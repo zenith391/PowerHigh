@@ -4,21 +4,15 @@ import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
 import org.powerhigh.graphics.renderers.IRenderer;
 import org.powerhigh.graphics.renderers.lightning.Lightning;
-import org.powerhigh.input.Keyboard;
-import org.powerhigh.input.Mouse;
+import org.powerhigh.input.Input;
 import org.powerhigh.objects.Container;
 import org.powerhigh.objects.GameObject;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 
-/**
- * 
- *
- */
 public abstract class Interface {
 
-	protected Keyboard input = new Keyboard(this);
-	protected Mouse mouse = new Mouse(-1, -1, this);
+	protected Input input = new Input(this);
 	protected GameObject focusedObj;
 	protected WindowEventThread thread = new WindowEventThread(this);
 	protected ViewportManager viewportManager;
@@ -109,7 +103,7 @@ public abstract class Interface {
 	public abstract void show();
 	public abstract void hide();
 
-	public Keyboard getKeyboard() {
+	public Input getInput() {
 		return input;
 	}
 
@@ -165,10 +159,6 @@ public abstract class Interface {
 
 	public abstract int getWidth();
 	public abstract int getHeight();
-
-	public Mouse getMouse() {
-		return mouse;
-	}
 
 	public void fireEvent(String type, Object... args) {
 		if (type.equals("mousePressed")) {
