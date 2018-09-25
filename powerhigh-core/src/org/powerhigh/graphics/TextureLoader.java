@@ -1,22 +1,33 @@
 package org.powerhigh.graphics;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.imageio.ImageIO;
-
 public class TextureLoader {
 
+	private static TextureLoaderPlugin plugin;
 	
+	public static TextureLoaderPlugin getPlugin() {
+		return plugin;
+	}
+
+	public static void setPlugin(TextureLoaderPlugin plugin) {
+		TextureLoader.plugin = plugin;
+	}
+
+	public static interface TextureLoaderPlugin {
+		
+		public Texture load(InputStream input);
+		public Texture load(String path);
+		
+	}
 	
-	public static Texture getTexture(File file) throws IOException {
-		return getTexture(new FileInputStream(file));
+	public static Texture getTexture(String path) throws IOException {
+		return plugin.load(path);
 	}
 	
 	public static Texture getTexture(InputStream is) throws IOException {
-		return new Texture(ImageIO.read(is));
+		return plugin.load(is);
 	}
 	
 }

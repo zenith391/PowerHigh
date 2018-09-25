@@ -1,6 +1,5 @@
 package org.powerhigh.graphics.renderers;
 
-import org.powerhigh.graphics.PostProcessor;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.objects.GameObject;
@@ -15,8 +14,6 @@ public interface IRenderer {
 	
 	public boolean shouldRender(Interface w, GameObject obj);
 	
-	public void addPostProcessor(PostProcessor processor);
-	public PostProcessor[] getPostProcessors();
 	public void setUsePostProcessing(boolean use);
 	public boolean isUsingPostProcessing();
 	

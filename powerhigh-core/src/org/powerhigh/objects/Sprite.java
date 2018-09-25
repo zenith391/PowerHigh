@@ -1,10 +1,9 @@
 package org.powerhigh.objects;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import org.powerhigh.graphics.Animation;
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Texture;
+import org.powerhigh.utils.Color;
 import org.powerhigh.graphics.Interface;
 
 public class Sprite extends GameObject {
@@ -57,13 +56,13 @@ public class Sprite extends GameObject {
 	
 
 	@Override
-	public void paint(Graphics g, Interface source) {
+	public void paint(Drawer g, Interface source) {
 		if (texture != null) {
-			g.drawImage(texture.getAWTImage(), x, y, width, height, null);
+			g.drawTexture(x, y, texture);
 		}
 		else if (animation != null) {
 			if (animation.getCurrentSprite() != null)
-				g.drawImage(animation.getCurrentSprite().getAWTImage(), x, y, width, height, null);
+				g.drawTexture(x, y, animation.getCurrentSprite());
 		}
 		else {
 			g.setColor(Color.BLUE);

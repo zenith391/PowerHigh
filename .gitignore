@@ -9,4 +9,7 @@ powerhigh-core/calm1.ogg
 powerhigh-core/cat.ogg
 
 .recommenders
-.metadata
+/.metadata/*
+/.metadata/*/*
+/.metadata/*/*/*
+/.metadata/*/*/*/*

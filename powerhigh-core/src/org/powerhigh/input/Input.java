@@ -15,6 +15,10 @@ public class Input {
 		Input.key = keyboard;
 	}
 	
+	public static void setMouseImpl(Mouse mouse) {
+		Input.mouse = mouse;
+	}
+	
 	private int lastUserX, lastUserY;
 	
 	public int getLastUserX() {
@@ -32,7 +36,6 @@ public class Input {
 	
 	public Input(Interface win) {
 		this.win = win;
-		mouse = win.getMouse();
 		keysAxisHorizental = new HashMap<>();
 		keysAxisVertical = new HashMap<>();
 		keysAxisHorizental.put(KeyCodes.KEY_Q, -1.0f);
@@ -45,19 +48,23 @@ public class Input {
 		return key;
 	}
 	
+	public Mouse getMouse() {
+		return mouse;
+	}
+	
 	public float getAxis(String axis) {
 		float ax = 0.0f;
 		if (axis.equals("Horizental")) {
 			for (int i : keysAxisHorizental.keySet()) {
 				if (key.isKeyDown(i)) {
-					ax = keysAxisHorizental.get((Integer) i);
+					ax = keysAxisHorizental.get(i);
 				}
 			}
 		}
 		if (axis.equals("Vertical")) {
 			for (int i : keysAxisVertical.keySet()) {
 				if (key.isKeyDown(i)) {
-					ax = keysAxisVertical.get((Integer) i);
+					ax = keysAxisVertical.get(i);
 				}
 			}
 		}

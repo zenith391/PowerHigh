@@ -36,6 +36,13 @@ public class Area {
 		this.height = height;
 	}
 	
+	public void setBounds(int x, int y, int width, int height) {
+		setWidth(width);
+		setHeight(height);
+		setX(x);
+		setY(y);
+	}
+	
 	public Area(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;

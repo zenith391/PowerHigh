@@ -1,8 +1,8 @@
 package org.powerhigh.objects;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 
 public class Container extends GameObject {
@@ -71,7 +71,7 @@ public class Container extends GameObject {
 		objects.remove(obj);
 	}
 
-	public void paint(Graphics g, Interface source) {
+	public void paint(Drawer g, Interface source) {
 		for (GameObject go : objects) {
 			if (checkContent) {
 				if (go.getY() < getY()) {

@@ -9,7 +9,7 @@ public class TextureAtlas {
 		atlas.atlas = new Texture[t.getWidth() / tw][t.getHeight() / th];
 		for (int y = 0; y < t.getHeight()/th; y++) {
 			for (int x = 0; x < t.getWidth()/tw; x++) {
-				atlas.atlas[x][y] = new Texture(t.getAWTImage().getSubimage(x * tw, y * th, tw, th));
+				atlas.atlas[x][y] = t.getSubTexture(x * tw, y * th, tw, th);
 			}
 		}
 		return atlas;

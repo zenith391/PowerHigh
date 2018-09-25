@@ -18,6 +18,7 @@ import org.powerhigh.input.AbstractKeyboard;
 import org.powerhigh.input.KeyCodes;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.objects.Button;
+import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
 import org.powerhigh.utils.debug.DebugLogger;
@@ -43,8 +44,8 @@ public class LGGLTest extends SimpleGame {
 	public void handleKeys(Interface win, double delta) {
 		AbstractKeyboard keyboard = win.getInput().getKeyboard();
 		int speed = (int) (5d * delta);
-		player.setX((int) (player.getX() + (input.getAxis("hor") * speed)));
-		player.setY((int) (player.getY() + (input.getAxis("ver") * speed)));
+		player.setX((int) (player.getX() + (input.getAxis("Horizental") * speed)));
+		player.setY((int) (player.getY() + (input.getAxis("Vertical") * speed)));
 		if (keyboard.isKeyDown(KeyCodes.KEY_G)) {
 			if (!(Interface.getRenderer() instanceof SimpleRenderer)) {
 				DebugLogger.logInfo("Changed Renderer to: Simple ()");
@@ -118,8 +119,10 @@ public class LGGLTest extends SimpleGame {
 		//int num = sc.nextInt();
 		//System.out.println(Integer.toHexString((fromu16(num)[0]&0xFF)) + " - " + Integer.toHexString((fromu16(num)[1]&0xFF)));
 		//System.exit(0);
+		Interface.setRenderer(new SimpleRenderer());
 		Interface.getRenderer().setUsePostProcessing(true);
-		
+		Rectangle rect = new Rectangle(100, 100, 100, 100, Color.YELLOW);
+		win.add(rect);
 		win.setViewportManager(new RatioViewport(160, 90));
 		// Iziditor.main(new String[] {});
 		player = new Sprite();
@@ -153,7 +156,7 @@ public class LGGLTest extends SimpleGame {
 		player.setSize(128, 128);
 		player.setColor(Color.YELLOW);
 		player.setMaterial(new Material(0.2f));
-		player.centerTo(win);
+		//player.centerTo(win);
 		try {
 			player.setAnimation(new Animation(new File("Dumb Man.gan")));
 			player.getAnimation().start();
@@ -197,6 +200,7 @@ public class LGGLTest extends SimpleGame {
 		win.add(fps);
 
 		win.add(box);
+		
 		setFrameRate(60);
 	}
 

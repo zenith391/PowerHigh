@@ -1,8 +1,6 @@
 package org.powerhigh.objects;
 
 import org.powerhigh.utils.Color;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import org.powerhigh.graphics.Texture;
@@ -103,11 +101,11 @@ public class Button extends GameObject {
 			g.setColor(cl);
 			g.fillRect(x, y, getWidth(), getHeight());
 		} else {
-			g.drawImage(img.getAWTImage(), x, y, getWidth(), getHeight(), null);
+			//g.drawImage(img.getAWTImage(), x, y, getWidth(), getHeight(), null);
 		}
-		g.setFont(new Font("Calibri", Font.PLAIN, 13));
+		//g.setFont(new Font("Calibri", Font.PLAIN, 13));
 		g.setColor(textColor);
-		g.drawString(buttonText, x + ((getWidth() / 2) - (g.getFontMetrics().stringWidth(buttonText) / 2)), y + ((getHeight() / 2) + (g.getFontMetrics().getHeight() / 3)));
+		//g.drawString(buttonText, x + ((getWidth() / 2) - (g.getFontMetrics().stringWidth(buttonText) / 2)), y + ((getHeight() / 2) + (g.getFontMetrics().getHeight() / 3)));
 	}
 
 	public Color getPressColor() {

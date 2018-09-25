@@ -2,10 +2,6 @@ package org.powerhigh.objects;
 
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 import org.powerhigh.Material;
 import org.powerhigh.graphics.Drawer;
@@ -28,7 +24,7 @@ public abstract class GameObject {
 	protected int height = 15;
 	private String name = Integer.toHexString(hashCode());
 	private boolean visible = true;
-	protected Rectangle hitbox = new Rectangle(x, y, width, height);
+	protected Area hitbox = new Area(x, y, width, height);
 	protected Color color = Color.BLACK;
 	
 	protected Material material = new Material(); // default
@@ -116,7 +112,7 @@ public abstract class GameObject {
 		x = nx;
 	}
 
-	public Rectangle2D getHitbox() {
+	public Area getHitbox() {
 		hitbox.setBounds(x, y, width, height);
 		return hitbox;
 	}
@@ -126,7 +122,8 @@ public abstract class GameObject {
 	}
 
 	public boolean isColliding(GameObject g) {
-		return getHitbox().intersects(g.getHitbox());
+		//return getHitbox().intersects(g.getHitbox());
+		return false;
 	}
 
 	public boolean isVisible() {

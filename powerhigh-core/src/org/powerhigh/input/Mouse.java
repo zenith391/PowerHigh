@@ -1,23 +1,12 @@
 package org.powerhigh.input;
 
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-
 import org.powerhigh.graphics.Interface;
 
-import java.awt.AWTException;
-import java.awt.Cursor;
-import java.awt.Robot;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-public class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
+public abstract class Mouse {
 	
 	private static int x = 0;
 	private static int y = 0;
 	private static int dx, dy;
-	private static Robot grabRobot;
 	private static boolean grab;
 	
 	private static int screenX = 0;
@@ -33,7 +22,7 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		window = win;
 	}
 
-	public void mouseClicked(MouseEvent m) {
+	public void mouseClicked(int x, int y, int button) {
 		clicked = true;
 		Thread t = null;
 		t = new Thread(new Runnable() {
@@ -49,51 +38,24 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		t.setName("Click4Thread");
 		t.start();
 		
-		window.fireEvent("mouseClicked", m.getX(), m.getY(), m.getButton() - 1);
+		window.fireEvent("mouseClicked", x, y, button - 1);
 	}
 
-	public void mouseEntered(MouseEvent m) {
-		
+	public void mousePressed(int button, int x, int y) {
+		pressedButtons[button] = true;
+		window.fireEvent("mousePressed", x, y, button - 1);
 	}
 
-	public void mouseExited(MouseEvent m) {
-		
+	public void mouseReleased(int button, int x, int y) {
+		pressedButtons[button] = false;
+		window.fireEvent("mouseReleased", x, y, button - 1);
 	}
 
-	public void mousePressed(MouseEvent m) {
-		if (m.getButton() == MouseEvent.BUTTON1) {
-			pressedButtons[0] = true;
-		}
-		if (m.getButton() == MouseEvent.BUTTON2) {
-			pressedButtons[1] = true;
-		}
-		if (m.getButton() == MouseEvent.BUTTON3) {
-			pressedButtons[2] = true;
-		}
-		window.fireEvent("mousePressed", m.getX(), m.getY(), m.getButton() - 1);
-	}
-
-	public void mouseReleased(MouseEvent m) {
-		if (m.getButton() == MouseEvent.BUTTON1) {
-			pressedButtons[0] = false;
-		}
-		if (m.getButton() == MouseEvent.BUTTON2) {
-			pressedButtons[1] = false;
-		}
-		if (m.getButton() == MouseEvent.BUTTON3) {
-			pressedButtons[2] = false;
-		}
-		window.fireEvent("mouseReleased", m.getX(), m.getY(), m.getButton() - 1);
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent m) {
+	public void mouseDragged(int button, int x, int y) {
 		dragged = true;
-		x = m.getX();
-		y = m.getY();
-		screenX = m.getXOnScreen();
-		screenY = m.getYOnScreen();
-		window.fireEvent("mouseDragged", x, y, m.getButton() - 1);
+//		screenX = m.getXOnScreen();
+//		screenY = m.getYOnScreen();
+		window.fireEvent("mouseDragged", x, y, button);
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e) {
@@ -109,28 +71,28 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	
 	private static int osx;
 	private static int osy;
-	@Override
-	public void mouseMoved(MouseEvent m) {
-		x = m.getX();
-		y = m.getY();
-		screenX = m.getXOnScreen();
-		screenY = m.getYOnScreen();
+	
+	public void mouseMoved(int x, int y, int screenX, int screenY) {
+		Mouse.screenX = screenX;
+		Mouse.x = x;
+		Mouse.screenY = screenY;
+		Mouse.y = y;
 		
 		window.fireEvent("mouseMoved", x, y);
 		
-		if (grab) {
-			if (osx == 0) {
-				//osx = window.getJFrame().getX() + (window.getJFrame().getWidth() / 2);
-				//osy = window.getJFrame().getY() + (window.getJFrame().getHeight() / 2);
-			}
-			if (dx == 0) {
-				//dx = (m.getXOnScreen() - osx) -  window.getJFrame().getX();
-			}
-			if (dy == 0) {
-				//dy = (m.getYOnScreen() - osy) - window.getJFrame().getY();
-			}
-			grabRobot.mouseMove(osx, osy);
-		}
+//		if (grab) {
+//			if (osx == 0) {
+//				//osx = window.getJFrame().getX() + (window.getJFrame().getWidth() / 2);
+//				//osy = window.getJFrame().getY() + (window.getJFrame().getHeight() / 2);
+//			}
+//			if (dx == 0) {
+//				//dx = (m.getXOnScreen() - osx) -  window.getJFrame().getX();
+//			}
+//			if (dy == 0) {
+//				//dy = (m.getYOnScreen() - osy) - window.getJFrame().getY();
+//			}
+//			grabRobot.mouseMove(osx, osy);
+//		}
 	}
 
 	public static int getDX() {
@@ -194,15 +156,9 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 		throw new UnsupportedOperationException("This method should be overriden.");
 	}
 
-	@Deprecated
-	public static void setCursor(Cursor cursor) {
-		throw new UnsupportedOperationException("This method should be overriden.");
-	}
-
-	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Deprecated
+//	public static void setCursor(Cursor cursor) {
+//		throw new UnsupportedOperationException("This method should be overriden.");
+//	}
 
 }

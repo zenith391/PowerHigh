@@ -1,13 +1,11 @@
 /**
- * 
- */
-/**
  * @author zenith391
- * 
+ * Main module of PowerHigh. Complementary modules usually
+ * doesn't put the require of this module as transitive.
  */
 module powerhigh.core {
+	
 	exports org.powerhigh.objects;
-	exports org.powerhigh.tools;
 	exports org.powerhigh.ui;
 	exports org.powerhigh.utils;
 	exports org.powerhigh.graphics;
@@ -20,5 +18,4 @@ module powerhigh.core {
 	exports org.powerhigh.graphics.renderers.lightning;
 	exports org.powerhigh.input;
 	
-	requires java.xml;
 }

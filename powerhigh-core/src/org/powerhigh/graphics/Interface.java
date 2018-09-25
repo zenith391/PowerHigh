@@ -3,6 +3,7 @@ package org.powerhigh.graphics;
 import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
 import org.powerhigh.graphics.renderers.IRenderer;
+import org.powerhigh.graphics.renderers.SimpleRenderer;
 import org.powerhigh.graphics.renderers.lightning.Lightning;
 import org.powerhigh.input.Input;
 import org.powerhigh.objects.Container;
@@ -16,7 +17,7 @@ public abstract class Interface {
 	protected GameObject focusedObj;
 	protected WindowEventThread thread = new WindowEventThread(this);
 	protected ViewportManager viewportManager;
-	protected Area viewport;
+	protected Area viewport = new Area(0, 0, 0, 0);
 	
 	private Container objectContainer;
 	
@@ -81,7 +82,7 @@ public abstract class Interface {
 
 	protected void init() {
 		if (render == null)
-			setRenderer(new Lightning());
+			setRenderer(new SimpleRenderer());
 		thread.start();
 		objectContainer = new Container();
 		camera = new Camera();
@@ -121,12 +122,17 @@ public abstract class Interface {
 	public void setCamera(Camera cam) {
 		camera = cam;
 	}
+	
+	public abstract void setSize(int width, int height);
+	public abstract Area getSize();
 
 	public void update() {
 		if (viewport != null) {
 			
 			// Re-working on this
-			
+			if (viewportManager != null) {
+				viewport = viewportManager.getViewport(this);
+			}
 //			Rectangle view = viewport.getViewport(this);
 //			if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
 //				view = new Rectangle(getWidth(), getHeight());

@@ -1,21 +1,17 @@
 package org.powerhigh.objects;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.utils.Color;
 
 public class Text extends GameObject {
 	
-	Font font;
+	Object font;
 	Color color;
 	String text;
 
 	public Text(int x, int y, String text, Color color) {
-		this(x, y, text, color, new Font("Arial", Font.PLAIN, 12));
+		this(x, y, text, color, null);
 	}
 	
 	public Text(String text) {
@@ -30,7 +26,7 @@ public class Text extends GameObject {
 		this("");
 	}
 	
-	public Text(int x, int y, String text, Color color, Font font) {
+	public Text(int x, int y, String text, Color color, Object font) {
 		this.x = x;
 		this.y = y;
 		this.text = text;
@@ -39,25 +35,20 @@ public class Text extends GameObject {
 	}
 
 	@Override
-	public void paint(Graphics g, Interface source) {
-		BufferedImage canvas = new BufferedImage(width > 0 ? width : 100, height > 0 ? height : 100, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2d = canvas.createGraphics();
-		if (font != null)
-			g2d.setFont(font);
-		width = g2d.getFontMetrics().stringWidth(text);
-		g2d.setColor(color);
-		if (!text.contains("\n")) {
-			g2d.drawString(text, 0, g2d.getFontMetrics().getHeight());
-			height = g2d.getFontMetrics().getHeight();
-		} else {
-			int txtY = g2d.getFontMetrics().getHeight();
-			height = g2d.getFontMetrics().getHeight() * text.split("\n").length;
-			for (String str : text.split("\n")) {
-				g2d.drawString(str, 0, txtY);
-				txtY += g2d.getFontMetrics().getHeight();
-			}
-		}
-		g.drawImage(canvas, x, y - g2d.getFontMetrics().getHeight(), null);
+	public void paint(Drawer g, Interface source) {
+//		width = g.getFontMetrics().stringWidth(text);
+//		g.setColor(color);
+//		if (!text.contains("\n")) {
+//			g.drawString(text, 0, g.getFontMetrics().getHeight());
+//			height = g.getFontMetrics().getHeight();
+//		} else {
+//			int txtY = g.getFontMetrics().getHeight();
+//			height = g.getFontMetrics().getHeight() * text.split("\n").length;
+//			for (String str : text.split("\n")) {
+//				g.drawString(str, 0, txtY);
+//				txtY += g.getFontMetrics().getHeight();
+//			}
+//		}
 		
 		// Using canvas for rotation support
 	}
@@ -66,11 +57,11 @@ public class Text extends GameObject {
 		text = txt;
 	}
 
-	public Font getFont() {
+	public Object getFont() {
 		return font;
 	}
 
-	public void setFont(Font font) {
+	public void setFont(Object font) {
 		this.font = font;
 	}
 

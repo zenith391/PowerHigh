@@ -1,5 +1,7 @@
 package org.powerhigh.game;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.powerhigh.Camera;
 import org.powerhigh.audio.Audio;
 import org.powerhigh.graphics.Interface;
@@ -94,8 +96,15 @@ public abstract class SimpleGame {
 		if (is.getInterfaceType() == ImplementationSettings.Interface.ANDROID) {
 			throw new UnsupportedOperationException("Android");
 		}
+		
 		try {
 			Class<?> cl = Class.forName(wcl);
+			try {
+				window = (org.powerhigh.graphics.Interface) cl.getConstructor().newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				e.printStackTrace();
+			}
 		} catch (ClassNotFoundException e1) {
 			throw new IllegalArgumentException(is.getInterfaceType().toString() + " jar is not in dependencies");
 		}
@@ -145,16 +154,7 @@ public abstract class SimpleGame {
 							a1 = true;
 						}
 					} catch (Throwable t) {
-//						Component parent = window.getJFrame().getContentPane();
-//						if (!window.isVisible()) {
-//							parent = null;
-//						}
-//						Toolkit.getDefaultToolkit().beep();
-//						t.printStackTrace();
-//						ErrorBox.create()
-//							.throwable(t)
-//								.show(parent);
-//						System.exit(1);
+						t.printStackTrace();
 					}
 				}
 			});
@@ -179,6 +179,7 @@ public abstract class SimpleGame {
 //				.throwable(t)
 //					.show(parent);
 //			System.exit(1);
+			t.printStackTrace();
 		}
 	}
 }

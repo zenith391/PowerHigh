@@ -1,5 +1,6 @@
 package org.powerhigh.swing;
 
+import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
@@ -8,6 +9,11 @@ import java.awt.GraphicsEnvironment;
 import javax.swing.JFrame;
 
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.TextureLoader;
+import org.powerhigh.input.Input;
+import org.powerhigh.swing.input.SwingKeyboard;
+import org.powerhigh.swing.input.SwingMouse;
+import org.powerhigh.swing.input.SwingTexturePlugin;
 
 public class SwingInterfaceImpl extends Interface {
 
@@ -17,17 +23,41 @@ public class SwingInterfaceImpl extends Interface {
 	private int fullscreenWidth, fullscreenHeight;
 	private GraphicsDevice device;
 	
+	private static GamePanel gamePanel;
+	private SwingKeyboard keyboard;
+	private SwingMouse mouse;
+	
 	public SwingInterfaceImpl() {
 		init();
 	}
 	
 	protected void init() {
-		super.init();
 		win = new JFrame();
+		win.setSize(800, 600);
+		win.setLocationRelativeTo(null);
+		gamePanel = new GamePanel(this);
+		keyboard = new SwingKeyboard(this);
+		mouse = new SwingMouse(-1, -1, this);
+		Input.setKeyboardImpl(keyboard);
+		Input.setMouseImpl(mouse);
+		TextureLoader.setPlugin(new SwingTexturePlugin());
+		win.addKeyListener(keyboard);
+		win.addMouseListener(mouse);
+		win.addMouseMotionListener(mouse);
+		win.add(gamePanel);
 		device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		fullscreenWidth = device.getDisplayMode().getWidth();
 		fullscreenHeight = device.getDisplayMode().getHeight();
 		fullscreen = false;
+		super.init();
+		
+		win.setVisible(true);
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		gamePanel.repaint();
 	}
 	
 	@Override
@@ -123,6 +153,16 @@ public class SwingInterfaceImpl extends Interface {
 	@Override
 	public int getHeight() {
 		return win.getHeight();
+	}
+
+	@Override
+	public void setSize(int width, int height) {
+		win.setSize(width, height);
+	}
+
+	@Override
+	public Area getSize() {
+		return new Area(win.getWidth(), win.getHeight());
 	}
 
 }

@@ -32,10 +32,10 @@ public class Oval extends GameObject {
 	@Override
 	public void paint(Drawer g, Interface source) {
 		g.setColor(getColor());
-		if (!filled)
-			g.drawOval(x, y, width, height);
-		else
-			g.fillOval(x, y, width, height);
+//		if (!filled)
+//			g.drawOval(x, y, width, height);
+//		else
+//			g.fillOval(x, y, width, height);
 	}
 
 	

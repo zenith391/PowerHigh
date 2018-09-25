@@ -1,10 +1,6 @@
 package org.powerhigh.graphics.renderers;
 
 import org.powerhigh.utils.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import org.powerhigh.graphics.PostProcessor;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.objects.GameObject;
@@ -24,18 +20,14 @@ public class SimpleRenderer implements IRenderer {
 	@Override
 	public void render(Interface win, Drawer g) {
 		g.setColor(win.getBackground());
-		g.fillRect(0, 0, win.getViewport().width, win.getViewport().height);
-		g.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
-		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
-		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
+		g.fillRect(0, 0, win.getViewport().getWidth(), win.getViewport().getHeight());
+//		g.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
+//		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
+//		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (shouldRender(win, obj)) {
-				AffineTransform old = g.getTransform();
-				g.rotate(Math.toRadians(obj.getRotation()), obj.getX()+(obj.getWidth() / 2), obj.getY()+(obj.getHeight() / 2));
+				// TODO re-do per-object rotate
 				obj.paint(g, win);
-				g.setColor(Color.RED);
-				g.drawRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
-				g.setTransform(old);
 			}
 		}
 	}
@@ -43,14 +35,6 @@ public class SimpleRenderer implements IRenderer {
 	@Override
 	public boolean shouldRender(Interface w, GameObject obj) {
 		return obj.isVisible();
-	}
-
-	@Override
-	public void addPostProcessor(PostProcessor processor) {}
-
-	@Override
-	public PostProcessor[] getPostProcessors() {
-		return null;
 	}
 
 	@Override
