@@ -1,6 +1,7 @@
 package org.powerhigh.swing;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -12,6 +13,7 @@ import org.powerhigh.utils.Color;
 public class JDrawer2D extends Drawer {
 
 	private Graphics2D g2d;
+	private AffineTransform state;
 	private Map<Texture, BufferedImage> cache = new WeakHashMap<>();
 	
 	public JDrawer2D(Graphics2D g2d) {
@@ -35,16 +37,7 @@ public class JDrawer2D extends Drawer {
 
 	@Override
 	public void drawTexture(int x, int y, Texture texture) {
-		BufferedImage img = cache.get(texture);
-		if (img == null) {
-			img = decodeTexture(texture);
-			if (cacheEnabled) {
-				cache.put(texture, img);
-			}
-		}
-		if (img != null) {
-			g2d.drawImage(img, x, y, null);
-		}
+		drawTexture(x, y, texture.getWidth(), texture.getHeight(), texture);
 	}
 	
 	private BufferedImage decodeTexture(Texture tex) {
@@ -65,6 +58,40 @@ public class JDrawer2D extends Drawer {
 	@Override
 	public void clearTextureFromCache(Texture texture) {
 		cache.put(texture, null);
+	}
+
+	@Override
+	public void drawText(int x, int y, String string) {
+		g2d.drawString(string, x, y);
+	}
+
+	@Override
+	public void localRotate(double radians, int orx, int ory) {
+		g2d.rotate(radians, orx, ory);
+	}
+
+	@Override
+	public void saveState() {
+		state = g2d.getTransform();
+	}
+
+	@Override
+	public void restoreState() {
+		g2d.setTransform(state);
+	}
+
+	@Override
+	public void drawTexture(int x, int y, int width, int height, Texture texture) {
+		BufferedImage img = cache.get(texture);
+		if (img == null) {
+			img = decodeTexture(texture);
+			if (cacheEnabled) {
+				cache.put(texture, img);
+			}
+		}
+		if (img != null) {
+			g2d.drawImage(img, x, y, width, height, null);
+		}
 	}
 	
 }

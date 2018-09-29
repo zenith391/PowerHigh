@@ -9,13 +9,10 @@
     <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
     <fullyQualifiedTypeName name="java.awt.Cursor"/>
     <fullyQualifiedTypeName name="java.awt.Toolkit"/>
-    <fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
     <fullyQualifiedTypeName name="java.awt.Point"/>
     <fullyQualifiedTypeName name="org.powerhigh.utils.Area"/>
     <fullyQualifiedTypeName name="org.powerhigh.input.KeyCodes"/>
     <fullyQualifiedTypeName name="org.powerhigh.graphics.renderers.SimpleRenderer"/>
-    <fullyQualifiedTypeName name="org.powerhigh.graphics.Drawer"/>
-    <fullyQualifiedTypeName name="org.powerhigh.utils.Color"/>
     <fullyQualifiedTypeName name="org.powerhigh.swing.input.SwingKeyboard"/>
     <fullyQualifiedTypeName name="org.powerhigh.input.AbstractKeyboard"/>
     <fullyQualifiedTypeName name="java.awt.event.KeyListener"/>
@@ -25,4 +22,18 @@
     <fullyQualifiedTypeName name="java.awt.event.MouseListener"/>
     <fullyQualifiedTypeName name="org.powerhigh.swing.input.SwingMouse"/>
     <fullyQualifiedTypeName name="java.awt.Graphics"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="java.util.HashMap"/>
+    <fullyQualifiedTypeName name="java.util.WeakHashMap"/>
+    <fullyQualifiedTypeName name="org.powerhigh.utils.Color"/>
+    <fullyQualifiedTypeName name="org.powerhigh.objects.Rectangle"/>
+    <fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
+    <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
+    <fullyQualifiedTypeName name="java.io.FileInputStream"/>
+    <fullyQualifiedTypeName name="org.powerhigh.graphics.TextureLoader"/>
+    <fullyQualifiedTypeName name="org.powerhigh.swing.input.SwingTexturePlugin"/>
+    <fullyQualifiedTypeName name="org.powerhigh.graphics.Drawer"/>
+    <fullyQualifiedTypeName name="org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer"/>
+    <fullyQualifiedTypeName name="org.powerhigh.objects.Particle"/>
 </qualifiedTypeNameHistroy>

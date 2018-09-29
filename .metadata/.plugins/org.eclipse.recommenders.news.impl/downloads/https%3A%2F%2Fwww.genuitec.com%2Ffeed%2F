@@ -12,12 +12,38 @@
 	<atom:link href="https://www.genuitec.com/feed/" rel="self" type="application/rss+xml" />
 	<link>https://www.genuitec.com</link>
 	<description>The Cloud Control Company</description>
-	<lastBuildDate>Tue, 25 Sep 2018 09:59:44 +0000</lastBuildDate>
+	<lastBuildDate>Fri, 28 Sep 2018 20:54:29 +0000</lastBuildDate>
 	<language>en-US</language>
 	<sy:updatePeriod>hourly</sy:updatePeriod>
 	<sy:updateFrequency>1</sy:updateFrequency>
 	<generator>https://wordpress.org/?v=4.9.2</generator>
 	<item>
+		<title>CodeMix 2.0 Is Out! Pipelines, CodeMining and More.</title>
+		<link>https://www.genuitec.com/codemix-2-0-pipelines-codemining-more/</link>
+		<pubDate>Tue, 25 Sep 2018 19:24:50 +0000</pubDate>
+		<dc:creator><![CDATA[Brian Fernandes]]></dc:creator>
+				<category><![CDATA[Eclipse]]></category>
+		<category><![CDATA[Genuitec]]></category>
+		<category><![CDATA[MyEclipse]]></category>
+		<category><![CDATA[Programming Tips]]></category>
+		<category><![CDATA[Webclipse]]></category>
+		<category><![CDATA[Angular]]></category>
+		<category><![CDATA[build pipelines]]></category>
+		<category><![CDATA[codelive]]></category>
+		<category><![CDATA[CodeMining]]></category>
+		<category><![CDATA[CodeMix 2.0 release]]></category>
+		<category><![CDATA[live preview]]></category>
+		<category><![CDATA[Minimap]]></category>
+		<category><![CDATA[Slack integration]]></category>
+		<category><![CDATA[terminal]]></category>
+		<category><![CDATA[typescript]]></category>
+
+		<guid isPermaLink="false">https://www.genuitec.com/?p=599056</guid>
+		<description><![CDATA[<p>It’s fall, and we’ve just dropped our hottest release of the year, CodeMix 2.0! Well past the CodeMix 1 growing pains, we’re hitting prime time with this release, which includes the best features from Webclipse 1.x, as well as exciting new modern web tech that CodeMix brings to Eclipse from VS Code.Exciting CodeMix CapabilitiesCodeMix is [&#8230;]</p>
+<p>The post <a rel="nofollow" href="https://www.genuitec.com/codemix-2-0-pipelines-codemining-more/">CodeMix 2.0 Is Out! Pipelines, CodeMining and More.</a> appeared first on <a rel="nofollow" href="https://www.genuitec.com">Genuitec</a>.</p>
+]]></description>
+		</item>
+		<item>
 		<title>A Day with Dani: Angular Coding with Angular IDE + CodeMix</title>
 		<link>https://www.genuitec.com/angular-coding-angular-ide-codemix/</link>
 		<pubDate>Mon, 17 Sep 2018 15:53:01 +0000</pubDate>
@@ -292,23 +318,6 @@
 <p>The post <a rel="nofollow" href="https://www.genuitec.com/angular-elements-made-simple-with-codemix/">Angular Elements Made Simple with CodeMix</a> appeared first on <a rel="nofollow" href="https://www.genuitec.com">Genuitec</a>.</p>
 ]]></description>
 		</item>
-		<item>
-		<title>React Tutorial: Create and Debug an App in Eclipse with CodeMix</title>
-		<link>https://www.genuitec.com/react-tutorial-getting-started/</link>
-		<pubDate>Thu, 24 May 2018 15:14:43 +0000</pubDate>
-		<dc:creator><![CDATA[eligiom]]></dc:creator>
-				<category><![CDATA[Eclipse]]></category>
-		<category><![CDATA[Genuitec]]></category>
-		<category><![CDATA[MyEclipse]]></category>
-		<category><![CDATA[Programming Tips]]></category>
-		<category><![CDATA[Webclipse]]></category>
-		<category><![CDATA[React in Eclipse]]></category>
-
-		<guid isPermaLink="false">https://www.genuitec.com/?p=588128</guid>
-		<description><![CDATA[<p>Making React run properly in Eclipse can be a really big headache…or an amazingly cool experience with CodeMix! CodeMix integrates the best of the VS Code world into Eclipse, such as support to create and debug React applications. Follow this React tutorial to quickly create and debug an app in Eclipse with CodeMix:Create Your App Make [&#8230;]</p>
-<p>The post <a rel="nofollow" href="https://www.genuitec.com/react-tutorial-getting-started/">React Tutorial: Create and Debug an App in Eclipse with CodeMix</a> appeared first on <a rel="nofollow" href="https://www.genuitec.com">Genuitec</a>.</p>
-]]></description>
-		</item>
 	</channel>
 </rss>
 
@@ -317,7 +326,7 @@ Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/pro
 
 Page Caching using disk: enhanced (SSL caching disabled) 
 Content Delivery Network via resources.cloud.genuitec.com
-Database Caching 157/162 queries in 0.029 seconds using disk
+Database Caching 156/161 queries in 0.031 seconds using disk
 
-Served from: www.genuitec.com @ 2018-09-25 06:30:37 by W3 Total Cache
+Served from: www.genuitec.com @ 2018-09-29 04:10:30 by W3 Total Cache
 -->

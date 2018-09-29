@@ -50,6 +50,9 @@ public class Text extends GameObject {
 //			}
 //		}
 		
+		g.setColor(getColor());
+		g.drawText(x, y, text);
+		
 		// Using canvas for rotation support
 	}
 

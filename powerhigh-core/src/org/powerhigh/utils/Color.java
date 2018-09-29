@@ -17,6 +17,14 @@ public class Color {
 		this.hasAlpha = false;
 	}
 	
+	public Color(float r, float g, float b) {
+		this((int) r * 255, (int) g * 255, (int) b * 255);
+	}
+	
+	public Color(float r, float g, float b, float a) {
+		this((int) r * 255, (int) g * 255, (int) b * 255, (int) a * 255);
+	}
+	
 	public Color(int r, int g, int b, int a) {
 		this(r, g, b);
 		setAlpha(a);

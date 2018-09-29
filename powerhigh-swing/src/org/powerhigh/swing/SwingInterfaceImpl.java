@@ -5,6 +5,8 @@ import org.powerhigh.utils.Color;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
@@ -22,6 +24,7 @@ public class SwingInterfaceImpl extends Interface {
 	private boolean fullscreen;
 	private int fullscreenWidth, fullscreenHeight;
 	private GraphicsDevice device;
+	private boolean closeRequest;
 	
 	private static GamePanel gamePanel;
 	private SwingKeyboard keyboard;
@@ -42,8 +45,17 @@ public class SwingInterfaceImpl extends Interface {
 		Input.setMouseImpl(mouse);
 		TextureLoader.setPlugin(new SwingTexturePlugin());
 		win.addKeyListener(keyboard);
-		win.addMouseListener(mouse);
-		win.addMouseMotionListener(mouse);
+		win.setLayout(null);
+		gamePanel.addMouseListener(mouse);
+		win.getContentPane().setBackground(java.awt.Color.BLACK);
+		gamePanel.addMouseMotionListener(mouse);
+		win.addWindowListener(new WindowAdapter() {
+			
+			public void windowClosing(WindowEvent e) {
+				closeRequest = true;
+			}
+			
+		});
 		win.add(gamePanel);
 		device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		fullscreenWidth = device.getDisplayMode().getWidth();
@@ -54,10 +66,16 @@ public class SwingInterfaceImpl extends Interface {
 		win.setVisible(true);
 	}
 	
+	private Area oldViewport;
+	
 	@Override
 	public void update() {
 		super.update();
 		gamePanel.repaint();
+		if (oldViewport != viewport) {
+			oldViewport = viewport;
+			gamePanel.setBounds(viewport.getX(), viewport.getY(), viewport.getWidth(), viewport.getHeight());
+		}
 	}
 	
 	@Override
@@ -137,7 +155,7 @@ public class SwingInterfaceImpl extends Interface {
 
 	@Override
 	public boolean isCloseRequested() {
-		return false;
+		return closeRequest;
 	}
 
 	@Override

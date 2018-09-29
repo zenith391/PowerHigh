@@ -58,11 +58,11 @@ public class Sprite extends GameObject {
 	@Override
 	public void paint(Drawer g, Interface source) {
 		if (texture != null) {
-			g.drawTexture(x, y, texture);
+			g.drawTexture(x, y, width, height, texture);
 		}
 		else if (animation != null) {
 			if (animation.getCurrentSprite() != null)
-				g.drawTexture(x, y, animation.getCurrentSprite());
+				g.drawTexture(x, y, width, height, animation.getCurrentSprite());
 		}
 		else {
 			g.setColor(Color.BLUE);

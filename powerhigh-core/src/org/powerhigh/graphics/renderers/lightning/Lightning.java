@@ -1,16 +1,9 @@
 package org.powerhigh.graphics.renderers.lightning;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
+import org.powerhigh.utils.Color;
 import java.util.ArrayList;
 import java.util.WeakHashMap;
 
-import org.powerhigh.graphics.PostProcessor;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.renderers.IRenderer;
@@ -21,18 +14,17 @@ import org.powerhigh.utils.debug.DebugLogger;
 public final class Lightning implements IRenderer {
 
 	private boolean pp = true;
-	private ArrayList<PostProcessor> postProcessors = new ArrayList<>();
 
 	private void render(Interface win, Drawer g, Area rect) {
 		g.setColor(win.getBackground());
 		g.fillRect(0, 0, rect.getWidth(), rect.getHeight());
-		g.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth() / 2, win.getHeight() / 2);
-		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
-		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
+		g.localRotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth() / 2, win.getHeight() / 2);
+//		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
+//		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (obj.isVisible() && shouldRender(rect, obj)) {
-				AffineTransform old = g.getTransform();
-				g.rotate(Math.toRadians(obj.getRotation()), obj.getX() + (obj.getWidth() / 2),
+				g.saveState();
+				g.localRotate(Math.toRadians(obj.getRotation()), obj.getX() + (obj.getWidth() / 2),
 						obj.getY() + (obj.getHeight() / 2));
 
 				obj.paint(g, win);
@@ -41,8 +33,7 @@ public final class Lightning implements IRenderer {
 				a /= 2;
 				g.setColor(new Color(.0f, 0f, 0f, a));
 				// g2.fillRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
-
-				g.setTransform(old);
+				g.restoreState();
 			}
 		}
 	}
@@ -65,16 +56,6 @@ public final class Lightning implements IRenderer {
 
 	public void setUsePostProcessing(boolean enable) {
 		pp = enable;
-	}
-
-	@Override
-	public void addPostProcessor(PostProcessor processor) {
-		postProcessors.add(processor);
-	}
-
-	@Override
-	public PostProcessor[] getPostProcessors() {
-		return postProcessors.toArray(new PostProcessor[postProcessors.size()]);
 	}
 
 	@Override

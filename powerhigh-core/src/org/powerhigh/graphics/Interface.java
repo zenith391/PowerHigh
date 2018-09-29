@@ -82,7 +82,7 @@ public abstract class Interface {
 
 	protected void init() {
 		if (render == null)
-			setRenderer(new SimpleRenderer());
+			setRenderer(new Lightning());
 		thread.start();
 		objectContainer = new Container();
 		camera = new Camera();

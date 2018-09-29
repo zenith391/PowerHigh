@@ -6,10 +6,13 @@ import java.io.IOException;
 
 import org.powerhigh.Material;
 import org.powerhigh.RatioViewport;
+import org.powerhigh.SizedViewport;
 import org.powerhigh.audio.WavMusic;
 import org.powerhigh.game.SimpleGame;
 import org.powerhigh.graphics.Animation;
+import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.ParticleBlueprint;
+import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
 import org.powerhigh.graphics.ParticleBox;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
@@ -18,6 +21,7 @@ import org.powerhigh.input.AbstractKeyboard;
 import org.powerhigh.input.KeyCodes;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.objects.Button;
+import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
@@ -67,13 +71,13 @@ public class LGGLTest extends SimpleGame {
 			Mouse.setCursorHidden(true);
 		}
 		
-//		Particle p = new Particle(damageBlueprint, Mouse.getX(), Mouse.getY());
-//		box.addParticle(p);
+		Particle p = new Particle(damageBlueprint, Mouse.getX(), Mouse.getY());
+		box.addParticle(p);
 		//System.out.println(delta);
 		if (!Double.isFinite(delta)) {
 			delta = 1d;
 		}
-		//box.windRight((int)(10d*delta), (int)(5*delta));
+		box.windRight((int)(10d*delta), (int)(5*delta));
 		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
 		player.setRotation(player.getRotation() + 1);
 		win.getCamera().setXOffset(win.getCamera().getXOffset() + Mouse.getDX());
@@ -119,11 +123,9 @@ public class LGGLTest extends SimpleGame {
 		//int num = sc.nextInt();
 		//System.out.println(Integer.toHexString((fromu16(num)[0]&0xFF)) + " - " + Integer.toHexString((fromu16(num)[1]&0xFF)));
 		//System.exit(0);
-		Interface.setRenderer(new SimpleRenderer());
-		Interface.getRenderer().setUsePostProcessing(true);
 		Rectangle rect = new Rectangle(100, 100, 100, 100, Color.YELLOW);
 		win.add(rect);
-		win.setViewportManager(new RatioViewport(160, 90));
+		win.setViewportManager(new SizedViewport(800, 600));
 		// Iziditor.main(new String[] {});
 		player = new Sprite();
 		fps = new Text();
@@ -131,28 +133,29 @@ public class LGGLTest extends SimpleGame {
 		box.setX(0);
 		box.setY(0);
 		box.setSize(1920, 1080);
-//		damageBlueprint = new ParticleBlueprint(10, (short) 255, new ParticleRenderer() {
-//
-//			@Override
-//			public void render(Graphics g, Particle p) {
-//				int a = p.getLife() % 255;
-//				if (a < 1) {
-//					a = 1;
+		ParticleRenderer damageRenderer = new ParticleRenderer() {
+
+			@Override
+			public void render(Drawer d, Particle p) {
+				int a = p.getLife() % 255;
+				if (a < 1) {
+					a = 1;
+				}
+				a -= 255;
+				a *= -1;
+				Color c = new Color(255, 255, 255, a);
+				d.setColor(c);
+				int size = p.getBlueprint().getSize();
+//				if (a != 0) {
+//					int d = a / 100;
+//					if (d<1)d=1;
+//					size /= d;
 //				}
-//				a -= 255;
-//				a *= -1;
-//				Color c = new Color(255, 255, 255, a);
-//				//g.setColor(c);
-//				int size = p.getBlueprint().getSize();
-////				if (a != 0) {
-////					int d = a / 100;
-////					if (d<1)d=1;
-////					size /= d;
-////				}
-//				g.fillRect(p.getX(), p.getY(), size, size);
-//			}
-//			
-//		});
+				d.fillRect(p.getX(), p.getY(), size, size);
+			}
+			
+		};
+		damageBlueprint = new ParticleBlueprint(10, (short)255, damageRenderer);
 		player.setSize(128, 128);
 		player.setColor(Color.YELLOW);
 		player.setMaterial(new Material(0.2f));
