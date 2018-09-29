@@ -105,7 +105,7 @@ public class Button extends GameObject {
 		}
 		//g.setFont(new Font("Calibri", Font.PLAIN, 13));
 		g.setColor(textColor);
-		//g.drawString(buttonText, x + ((getWidth() / 2) - (g.getFontMetrics().stringWidth(buttonText) / 2)), y + ((getHeight() / 2) + (g.getFontMetrics().getHeight() / 3)));
+		g.drawText(x + 5, y + 15, buttonText);
 	}
 
 	public Color getPressColor() {
