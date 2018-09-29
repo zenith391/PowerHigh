@@ -6235,3 +6235,173 @@ java.lang.NullPointerException
 
 !ENTRY org.eclipse.m2e.logback.appender 2 0 2018-09-29 11:27:52.408
 !MESSAGE Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2018-09-29 11:36:14.620
+!MESSAGE No repository found at http://download.eclipse.org/buildship/updates/e48/releases/2.x/.
+
+!ENTRY org.eclipse.equinox.p2.metadata.repository 4 1000 2018-09-29 11:36:30.382
+!MESSAGE No repository found at http://download.eclipse.org/windowbuilder/WB/integration/4.8/.
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2018-09-29 11:36:35.192
+!MESSAGE Server returned lastModified <= 0 for https://raw.githubusercontent.com/antlr4ide/antlr4ide-eclipse-release/master/content.jar
+
+!ENTRY org.eclipse.equinox.p2.repository 2 0 2018-09-29 11:37:10.504
+!MESSAGE Server returned lastModified <= 0 for https://raw.githubusercontent.com/antlr4ide/antlr4ide-eclipse-release/master/artifacts.jar
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2018-09-29 11:37:25.222
+!MESSAGE An error occurred while collecting items to be installed
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2018-09-29 11:37:25.222
+!MESSAGE session context was:(profile=C__Users_UserPC_eclipse_java-oxygen_eclipse, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.apidocs,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.apidocs.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.calls,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.calls.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.chain.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.completion.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.constructors,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.constructors.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.coordinates,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.coordinates.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.injection,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.jayes,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.jayes.io,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.jdt,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.models,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.models.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.mylyn.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.net,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news.api,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news.impl,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.overrides,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.overrides.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.snipmatch,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.snipmatch.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.statics,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.statics.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.222
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.subwords.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.types.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.utils,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.utils.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.mylyn.rcp.feature,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.news.rcp.feature,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.rcp.feature,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.223
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.snipmatch.rcp.feature,2.5.4.v20180909-1132
+
+!ENTRY org.eclipse.equinox.p2.engine 4 4 2018-09-29 11:37:25.225
+!MESSAGE An error occurred while collecting items to be installed
+!SUBENTRY 1 org.eclipse.equinox.p2.engine 4 0 2018-09-29 11:37:25.225
+!MESSAGE session context was:(profile=C__Users_UserPC_eclipse_java-oxygen_eclipse, phase=org.eclipse.equinox.internal.p2.engine.phases.Collect, operand=, action=).
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.apidocs,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.apidocs.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.calls,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.calls.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.chain.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.completion.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.constructors,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.constructors.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.coordinates,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.coordinates.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.injection,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.jayes,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.jayes.io,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.jdt,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.models,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.models.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.mylyn.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.net,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news.api,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news.impl,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.news.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.overrides,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.overrides.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.snipmatch,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.snipmatch.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.statics,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.statics.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.subwords.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.types.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.utils,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: osgi.bundle,org.eclipse.recommenders.utils.rcp,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.mylyn.rcp.feature,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.news.rcp.feature,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.rcp.feature,2.5.4.v20180909-1132
+!SUBENTRY 1 org.eclipse.equinox.p2.artifact.repository 4 0 2018-09-29 11:37:25.225
+!MESSAGE No repository found containing: org.eclipse.update.feature,org.eclipse.recommenders.snipmatch.rcp.feature,2.5.4.v20180909-1132

@@ -1,2 +1,0 @@
-@echo off
-javadoc -cp ../powerhigh-core/src;../powerhigh-swing/src org.powerhigh org.powerhigh.audio org.powerhigh.game org.powerhigh.graphics org.powerhigh.input org.powerhigh.objects org.powerhigh.tools org.powerhigh.ui org.powerhigh.utils org.powerhigh.swing -html5
