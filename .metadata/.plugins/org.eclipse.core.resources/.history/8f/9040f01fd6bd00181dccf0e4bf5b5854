@@ -1,7 +1,0 @@
-package org.powerhigh.graphics;
-
-public abstract class Drawer {
-
-	
-	
-}

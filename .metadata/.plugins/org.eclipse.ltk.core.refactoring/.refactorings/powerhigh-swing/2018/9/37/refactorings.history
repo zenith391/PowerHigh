@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;module-info.java&apos; to &apos;powerhigh-core/src&apos;&#x0D;&#x0A;- Original project: &apos;powerhigh-swing&apos;&#x0D;&#x0A;- Destination element: &apos;powerhigh-core/src&apos;&#x0D;&#x0A;- Original element: &apos;module-info.java&apos;" description="Copy compilation unit" destination="=powerhigh-core/src" element1="/src&lt;{module-info.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1537025500625" units="1" version="1.0"/>
-</session>
