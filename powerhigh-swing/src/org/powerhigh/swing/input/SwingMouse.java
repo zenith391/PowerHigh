@@ -15,7 +15,7 @@ public class SwingMouse extends Mouse implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		this.mouseDragged(e.getButton(), e.getX(), e.getY());
+		this.mouseDragged(e.getButton() - 1, e.getX(), e.getY());
 	}
 
 	@Override
@@ -25,17 +25,17 @@ public class SwingMouse extends Mouse implements MouseListener, MouseMotionListe
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		this.mouseClicked(e.getButton(), e.getX(), e.getY());
+		this.mouseClicked(e.getButton() - 1, e.getX(), e.getY());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		this.mousePressed(e.getButton(), e.getX(), e.getY());
+		this.mousePressed(e.getButton() - 1, e.getX(), e.getY());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		this.mouseReleased(e.getButton(), e.getX(), e.getY());
+		this.mouseReleased(e.getButton() - 1, e.getX(), e.getY());
 	}
 
 	@Override

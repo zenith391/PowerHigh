@@ -34,6 +34,14 @@ public class SwingInterfaceImpl extends Interface {
 		init();
 	}
 	
+	public void setTitle(String title) {
+		win.setTitle(title);
+	}
+	
+	public void setResizable(boolean resizable) {
+		win.setResizable(resizable);
+	}
+	
 	protected void init() {
 		win = new JFrame();
 		win.setSize(800, 600);

@@ -3,6 +3,7 @@ package org.powerhigh.swing.audio;
 import java.io.File;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -12,6 +13,7 @@ import org.powerhigh.audio.Music;
 public class WavMusic extends Music {
 
 	private AudioInputStream ais;
+	private AudioFormat format;
 
 	@Override
 	public int getFrameSize() {

@@ -108,5 +108,10 @@ public class JDrawer2D extends Drawer {
 			g2d.drawImage(img, x, y, width, height, null);
 		}
 	}
+
+	@Override
+	public void translate(int x, int y) {
+		g2d.translate(x, y);
+	}
 	
 }
