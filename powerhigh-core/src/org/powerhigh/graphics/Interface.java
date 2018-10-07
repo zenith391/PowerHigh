@@ -3,7 +3,6 @@ package org.powerhigh.graphics;
 import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
 import org.powerhigh.graphics.renderers.IRenderer;
-import org.powerhigh.graphics.renderers.SimpleRenderer;
 import org.powerhigh.graphics.renderers.lightning.Lightning;
 import org.powerhigh.input.Input;
 import org.powerhigh.objects.Container;
@@ -121,6 +120,14 @@ public abstract class Interface {
 	
 	public void setCamera(Camera cam) {
 		camera = cam;
+	}
+	
+	public void setResizable(boolean resizable) {
+		throw new UnsupportedOperationException(); // To be defined (or not) by implementation.
+	}
+	
+	public void setTitle(String title) {
+		throw new UnsupportedOperationException(); // To be defined (or not) by implementation.
 	}
 	
 	public abstract void setSize(int width, int height);

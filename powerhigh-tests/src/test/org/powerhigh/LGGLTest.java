@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.powerhigh.Material;
 import org.powerhigh.RatioViewport;
 import org.powerhigh.SizedViewport;
-import org.powerhigh.audio.WavMusic;
 import org.powerhigh.game.SimpleGame;
 import org.powerhigh.graphics.Animation;
 import org.powerhigh.graphics.Drawer;
@@ -25,6 +24,7 @@ import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
+import org.powerhigh.swing.audio.WavMusic;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class LGGLTest extends SimpleGame {

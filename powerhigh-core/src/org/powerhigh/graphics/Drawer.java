@@ -29,6 +29,13 @@ public abstract class Drawer {
 	public abstract void localRotate(double radians, int orx, int ory);
 	
 	/**
+	 * Translating.
+	 * @param x
+	 * @param y
+	 */
+	public abstract void translate(int x, int y);
+	
+	/**
 	 * Platform-dependent state saving (overwrite older saves)
 	 */
 	public abstract void saveState();

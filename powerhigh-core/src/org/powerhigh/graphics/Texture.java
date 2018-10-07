@@ -1,10 +1,5 @@
 package org.powerhigh.graphics;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-
 import org.powerhigh.utils.Color;
 
 public class Texture {

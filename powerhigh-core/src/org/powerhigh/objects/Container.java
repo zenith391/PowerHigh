@@ -72,7 +72,7 @@ public class Container extends GameObject {
 	}
 
 	public void paint(Drawer g, Interface source) {
-		for (GameObject go : objects) {
+		for (GameObject go : getObjects()) {
 			if (checkContent) {
 				if (go.getY() < getY()) {
 					go.setY(getY());

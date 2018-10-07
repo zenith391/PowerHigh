@@ -1,15 +1,13 @@
 package org.powerhigh.audio;
 
-import javax.sound.sampled.AudioFormat;
-
 public abstract class Music {
 
 	protected long position = -1;
 	protected long length = Integer.MAX_VALUE;
 	protected byte[] sampleBuffer;
 	protected int sampleBufferSize = 65536;
-	protected AudioFormat format;
 	protected float volume;
+	protected int audioFlags;
 	
 	private byte[] s;
 	private int j;
@@ -26,7 +24,7 @@ public abstract class Music {
 					s = readNextSamples();
 					j = 0;
 				}
-				for (j = j; j < s.length; j++) {
+				for (; j < s.length; j++) {
 					try {
 						sampleBuffer[i + j] = s[j];
 					} catch (ArrayIndexOutOfBoundsException e) {
@@ -69,8 +67,8 @@ public abstract class Music {
 		return position;
 	}
 	
-	public AudioFormat getFormat() {
-		return format;
+	public int getAudioFlags() {
+		return audioFlags;
 	}
 	
 	public abstract int getFrameSize();

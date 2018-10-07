@@ -1,5 +1,6 @@
 package org.powerhigh.swing;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -12,6 +13,7 @@ import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.objects.GameObject;
+import org.powerhigh.utils.Area;
 
 public class SwingObject extends GameObject {
 
@@ -42,10 +44,10 @@ public class SwingObject extends GameObject {
 				}
 			}
 		}
-		content.setSize(getSize());
+		content.setSize(new Dimension(getSize().getWidth(), getSize().getHeight()));
 		BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		content.paint(img.createGraphics());
-		g.drawImage(img, x, y, null);
+		g.drawTexture(x, y, SwingUtils.toTexture(img));
 	}
 	
 	public void onEvent(String name, Object... args) {
@@ -78,7 +80,7 @@ public class SwingObject extends GameObject {
 	public void setContent(JComponent c) {
 		mouseLastPos = new Point(0, 0);
 		content = c;
-		setSize(c.getPreferredSize());
+		setSize(new Area(c.getPreferredSize().width, c.getPreferredSize().height));
 	}
 	
 	public static boolean isInBounds(double x, double y, double d, double e, double f, double g) {

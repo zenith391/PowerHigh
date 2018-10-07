@@ -7,7 +7,6 @@ public abstract class Mouse {
 	private static int x = 0;
 	private static int y = 0;
 	private static int dx, dy;
-	private static boolean grab;
 	
 	private static int screenX = 0;
 	private static int screenY = 0;
@@ -68,9 +67,6 @@ public abstract class Mouse {
 		dx = 0;
 		dy = 0;
 	}
-	
-	private static int osx;
-	private static int osy;
 	
 	public void mouseMoved(int x, int y, int screenX, int screenY) {
 		Mouse.screenX = screenX;

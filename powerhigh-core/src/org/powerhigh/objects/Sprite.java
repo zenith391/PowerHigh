@@ -50,7 +50,8 @@ public class Sprite extends GameObject {
 	@Override
 	public void dispose() {
 		super.dispose();
-		animation.dispose();
+		if (animation != null)
+			animation.dispose();
 		animation = null;
 	}
 	

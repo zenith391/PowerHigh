@@ -1,6 +1,5 @@
 package org.powerhigh.graphics.renderers;
 
-import org.powerhigh.utils.Color;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.objects.GameObject;
@@ -15,14 +14,12 @@ import org.powerhigh.objects.GameObject;
  */
 public class SimpleRenderer implements IRenderer {
 
-	private boolean pause;
-
 	@Override
 	public void render(Interface win, Drawer g) {
 		g.setColor(win.getBackground());
 		g.fillRect(0, 0, win.getViewport().getWidth(), win.getViewport().getHeight());
-//		g.rotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
-//		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
+		g.localRotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth()/2, win.getHeight()/2);
+		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
 //		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (shouldRender(win, obj)) {

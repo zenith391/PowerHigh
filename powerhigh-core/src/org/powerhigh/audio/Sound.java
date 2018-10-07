@@ -1,19 +1,17 @@
 package org.powerhigh.audio;
 
-import javax.sound.sampled.AudioFormat;
-
 public class Sound {
 
 	private int pos = -1;
 	
 	protected byte[] samples;
 	
-	protected AudioFormat format;
+	protected int audioFlags;
 	
 	protected float volume;
 	
-	public AudioFormat getFormat() {
-		return format;
+	public int getAudioFlags() {
+		return audioFlags;
 	}
 	
 	public Sound() {

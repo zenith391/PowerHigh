@@ -3,7 +3,9 @@
  */
 module powerhigh.swing {
 	
-	requires java.desktop;
+	requires transitive java.desktop;
 	requires powerhigh.core;
+	
+	exports org.powerhigh.swing;
 	
 }
