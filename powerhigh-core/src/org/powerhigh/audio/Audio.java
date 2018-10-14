@@ -10,15 +10,19 @@ public class Audio {
 	
 	private float masterVolume;
 	private int flags;
-	private AudioImplementation impl;
+	private static AudioImplementation impl;
 	
 	public Audio(int flags) throws LGGLException {
 		masterVolume = 1.0f;
 		this.flags = flags;
 		
-		if ((flags & AUDIO_BIT_8) == AUDIO_BIT_8) {
-			System.out.println("8-bits music!");
-		}
+//		if ((flags & AUDIO_BIT_8) == AUDIO_BIT_8) {
+//			System.out.println("8-bits music!");
+//		}
+	}
+	
+	public static void setImplementation(AudioImplementation impl) {
+		Audio.impl = impl;
 	}
 	
 	public float getVolumeModifier() {
@@ -30,10 +34,14 @@ public class Audio {
 	}
 	
 	public void playMusic(Music music) {
+		if (impl == null)
+			throw new UnsupportedOperationException("impl == null");
 		impl.playMusic(music, flags);
 	}
 	
 	public void playSound(Sound sound) {
+		if (impl == null)
+			throw new UnsupportedOperationException("impl == null");
 		impl.playSound(sound, flags);
 	}
 

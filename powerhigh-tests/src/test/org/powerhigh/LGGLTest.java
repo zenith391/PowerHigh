@@ -24,7 +24,6 @@ import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
-import org.powerhigh.swing.audio.WavMusic;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class LGGLTest extends SimpleGame {
