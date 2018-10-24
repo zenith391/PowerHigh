@@ -1,5 +1,5 @@
 # PowerHigh
-PowerHigh is a 2D game library using a component-system, it is also very customizable via various drawing calls. And custom-doublebuffering, with (at next version) Android support.
+PowerHigh is a 2D game library using a component-system, it is also very customizable via various drawing calls. And custom-doublebuffering, with (at 1.0) Android support.
 
 ## Getting started
 
@@ -18,9 +18,13 @@ open a terminal and write following commands:
 cd <directory where you installed PowerHigh>
 java -cp powerhigh-core.jar;powerhigh-swing.jar;powerhigh-test.jar test.org.powerhigh.LGGLTest
 ```
+If you don't have "powerhigh-test.jar", don't worry, just download it.
 If you see a window opened with stuff on it, everything works and the JAR is ready to be used.
 
 PowerHigh is built with Maven.
+
+When everything is okay, you can look at the documentation, start a new project in your favorite IDE.
+And use that library that saves you days of code! ;)
 
 ## Contributing
 
@@ -28,8 +32,8 @@ If you want to contribute, first of all, thanks you! I can't work on this librar
 are really helpful and keep knowing that people uses and help me on this project is motivating.
 But there is some rules/tips for contributing:
 First of all, the issue/pull request must have things that goes with the library. For example, i will not accept 3D because
-this library has been made for 2D.
+this library has been made for 2D, and so, would be horribly slow or would need a total re-code.
 Also, if you're posting an bug issue and think you can be able to post a little pull request / commits to fix it, it would be very nice to do it.
 
 ## License
-The project is released under MIT license - more details in [LICENSE](https://github.com/DigitalSnakeSoftware/PowerHigh/blob/master/LICENSE) file.
+The project is released under MIT license - more details in [the license](https://github.com/DigitalSnakeSoftware/PowerHigh/blob/master/LICENSE) file.
