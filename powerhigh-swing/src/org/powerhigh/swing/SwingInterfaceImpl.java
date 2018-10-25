@@ -70,8 +70,6 @@ public class SwingInterfaceImpl extends Interface {
 		fullscreenHeight = device.getDisplayMode().getHeight();
 		fullscreen = false;
 		super.init();
-		
-		win.setVisible(true);
 	}
 	
 	private Area oldViewport;

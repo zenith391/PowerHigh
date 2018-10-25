@@ -1,6 +1,10 @@
 package org.powerhigh.audio;
 
-public abstract class Music {
+public abstract class Music extends AudioSource {
+
+	public Music(int flags, float volume) {
+		super(flags, volume);
+	}
 
 	protected long position = -1;
 	protected long length = Integer.MAX_VALUE;
@@ -12,7 +16,7 @@ public abstract class Music {
 	private byte[] s;
 	private int j;
 	
-	public byte getNextSample() {
+	public byte getNextSampleByte() {
 		position++;
 		if ((position % (sampleBufferSize)) >= sampleBufferSize-1 || sampleBuffer == null) {
 			if (sampleBuffer == null) {
@@ -39,22 +43,14 @@ public abstract class Music {
 		return sampleBuffer[(int) (position % sampleBufferSize)];
 	}
 	
-	public byte[] getNextSampleBuffer() {
+	public byte[] getNextSample() {
 		byte[] sb = new byte[getFrameSize()];
 		for (int i = 0; i < sb.length; i++) {
-			sb[i] = getNextSample();
+			sb[i] = getNextSampleByte();
 		}
 		return sb;
 	}
-	
-	public float getVolume() {
-		return volume;
-	}
-	
-	public void setVolume(float volume) {
-		this.volume = volume;
-	}
-	
+
 	public long getLength() {
 		return length;
 	}
@@ -65,10 +61,6 @@ public abstract class Music {
 	
 	public long getPosition() {
 		return position;
-	}
-	
-	public int getAudioFlags() {
-		return audioFlags;
 	}
 	
 	public abstract int getFrameSize();

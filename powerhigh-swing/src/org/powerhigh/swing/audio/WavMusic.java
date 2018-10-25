@@ -31,11 +31,12 @@ public class WavMusic extends Music {
 		return sb;
 	}
 	
-	public WavMusic(File f) throws IOException {
+	public WavMusic(int flags, float volume, File f) throws IOException {
+		super(flags, volume);
 		try {
 			ais = AudioSystem.getAudioInputStream(f);
 			format = ais.getFormat();
-			length = ais.getFrameLength()*format.getFrameSize();
+			length = ais.getFrameLength() * getFrameSize();
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();
 			throw new IOException(f + " is not supported", e);

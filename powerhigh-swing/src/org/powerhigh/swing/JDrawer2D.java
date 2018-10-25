@@ -113,5 +113,20 @@ public class JDrawer2D extends Drawer {
 	public void translate(int x, int y) {
 		g2d.translate(x, y);
 	}
+
+	@Override
+	public int getEstimatedWidth(String text) {
+		return g2d.getFontMetrics().stringWidth(text);
+	}
+
+	@Override
+	public int getEstimatedHeight() {
+		return g2d.getFontMetrics().getHeight();
+	}
+
+	@Override
+	public boolean supportsTextEstimations() {
+		return true;
+	}
 	
 }

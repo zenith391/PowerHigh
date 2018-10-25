@@ -33,16 +33,22 @@ public class Audio {
 		this.masterVolume = masterVolume;
 	}
 	
+	public void playFromSource(AudioSource source) {
+		if (impl == null)
+			throw new UnsupportedOperationException("impl == null");
+		impl.playFromSource(source, flags);
+	}
+	
 	public void playMusic(Music music) {
 		if (impl == null)
 			throw new UnsupportedOperationException("impl == null");
-		impl.playMusic(music, flags);
+		impl.playFromSource(music, flags);
 	}
 	
 	public void playSound(Sound sound) {
 		if (impl == null)
 			throw new UnsupportedOperationException("impl == null");
-		impl.playSound(sound, flags);
+		impl.playFromSource(sound, flags);
 	}
 
 }

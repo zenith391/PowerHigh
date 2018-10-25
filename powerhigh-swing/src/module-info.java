@@ -4,8 +4,9 @@
 module powerhigh.swing {
 	
 	requires transitive java.desktop;
-	requires powerhigh.core;
+	requires transitive powerhigh.core;
 	
 	exports org.powerhigh.swing;
+	exports org.powerhigh.swing.audio;
 	
 }

@@ -22,6 +22,10 @@ public abstract class Drawer {
 	public abstract void clearTextureFromCache(Texture texture);
 	public abstract void drawText(int x, int y, String string);
 	
+	public abstract int getEstimatedWidth(String text);
+	public abstract int getEstimatedHeight();
+	public abstract boolean supportsTextEstimations();
+	
 	/**
 	 * Local rotate (next drawing calls) in radians
 	 * @param radians

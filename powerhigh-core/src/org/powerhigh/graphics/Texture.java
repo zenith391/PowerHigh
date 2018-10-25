@@ -30,10 +30,10 @@ public class Texture {
 	}
 	
 	public Texture getSubTexture(int x, int y, int width, int height) {
-		int[][] np = new int[x + width][y + height];
+		int[][] np = new int[width][height];
 		for (int i = x; i < x+width; i++) {
 			for (int j = y; j < y+height; j++) {
-				np[i][j] = pixels[i][j];
+				np[i-x][j-y] = pixels[i][j];
 			}
 		}
 		return new Texture(np);

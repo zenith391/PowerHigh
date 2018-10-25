@@ -31,6 +31,11 @@ public class Button extends GameObject {
 		img = normal;
 	}
 	
+	public Button(String text) {
+		this();
+		buttonText = text;
+	}
+	
 	public Color getForeground() {
 		return textColor;
 	}
@@ -101,11 +106,15 @@ public class Button extends GameObject {
 			g.setColor(cl);
 			g.fillRect(x, y, getWidth(), getHeight());
 		} else {
-			//g.drawImage(img.getAWTImage(), x, y, getWidth(), getHeight(), null);
+			g.drawTexture(x, y, getWidth(), getHeight(), img);
 		}
-		//g.setFont(new Font("Calibri", Font.PLAIN, 13));
+		//TODO make fonts
 		g.setColor(textColor);
-		g.drawText(x + 5, y + 15, buttonText);
+		if (!g.supportsTextEstimations()) {
+			g.drawText(x + 5, y + 15, buttonText);
+		} else {
+			g.drawText(x + width / 2 - (g.getEstimatedWidth(buttonText) / 2), y + height / 2 + (g.getEstimatedHeight() / 2), buttonText);
+		}
 	}
 
 	public Color getPressColor() {

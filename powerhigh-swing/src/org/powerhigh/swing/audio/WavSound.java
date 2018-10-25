@@ -16,27 +16,25 @@ public class WavSound extends Sound {
 	private AudioInputStream ais;
 	private AudioFormat format;
 	
-	public WavSound(File file) {
+	public WavSound(int flags, float volume, File file) {
+		
+		super(flags, volume);
+		
 		try {
 			ais = AudioSystem.getAudioInputStream(file);
-		} catch (UnsupportedAudioFileException | IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			samples = new byte[90001];
-			System.out.println(ais.getFrameLength());
-			for (int i = 0; i < 90000; i++) {
-				byte[] sb = new byte[ais.getFormat().getFrameSize()];
-				ais.read(sb);
-				for (int i0 = 0; i0 < sb.length; i0++) {
-					samples[i0 + (i * ais.getFormat().getFrameSize())] = sb[i0];
-				}
-			}
 			format = ais.getFormat();
-		} catch (IOException e) {
+			samples = new byte[(int) ais.getFrameLength()][format.getFrameSize()];
+			for (int i = 0; i < samples.length; i++) {
+				byte[] sb = new byte[format.getFrameSize()];
+				ais.read(sb);
+				samples[i] = sb;
+			}
+		} catch (IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
 		}
-		DebugLogger.logError("WavSound used. It migth be deleted in a future version.");
+		
+		DebugLogger.logWarn("WavSound used. Still not suited for production, but usable.");
+		
 	}
 
 }

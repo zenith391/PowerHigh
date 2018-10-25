@@ -16,9 +16,13 @@ public class DebugLogger {
 	}
 
 	public static void logError(Object err) {
-
 		DebugLogger.printDate();
 		System.err.println("FATAL " + err);
+	}
+	
+	public static void logWarn(Object warn) {
+		DebugLogger.printDate();
+		System.err.println("WARN " + warn);
 	}
 
 	public static boolean isDebugMode() {

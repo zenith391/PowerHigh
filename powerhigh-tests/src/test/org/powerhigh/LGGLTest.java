@@ -1,12 +1,15 @@
 package test.org.powerhigh;
 
 import org.powerhigh.utils.Color;
+import org.powerhigh.utils.LGGLException;
+
 import java.io.File;
 import java.io.IOException;
 
 import org.powerhigh.Material;
 import org.powerhigh.RatioViewport;
 import org.powerhigh.SizedViewport;
+import org.powerhigh.audio.Audio;
 import org.powerhigh.game.SimpleGame;
 import org.powerhigh.graphics.Animation;
 import org.powerhigh.graphics.Drawer;
@@ -24,6 +27,8 @@ import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
+import org.powerhigh.swing.audio.SwingAudioImpl;
+import org.powerhigh.swing.audio.WavMusic;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class LGGLTest extends SimpleGame {
@@ -102,7 +107,7 @@ public class LGGLTest extends SimpleGame {
 	public void dbgsound() {
 		WavMusic music = null;
 		try {
-			music = new WavMusic(new File("Alonzo - Santana.wav"));
+			music = new WavMusic(Audio.AUDIO_BIT_16, 1.0f, new File("Alonzo - Santana.wav"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -118,6 +123,12 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void init(Interface win) {
+		Audio.setImplementation(new SwingAudioImpl());
+		try {
+			audio = new Audio(Audio.AUDIO_BIT_16);
+		} catch (LGGLException e) {
+			e.printStackTrace();
+		}
 		//Scanner sc = new Scanner(System.in);
 		//int num = sc.nextInt();
 		//System.out.println(Integer.toHexString((fromu16(num)[0]&0xFF)) + " - " + Integer.toHexString((fromu16(num)[1]&0xFF)));
