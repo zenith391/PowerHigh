@@ -36,24 +36,19 @@ public class Text extends GameObject {
 
 	@Override
 	public void paint(Drawer g, Interface source) {
-//		width = g.getFontMetrics().stringWidth(text);
-//		g.setColor(color);
-//		if (!text.contains("\n")) {
-//			g.drawString(text, 0, g.getFontMetrics().getHeight());
-//			height = g.getFontMetrics().getHeight();
-//		} else {
-//			int txtY = g.getFontMetrics().getHeight();
-//			height = g.getFontMetrics().getHeight() * text.split("\n").length;
-//			for (String str : text.split("\n")) {
-//				g.drawString(str, 0, txtY);
-//				txtY += g.getFontMetrics().getHeight();
-//			}
-//		}
-		
-		g.setColor(getColor());
-		g.drawText(x, y, text);
-		
-		// Using canvas for rotation support
+		width = g.getEstimatedWidth(text);
+		g.setColor(color);
+		if (!text.contains("\n")) {
+			g.drawText(x, y + g.getEstimatedHeight(), text);
+			height = g.getEstimatedHeight();
+		} else {
+			int txtY = y + g.getEstimatedHeight();
+			height = g.getEstimatedHeight() * text.split("\n").length;
+			for (String str : text.split("\n")) {
+				g.drawText(x, txtY, str);
+				txtY += g.getEstimatedHeight();
+			}
+		}
 	}
 
 	public void setText(String txt) {

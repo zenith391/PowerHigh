@@ -94,6 +94,11 @@ public class SwingInterfaceImpl extends Interface {
 		return new Color(win.getBackground().getRed(), win.getBackground().getGreen(), win.getBackground().getBlue());
 	}
 	
+	public void setFullscreenSize(int width, int height) {
+		fullscreenWidth = width;
+		fullscreenHeight = height;
+	}
+	
 	public void setFullscreen(boolean fullscreen) {
 		try {
 			if (System.getProperty("sun.java2d.opengl", "false").equals("true")) {
