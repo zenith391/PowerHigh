@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.powerhigh.Material;
-import org.powerhigh.RatioViewport;
 import org.powerhigh.SizedViewport;
 import org.powerhigh.audio.Audio;
 import org.powerhigh.game.SimpleGame;
@@ -22,6 +21,7 @@ import org.powerhigh.graphics.renderers.lightning.Lightning;
 import org.powerhigh.input.AbstractKeyboard;
 import org.powerhigh.input.KeyCodes;
 import org.powerhigh.input.Mouse;
+import org.powerhigh.jfx.JFXInterfaceImpl;
 import org.powerhigh.objects.Button;
 import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
@@ -123,6 +123,8 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void init(Interface win) {
+		this.window = new JFXInterfaceImpl();
+		win = window;
 		Audio.setImplementation(new SwingAudioImpl());
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_16);

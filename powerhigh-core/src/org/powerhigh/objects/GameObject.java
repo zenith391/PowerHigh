@@ -71,7 +71,7 @@ public abstract class GameObject {
 	}
 
 	public String toString() {
-		return getClass().getName() + "x=" + x + ", y=" + y + ", width=" + width
+		return getClass().getName() + "[x=" + x + ", y=" + y + ", width=" + width
 				+ ", height=" + height + "]";
 	}
 

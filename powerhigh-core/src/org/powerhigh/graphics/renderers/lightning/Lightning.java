@@ -15,10 +15,11 @@ public final class Lightning implements IRenderer {
 	private void render(Interface win, Drawer g, Area rect) {
 		g.setColor(win.getBackground());
 		g.fillRect(0, 0, rect.getWidth(), rect.getHeight());
-		g.localRotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth() / 2, win.getHeight() / 2);
+		//g.localRotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth() / 2, win.getHeight() / 2);
 		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
 //		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
+			//System.out.println(obj);
 			if (obj.isVisible() && shouldRender(rect, obj)) {
 				g.saveState();
 				g.localRotate(Math.toRadians(obj.getRotation()), obj.getX() + (obj.getWidth() / 2),
