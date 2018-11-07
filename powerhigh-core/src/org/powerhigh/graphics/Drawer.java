@@ -4,7 +4,7 @@ import org.powerhigh.utils.Color;
 
 public abstract class Drawer {
 
-	protected boolean cacheEnabled;
+	protected boolean cacheEnabled = true;
 	
 	public abstract void fillRect(int x, int y, int width, int height);
 	public abstract void setColor(Color color);

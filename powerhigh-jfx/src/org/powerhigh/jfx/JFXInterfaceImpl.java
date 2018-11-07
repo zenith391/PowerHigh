@@ -110,7 +110,10 @@ public class JFXInterfaceImpl extends Interface {
 			stage.setWidth(width);
 			stage.setHeight(height);
 		});
+		System.out.println("Hello World!");
 	}
+	
+	
 	
 	@Override
 	public void update() {
