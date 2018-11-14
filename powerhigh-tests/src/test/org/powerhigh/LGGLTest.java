@@ -123,8 +123,8 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void init(Interface win) {
-//		this.window = new JFXInterfaceImpl();
-//		win = window;
+		this.window = new JFXInterfaceImpl();
+		win = window;
 		Audio.setImplementation(new SwingAudioImpl());
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_16);

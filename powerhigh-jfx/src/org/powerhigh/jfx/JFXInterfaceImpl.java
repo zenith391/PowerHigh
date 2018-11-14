@@ -118,12 +118,14 @@ public class JFXInterfaceImpl extends Interface {
 	@Override
 	public void update() {
 		if (visible) {
+			super.update();
 			Platform.runLater(() -> {
-				gameCanvas.setWidth(stage.getWidth());
-				gameCanvas.setHeight(stage.getHeight());
+				gameCanvas.setTranslateX(getViewport().getX());
+				gameCanvas.setTranslateY(getViewport().getY());
+				gameCanvas.setWidth(getViewport().getWidth());
+				gameCanvas.setHeight(getViewport().getHeight());
 				GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 				drawer.setGC(gc);
-				System.out.println("draw");
 				JFXInterfaceImpl.getRenderer().render(JFXInterfaceImpl.this, drawer);
 			});
 		}
