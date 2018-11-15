@@ -12,6 +12,7 @@ public class Animation {
 
 	private Properties p;
 	private Texture img;
+	private Texture[] loadedTextures;
 	private int frame;
 	private int maxFrame;
 	private int tick, mTick;
@@ -32,20 +33,23 @@ public class Animation {
 					// Generate only one animation thread
 					// This thread handle around 1000 animations. Which is a lot
 					for (Animation anim : activeAnimations) {
+						if (anim.loadedTextures == null) {
+							anim.loadedTextures = new Texture[anim.maxFrame];
+						}
 						anim.tick += 1;
 						if (anim.tick >= anim.mTick) {
 							anim.tick = 0;
-							anim.frame++;
-							String name = anim.fileName.replace("{%FRAME%}", String.valueOf(anim.frame-1));
-							ZipEntry entry = anim.file.getEntry(name);
-							try {
-								anim.img = TextureLoader.getTexture(anim.file.getInputStream(entry));
-							} catch (IOException e) {
-								e.printStackTrace();
+							anim.toNextFrame();
+							if (loadedTextures[anim.frame] == null) {
+								String name = anim.fileName.replace("{%FRAME%}", String.valueOf(anim.frame));
+								ZipEntry entry = anim.file.getEntry(name);
+								try {
+									anim.loadedTextures[anim.frame] = TextureLoader.getTexture(anim.file.getInputStream(entry));
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
 							}
-							if (anim.frame >= anim.maxFrame) {
-								anim.frame = 0;
-							}
+							anim.img = anim.loadedTextures[anim.frame];
 						}
 					}
 					try {

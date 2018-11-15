@@ -13,6 +13,7 @@ public abstract class AudioSource {
 	}
 	
 	public abstract boolean hasNextSample();
+	public abstract byte getNextSampleByte();
 	public abstract byte[] getNextSample();
 	
 	public float getVolume() {

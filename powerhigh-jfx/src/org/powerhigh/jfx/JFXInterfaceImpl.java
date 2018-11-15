@@ -1,6 +1,8 @@
 package org.powerhigh.jfx;
 
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.input.Input;
+import org.powerhigh.jfx.input.JFXMouse;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 
@@ -12,6 +14,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+
+// TODO use com.sun.media.jfxmediaimpl.AudioClipProvider.create for sound
 public class JFXInterfaceImpl extends Interface {
 
 	public static Stage stage;
@@ -22,6 +26,8 @@ public class JFXInterfaceImpl extends Interface {
 	private GCDrawer drawer;
 	private boolean visible;
 	private Color background = Color.BLUE;
+	static JFXInterfaceImpl instance;
+	private JFXMouse mouse;
 	
 	public static class JFXApp extends Application {
 
@@ -38,9 +44,20 @@ public class JFXInterfaceImpl extends Interface {
 			scene = new Scene(pane, 620, 480);
 			gameCanvas = new Canvas();
 			pane.setTop(gameCanvas);
+			gameCanvas.setOnMouseMoved((e) -> {
+				instance.mouse.mouseMoved((int) e.getX(), (int) e.getY(), (int) e.getScreenX(), (int) e.getScreenY());
+			});
+			gameCanvas.setOnMouseDragged((e) -> {
+				instance.mouse.mouseDragged(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+			});
+			gameCanvas.setOnMousePressed((e) -> {
+				instance.mouse.mousePressed(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+			});
+			gameCanvas.setOnMouseReleased((e) -> {
+				instance.mouse.mouseReleased(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+			});
 			stage = primaryStage;
 			stage.setScene(scene);
-			//stage.setResizable(false);
 			stage.setOnCloseRequest((event) -> {
 				closeRequested = true;
 			});
@@ -49,13 +66,13 @@ public class JFXInterfaceImpl extends Interface {
 	}
 	
 	public JFXInterfaceImpl() {
+		instance = this;
 		Thread t = new Thread(() -> {
 			Application.launch(JFXApp.class);
 		});
 		t.start();
 		drawer = new GCDrawer();
 		init();
-		inited = true;
 	}
 	
 	@Override
@@ -72,7 +89,8 @@ public class JFXInterfaceImpl extends Interface {
 	public void show() {
 		if (!inited) {
 			inited = true;
-			init();
+			instance.mouse = new JFXMouse(0, 0, instance);
+			Input.setMouseImpl(mouse);
 		}
 		Platform.runLater(() -> {
 			stage.show();

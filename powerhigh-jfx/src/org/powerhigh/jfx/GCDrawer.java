@@ -6,8 +6,11 @@ import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Texture;
 import org.powerhigh.utils.Color;
 
+import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.WritableImage;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 
 public class GCDrawer extends Drawer {
 
@@ -48,6 +51,7 @@ public class GCDrawer extends Drawer {
 		if (texCache.get(texture) == null) {
 			texCache.put(texture, decodeTexture(texture));
 		}
+		
 		gc.drawImage(texCache.get(texture), x, y, width, height);
 	}
 
@@ -57,22 +61,7 @@ public class GCDrawer extends Drawer {
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
 				int rgb = t.getRGB(x, y);
-				int alpha = 255;
-				int red = 0;
-				int green = 0;
-				int blue = 0;
-				if (rgb > Integer.decode("0x000000") || false) {
-					red = (rgb >> 24) & 0xFF;
-					green = (rgb >> 16) & 0xFF;
-					blue = (rgb >> 8) & 0xFF;
-					alpha = (rgb) & 0xFF;
-				} else {
-					red = (rgb >> 16) & 0xFF;
-					green = (rgb >> 8) & 0xFF;
-					blue = (rgb) & 0xFF;
-				}
-				img.getPixelWriter().setColor(x, y,
-						javafx.scene.paint.Color.rgb(red, green, blue, ((double) alpha / 255)));
+				img.getPixelWriter().setArgb(x, y, rgb);
 			}
 		}
 		System.gc();
@@ -96,22 +85,32 @@ public class GCDrawer extends Drawer {
 
 	@Override
 	public int getEstimatedWidth(String text) {
-		return 0;
+		Text theText = new Text(text);
+		theText.setFont(gc.getFont());
+		return (int) theText.getBoundsInLocal().getWidth();
 	}
 
 	@Override
 	public int getEstimatedHeight() {
-		return 0;
+		Text theText = new Text("ABC");
+		theText.setFont(gc.getFont());
+		return (int) theText.getBoundsInLocal().getHeight();
 	}
 
 	@Override
 	public boolean supportsTextEstimations() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public void localRotate(double radians, int orx, int ory) {
 		// gc.rotate(Math.toDegrees(radians));
+		rotate(Math.toDegrees(radians), orx, ory);
+	}
+
+	private void rotate(double angle, double px, double py) {
+		Rotate r = new Rotate(angle, px, py);
+		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 	}
 
 	@Override

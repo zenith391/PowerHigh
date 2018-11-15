@@ -38,7 +38,8 @@ public abstract class SimpleGame {
 			
 			SWING(),
 			OPENGL(),
-			ANDROID();
+			ANDROID(),
+			JAVAFX();
 			
 			public String toString() {
 				if (this == SWING) {
@@ -50,15 +51,19 @@ public abstract class SimpleGame {
 				if (this == ANDROID) {
 					return "powerhigh-android";
 				}
+				if (this == JAVAFX) {
+					return "powerhigh-jfx";
+				}
 				return null;
 			}
 			
 		}
 		
 		public static enum Audio {
-			AWT,
-			OPENAL,
-			ANDROID;
+			AWT,    // sun     sound api
+			OPENAL, // openal sample api
+			JAVAFX, // javafx  media api
+			ANDROID;// android media api
 		}
 		
 		public ImplementationSettings(Interface itrf, Audio audio) {
@@ -84,7 +89,7 @@ public abstract class SimpleGame {
 	 * Core init of game, if overriding this method, add <code>super.coreInit()</code> unless you know what you're doing !
 	 * <p><b>Note:</b> This method is called before init, it is like a pre-init</p>
 	 */
-	protected void coreInit() {
+	protected void implInit() {
 		is = getImplementationSettings();
 		String wcl = "";
 		if (is.getInterfaceType() == ImplementationSettings.Interface.SWING) {
@@ -92,6 +97,9 @@ public abstract class SimpleGame {
 		}
 		if (is.getInterfaceType() == ImplementationSettings.Interface.OPENGL) {
 			wcl = "org.powerhigh.opengl.OpenGLInterfaceImpl";
+		}
+		if (is.getInterfaceType() == ImplementationSettings.Interface.OPENGL) {
+			wcl = "org.powerhigh.jfx.JFXInterfaceImpl";
 		}
 		if (is.getInterfaceType() == ImplementationSettings.Interface.ANDROID) {
 			throw new UnsupportedOperationException("Android");
@@ -130,6 +138,10 @@ public abstract class SimpleGame {
 			window.getEventThread().setFrameRate(frames);
 		}
 	}
+	
+	public void restartImplementation() {
+		implInit();
+	}
 
 	protected boolean launched, a1;
 	
@@ -141,7 +153,7 @@ public abstract class SimpleGame {
 				dbg();
 			}
 			
-			coreInit();
+			implInit();
 			init(window);
 			window.show();
 			
