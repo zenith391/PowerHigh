@@ -1,5 +1,8 @@
 package org.powerhigh.jfx;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Input;
 import org.powerhigh.jfx.input.JFXMouse;
@@ -44,17 +47,26 @@ public class JFXInterfaceImpl extends Interface {
 			scene = new Scene(pane, 620, 480);
 			gameCanvas = new Canvas();
 			pane.setTop(gameCanvas);
+			ExecutorService service = Executors.newSingleThreadExecutor();
 			gameCanvas.setOnMouseMoved((e) -> {
-				instance.mouse.mouseMoved((int) e.getX(), (int) e.getY(), (int) e.getScreenX(), (int) e.getScreenY());
+				service.submit(() -> {
+					instance.mouse.mouseMoved((int) e.getX(), (int) e.getY(), (int) e.getScreenX(), (int) e.getScreenY());
+				});
 			});
 			gameCanvas.setOnMouseDragged((e) -> {
-				instance.mouse.mouseDragged(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+				service.submit(() -> {
+					instance.mouse.mouseDragged(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+				});
 			});
 			gameCanvas.setOnMousePressed((e) -> {
-				instance.mouse.mousePressed(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+				service.submit(() -> {
+					instance.mouse.mousePressed(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+				});
 			});
 			gameCanvas.setOnMouseReleased((e) -> {
-				instance.mouse.mouseReleased(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+				service.submit(() -> {
+					instance.mouse.mouseReleased(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+				});
 			});
 			stage = primaryStage;
 			stage.setScene(scene);
@@ -169,6 +181,12 @@ public class JFXInterfaceImpl extends Interface {
 	@Override
 	public int getHeight() {
 		return getSize().getHeight();
+	}
+
+	@Override
+	public void unregister() {
+		hide();
+		Platform.exit();
 	}
 
 }

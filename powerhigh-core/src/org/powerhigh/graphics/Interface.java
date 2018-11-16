@@ -13,7 +13,6 @@ import org.powerhigh.utils.Color;
 public abstract class Interface {
 
 	protected Input input = new Input(this);
-	protected GameObject focusedObj;
 	protected WindowEventThread thread = new WindowEventThread(this);
 	protected ViewportManager viewportManager;
 	protected Area viewport = new Area(0, 0, 0, 0);
@@ -89,7 +88,10 @@ public abstract class Interface {
 
 	public void setViewport(int x, int y, int width, int height) {
 		objectContainer.setSize(width, height);
-		
+	}
+	
+	public void setObjectContainer(Container container) {
+		objectContainer = container;
 	}
 
 	/**
@@ -109,6 +111,11 @@ public abstract class Interface {
 
 	public abstract boolean isCloseRequested();
 	public abstract boolean isVisible();
+	
+	/**
+	 * Unregister platform specific tools (threads, callbacks, listeners)
+	 */
+	public abstract void unregister();
 
 	public void add(GameObject obj) {
 		objectContainer.add(obj);
@@ -131,6 +138,11 @@ public abstract class Interface {
 	}
 	
 	public abstract void setSize(int width, int height);
+	
+	public void setSize(Area size) {
+		setSize(size.getWidth(), size.getHeight());
+	}
+	
 	public abstract Area getSize();
 
 	public void update() {
@@ -174,20 +186,7 @@ public abstract class Interface {
 	public abstract int getHeight();
 
 	public void fireEvent(String type, Object... args) {
-		if (type.equals("mousePressed")) {
-			GameObject[] a = getObjects();
-			int mx = (int) args[0];
-			int my = (int) args[1];
-			focusedObj = null;
-			for (GameObject b : a) {
-				if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
-					focusedObj = b;
-					break;
-				}
-			}
-		}
-		if (focusedObj != null)
-			focusedObj.onEvent(type, args);
+		objectContainer.onEvent(type, args);
 	}
 
 	public void removeAll() {

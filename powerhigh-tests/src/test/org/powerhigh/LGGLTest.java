@@ -38,6 +38,7 @@ public class LGGLTest extends SimpleGame {
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
 	private boolean scaleUp;
+	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
 
 	@Override
 	public void update(Interface win, double delta) {
@@ -123,8 +124,6 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void init(Interface win) {
-		this.window = new JFXInterfaceImpl();
-		win = window;
 		Audio.setImplementation(new SwingAudioImpl());
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_16);
@@ -205,13 +204,27 @@ public class LGGLTest extends SimpleGame {
 			}
 
 		});
-		Button tbt = new Button();
-		tbt.setText("Test Button");
-		tbt.setX(400);
-		tbt.setY(100);
-		tbt.setSize(100, 60);
+		Button stj = new Button("Switch to JavaFX");
+		stj.setX(400);
+		stj.setY(100);
+		stj.setSize(100, 60);
+		stj.addAction(() -> {
+			impl = new ImplementationSettings(ImplementationSettings.Interface.JAVAFX, ImplementationSettings.Audio.AWT);
+			restartImplementation();
+		});
+		
+		Button sts = new Button("Switch to Swing");
+		sts.setX(550);
+		sts.setY(100);
+		sts.setSize(100, 60);
+		sts.addAction(() -> {
+			impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
+			restartImplementation();
+		});
+		
 		win.add(bt);
-		win.add(tbt);
+		win.add(stj);
+		win.add(sts);
 		win.add(fps);
 
 		win.add(box);
@@ -226,7 +239,7 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public ImplementationSettings getImplementationSettings() {
-		return new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
+		return impl;
 	}
 
 }

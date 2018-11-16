@@ -3,9 +3,12 @@ package org.powerhigh.game;
 import java.lang.reflect.InvocationTargetException;
 
 import org.powerhigh.Camera;
+import org.powerhigh.ViewportManager;
 import org.powerhigh.audio.Audio;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Input;
+import org.powerhigh.objects.Container;
+import org.powerhigh.utils.Area;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public abstract class SimpleGame {
@@ -98,7 +101,7 @@ public abstract class SimpleGame {
 		if (is.getInterfaceType() == ImplementationSettings.Interface.OPENGL) {
 			wcl = "org.powerhigh.opengl.OpenGLInterfaceImpl";
 		}
-		if (is.getInterfaceType() == ImplementationSettings.Interface.OPENGL) {
+		if (is.getInterfaceType() == ImplementationSettings.Interface.JAVAFX) {
 			wcl = "org.powerhigh.jfx.JFXInterfaceImpl";
 		}
 		if (is.getInterfaceType() == ImplementationSettings.Interface.ANDROID) {
@@ -140,7 +143,40 @@ public abstract class SimpleGame {
 	}
 	
 	public void restartImplementation() {
+		
+		// Save state
+		Container c = window.getObjectContainer();
+		ViewportManager manager = window.getViewportManager();
+		Area size = window.getSize();
+		
+		window.hide();
+		window.unregister();
+		window.getEventThread().interrupt();
 		implInit();
+		
+		// Load state
+		try {
+			Thread.sleep(1000); // To wait some implementations to init
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		window.show();
+		window.setObjectContainer(c);
+		window.setSize(size);
+		window.setViewportManager(manager);
+		window.getEventThread().addUpdateListener(new Runnable() {
+			public void run() {
+				try {
+					update(window, window.getEventThread().getDelta());
+					if (window.isCloseRequested() && a1 == false) {
+						exit(window);
+						a1 = true;
+					}
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+			}
+		});
 	}
 
 	protected boolean launched, a1;

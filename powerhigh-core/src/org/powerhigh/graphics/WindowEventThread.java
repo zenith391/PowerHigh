@@ -10,6 +10,7 @@ public class WindowEventThread extends Thread {
 	private int targetFPS = 60;
 	private int frames;
 	private int fps;
+	private boolean stop;
 
 	private double delta;
 
@@ -46,11 +47,15 @@ public class WindowEventThread extends Thread {
 	public void runLater(Runnable r) {
 		runnable = r;
 	}
+	
+	public void interrupt() {
+		stop = true;
+	}
 
 	public void run() {
 		setName("Update Thread");
 		long sleepTime = 1000 / 60;
-		while (true) {
+		while (!stop) {
 			long estimatedTime = 0;
 			if (targetFPS > 0) {
 				estimatedTime = 1000 / targetFPS;
@@ -80,5 +85,6 @@ public class WindowEventThread extends Thread {
 			}
 			frames++;
 		}
+		stop = false;
 	}
 }

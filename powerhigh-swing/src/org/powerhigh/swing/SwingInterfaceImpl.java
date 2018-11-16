@@ -194,4 +194,9 @@ public class SwingInterfaceImpl extends Interface {
 		return new Area(win.getWidth(), win.getHeight());
 	}
 
+	@Override
+	public void unregister() {
+		win.dispose();
+	}
+
 }
