@@ -156,7 +156,7 @@ public abstract class SimpleGame {
 		
 		// Load state
 		try {
-			Thread.sleep(1000); // To wait some implementations to init
+			Thread.sleep(500); // To wait some implementations to init
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

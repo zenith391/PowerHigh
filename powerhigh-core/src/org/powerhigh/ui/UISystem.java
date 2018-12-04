@@ -19,7 +19,7 @@ public class UISystem {
 					uiModel = new FileUIModel(new InputStreamReader(new FileInputStream("base/base_ui_skin.ui")), 
 							"base/"); // Special case, inside .jar / project
 				} else {
-					DebugLogger.logError("No \"base\" folder!");
+					DebugLogger.logWarn("No \"base\" folder!");
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

@@ -23,6 +23,7 @@ public class JFXInterfaceImpl extends Interface {
 
 	public static Stage stage;
 	protected static boolean closeRequested;
+	private static boolean platformStarted;
 	private Object answer;
 	public static Canvas gameCanvas;
 	private boolean inited;
@@ -73,6 +74,8 @@ public class JFXInterfaceImpl extends Interface {
 			stage.setOnCloseRequest((event) -> {
 				closeRequested = true;
 			});
+			//stage.show();
+			System.out.println("start ended");
 		}
 		
 	}
@@ -80,7 +83,21 @@ public class JFXInterfaceImpl extends Interface {
 	public JFXInterfaceImpl() {
 		instance = this;
 		Thread t = new Thread(() -> {
-			Application.launch(JFXApp.class);
+			if (!platformStarted) {
+				Application.launch(JFXApp.class);
+				platformStarted = true;
+			} else {
+				JFXApp app = new JFXApp();
+				Platform.runLater(() -> {
+					try {
+						app.init();
+						app.start(new Stage());
+					} catch (Exception e) {
+						System.out.println("JavaFX error:");
+						e.printStackTrace();
+					}
+				});
+			}
 		});
 		t.start();
 		drawer = new GCDrawer();
@@ -105,7 +122,8 @@ public class JFXInterfaceImpl extends Interface {
 			Input.setMouseImpl(mouse);
 		}
 		Platform.runLater(() -> {
-			stage.show();
+			if (stage != null)
+				stage.show();
 		});
 		visible = true;
 	}

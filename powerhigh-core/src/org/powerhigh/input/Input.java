@@ -39,8 +39,10 @@ public class Input {
 		keysAxisHorizental = new HashMap<>();
 		keysAxisVertical = new HashMap<>();
 		keysAxisHorizental.put(KeyCodes.KEY_Q, -1.0f);
+		keysAxisHorizental.put(KeyCodes.KEY_A, -1.0f);
 		keysAxisHorizental.put(KeyCodes.KEY_D, 1.0f);
 		keysAxisVertical.put(KeyCodes.KEY_Z, -1.0f);
+		keysAxisVertical.put(KeyCodes.KEY_W, -1.0f);
 		keysAxisVertical.put(KeyCodes.KEY_S, 1.0f);
 	}
 	
@@ -48,8 +50,26 @@ public class Input {
 		return key;
 	}
 	
+	public void setVaryWithDelta(boolean vary) {
+		useDelta = vary;
+	}
+	
 	public Mouse getMouse() {
 		return mouse;
+	}
+	
+	public void removeAllAxisTriggers() {
+		keysAxisHorizental.clear();
+		keysAxisVertical.clear();
+	}
+	
+	public void registerAxisTrigger(String axis, int keyCode, float value) {
+		if (axis.equals("Horizental")) {
+			keysAxisHorizental.put(keyCode, value);
+		}
+		if (axis.equals("Vertical")) {
+			keysAxisVertical.put(keyCode, value);
+		}
 	}
 	
 	public float getAxis(String axis) {

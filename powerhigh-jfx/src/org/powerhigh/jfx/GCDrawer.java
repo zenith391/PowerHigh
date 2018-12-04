@@ -92,7 +92,7 @@ public class GCDrawer extends Drawer {
 
 	@Override
 	public int getEstimatedHeight() {
-		Text theText = new Text("ABC");
+		Text theText = new Text("a");
 		theText.setFont(gc.getFont());
 		return (int) theText.getBoundsInLocal().getHeight();
 	}
