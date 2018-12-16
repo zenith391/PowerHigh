@@ -59,7 +59,8 @@ public class Animation {
 					}
 				}
 			});
-			animThread.setPriority(Thread.MIN_PRIORITY); // I don't think animation accuracy is important.
+			animThread.setName("Animation-Updater-Thread");
+			animThread.setPriority(Thread.MIN_PRIORITY); // Performance over animation speed accuracy
 			animThread.setDaemon(true);
 			animThread.start();
 		}

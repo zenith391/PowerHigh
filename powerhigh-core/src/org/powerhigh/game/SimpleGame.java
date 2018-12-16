@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
 import org.powerhigh.audio.Audio;
+import org.powerhigh.audio.AudioImplementation;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Input;
 import org.powerhigh.objects.Container;
@@ -62,10 +63,14 @@ public abstract class SimpleGame {
 			
 		}
 		
+		/**
+		 * Includes all implementations that support low-level audio API
+		 * @author zenith391
+		 *
+		 */
 		public static enum Audio {
 			AWT,    // sun     sound api
-			OPENAL, // openal sample api
-			JAVAFX, // javafx  media api
+			OPENAL, // openal  sample api
 			ANDROID;// android media api
 		}
 		
@@ -95,6 +100,7 @@ public abstract class SimpleGame {
 	protected void implInit() {
 		is = getImplementationSettings();
 		String wcl = "";
+		String acl = "";
 		if (is.getInterfaceType() == ImplementationSettings.Interface.SWING) {
 			wcl = "org.powerhigh.swing.SwingInterfaceImpl";
 		}
@@ -108,10 +114,17 @@ public abstract class SimpleGame {
 			throw new UnsupportedOperationException("Android");
 		}
 		
+		if (is.getAudioType() == ImplementationSettings.Audio.AWT) {
+			acl = "org.powerhigh.swing.audio.SwingAudioImpl";
+		}
+		
+		AudioImplementation aimpl = null;
 		try {
 			Class<?> cl = Class.forName(wcl);
+			Class<?> cl2 = Class.forName(acl);
 			try {
 				window = (org.powerhigh.graphics.Interface) cl.getConstructor().newInstance();
+				aimpl = (org.powerhigh.audio.AudioImplementation) cl2.getConstructor().newInstance();
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
@@ -120,7 +133,9 @@ public abstract class SimpleGame {
 			throw new IllegalArgumentException(is.getInterfaceType().toString() + " jar is not in dependencies");
 		}
 		try {
-			audio = null;
+			audio = new Audio(Audio.AUDIO_BIT_24);
+			if (aimpl != null)
+				Audio.setImplementation(aimpl);
 			if (enableLaunchDebug)
 				DebugLogger.logInfo("Audio ready !");
 		} catch (Exception e) {

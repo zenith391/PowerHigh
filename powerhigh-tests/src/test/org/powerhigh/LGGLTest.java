@@ -22,6 +22,8 @@ import org.powerhigh.input.AbstractKeyboard;
 import org.powerhigh.input.KeyCodes;
 import org.powerhigh.input.Mouse;
 import org.powerhigh.jfx.JFXInterfaceImpl;
+import org.powerhigh.multiplayer.Connection;
+import org.powerhigh.multiplayer.Server;
 import org.powerhigh.objects.Button;
 import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
@@ -38,7 +40,7 @@ public class LGGLTest extends SimpleGame {
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
 	private boolean scaleUp;
-	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
+	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.JAVAFX, ImplementationSettings.Audio.AWT);
 
 	@Override
 	public void update(Interface win, double delta) {
@@ -57,25 +59,25 @@ public class LGGLTest extends SimpleGame {
 		player.setY((int) (player.getY() + (input.getAxis("Vertical") * speed)));
 		if (keyboard.isKeyDown(KeyCodes.KEY_G)) {
 			if (!(Interface.getRenderer() instanceof SimpleRenderer)) {
-				DebugLogger.logInfo("Changed Renderer to: Simple ()");
+				DebugLogger.logInfo("Changed Renderer to: Simple (Fast, Unaccurate)");
 				Interface.setRenderer(new SimpleRenderer());
 			}
 		}
 		if (keyboard.isKeyDown(KeyCodes.KEY_H)) {
 			if (!(Interface.getRenderer() instanceof Lightning)) {
-				DebugLogger.logInfo("Changed Renderer to: Lightning");
+				DebugLogger.logInfo("Changed Renderer to: Lightning (Default, Accurate)");
 				Interface.setRenderer(new Lightning());
 			}
 		}
-		if (keyboard.isKeyDown(KeyCodes.KEY_ESCAPE)) {
-			Mouse.setGrabbed(false);
-			Mouse.setCursorHidden(false);
-		}
-		if (keyboard.isKeyDown(KeyCodes.KEY_E)) {
-			Mouse.setGrabbed(true);
-			Mouse.setCursorHidden(true);
-		}
-		
+//		if (keyboard.isKeyDown(KeyCodes.KEY_ESCAPE)) {
+//			Mouse.setGrabbed(false);
+//			Mouse.setCursorHidden(false);
+//		}
+//		if (keyboard.isKeyDown(KeyCodes.KEY_E)) {
+//			Mouse.setGrabbed(true);
+//			Mouse.setCursorHidden(true);
+//		}
+//		
 		Particle p = new Particle(damageBlueprint, Mouse.getX(), Mouse.getY());
 		box.addParticle(p);
 		//System.out.println(delta);
@@ -121,23 +123,37 @@ public class LGGLTest extends SimpleGame {
 		byte b1 = (byte) ((x % 256));
 		return new byte[] {b1, b2};
 	}
+	
+	public void server() {
+		Server server = Server.connect(new BasicServerHandler(), 4192);
+		Connection con = Connection.connect("127.0.0.1", 4192);
+		try {
+			con.sendStablePacket(new byte[] {1, 1});  // TCP
+			con.sendPacket(new byte[] {1, 1});        // UDP
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			con.close();
+			//server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void init(Interface win) {
-		Audio.setImplementation(new SwingAudioImpl());
+		//Audio.setImplementation(new SwingAudioImpl());
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_16);
 		} catch (LGGLException e) {
 			e.printStackTrace();
 		}
-		//Scanner sc = new Scanner(System.in);
-		//int num = sc.nextInt();
-		//System.out.println(Integer.toHexString((fromu16(num)[0]&0xFF)) + " - " + Integer.toHexString((fromu16(num)[1]&0xFF)));
-		//System.exit(0);
 		Rectangle rect = new Rectangle(100, 100, 100, 100, Color.YELLOW);
 		win.add(rect);
 		win.setViewportManager(new SizedViewport(800, 600));
-		// Iziditor.main(new String[] {});
+		server();
 		player = new Sprite();
 		fps = new Text();
 		box = new ParticleBox(512);

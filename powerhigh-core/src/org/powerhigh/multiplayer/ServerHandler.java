@@ -7,12 +7,12 @@ public interface ServerHandler {
 	 * Using handleFullPacket method, incomplete packets are totally discarded
 	 * @param packet
 	 */
-	public void handleFullPacket(byte[] packet);
+	public void handleFullPacket(Client cl, byte[] packet);
 	
 	/**
 	 * Handle packets, if sended through UDP, they might appear incomplete
 	 * @param packet
 	 */
-	public void handleUnsafePacket(byte[] packet);
+	public void handleUnsafePacket(Client cl, byte[] packet);
 	
 }

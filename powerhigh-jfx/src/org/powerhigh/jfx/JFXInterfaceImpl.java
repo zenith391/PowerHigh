@@ -4,8 +4,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.TextureLoader;
 import org.powerhigh.input.Input;
+import org.powerhigh.jfx.input.JFXKeyboard;
 import org.powerhigh.jfx.input.JFXMouse;
+import org.powerhigh.jfx.input.JFXTexturePlugin;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 
@@ -32,6 +35,7 @@ public class JFXInterfaceImpl extends Interface {
 	private Color background = Color.BLUE;
 	static JFXInterfaceImpl instance;
 	private JFXMouse mouse;
+	private JFXKeyboard keyboard;
 	
 	public static class JFXApp extends Application {
 
@@ -49,6 +53,8 @@ public class JFXInterfaceImpl extends Interface {
 			gameCanvas = new Canvas();
 			pane.setTop(gameCanvas);
 			ExecutorService service = Executors.newSingleThreadExecutor();
+			
+			// Mouse events
 			gameCanvas.setOnMouseMoved((e) -> {
 				service.submit(() -> {
 					instance.mouse.mouseMoved((int) e.getX(), (int) e.getY(), (int) e.getScreenX(), (int) e.getScreenY());
@@ -56,7 +62,7 @@ public class JFXInterfaceImpl extends Interface {
 			});
 			gameCanvas.setOnMouseDragged((e) -> {
 				service.submit(() -> {
-					instance.mouse.mouseDragged(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
+					instance.mouse.mouseDragged(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY(), (int) e.getScreenX(), (int) e.getScreenY());
 				});
 			});
 			gameCanvas.setOnMousePressed((e) -> {
@@ -69,11 +75,30 @@ public class JFXInterfaceImpl extends Interface {
 					instance.mouse.mouseReleased(e.getButton().ordinal() - 1, (int) e.getX(), (int) e.getY());
 				});
 			});
+			
+			// Keyboard events
+			scene.setOnKeyPressed((e) -> {
+				service.submit(() -> {
+					instance.keyboard.keyPressed(e.getCode().getCode());
+				});
+			});
+			scene.setOnKeyReleased((e) -> {
+				service.submit(() -> {
+					instance.keyboard.keyReleased(e.getCode().getCode());
+				});
+			});
+			scene.setOnKeyTyped((e) -> {
+				service.submit(() -> {
+					instance.keyboard.keyTyped(e.getCode().getCode());
+				});
+			});
+			
 			stage = primaryStage;
 			stage.setScene(scene);
 			stage.setOnCloseRequest((event) -> {
 				closeRequested = true;
 			});
+			
 			//stage.show();
 			System.out.println("start ended");
 		}
@@ -82,6 +107,7 @@ public class JFXInterfaceImpl extends Interface {
 	
 	public JFXInterfaceImpl() {
 		instance = this;
+		TextureLoader.setPlugin(new JFXTexturePlugin());
 		Thread t = new Thread(() -> {
 			if (!platformStarted) {
 				Application.launch(JFXApp.class);
@@ -90,16 +116,25 @@ public class JFXInterfaceImpl extends Interface {
 				JFXApp app = new JFXApp();
 				Platform.runLater(() -> {
 					try {
+						System.out.println("initing..");
 						app.init();
 						app.start(new Stage());
+						System.out.println("inited :D");
 					} catch (Exception e) {
 						System.out.println("JavaFX error:");
 						e.printStackTrace();
 					}
 				});
+				Platform.requestNextPulse();
+				System.out.println("exit");
 			}
 		});
 		t.start();
+		try {
+			t.join(1000);
+		} catch (InterruptedException e) {
+			//e.printStackTrace();
+		}
 		drawer = new GCDrawer();
 		init();
 	}
@@ -119,7 +154,9 @@ public class JFXInterfaceImpl extends Interface {
 		if (!inited) {
 			inited = true;
 			instance.mouse = new JFXMouse(0, 0, instance);
+			instance.keyboard = new JFXKeyboard(this);
 			Input.setMouseImpl(mouse);
+			Input.setKeyboardImpl(instance.keyboard);
 		}
 		Platform.runLater(() -> {
 			if (stage != null)

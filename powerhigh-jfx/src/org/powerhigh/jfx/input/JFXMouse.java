@@ -9,8 +9,8 @@ public class JFXMouse extends Mouse {
 		super(defaultX, defaultY, win);
 	}
 	
-	public void mouseDragged(int button, int x, int y) {
-		super.mouseDragged(button, x, y);
+	public void mouseDragged(int button, int x, int y, int screenX, int screenY) {
+		super.mouseDragged(button, x, y, screenX, screenY);
 	}
 	
 	public void mouseMoved(int x, int y, int screenX, int screenY) {

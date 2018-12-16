@@ -16,5 +16,6 @@ module powerhigh.core {
 	exports org.powerhigh.utils.debug;
 	exports org.powerhigh.graphics.renderers.lightning;
 	exports org.powerhigh.input;
+	exports org.powerhigh.multiplayer;
 	
 }

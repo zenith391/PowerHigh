@@ -1,6 +1,7 @@
 package org.powerhigh.input;
 
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.Texture;
 
 public abstract class Mouse {
 	
@@ -13,6 +14,18 @@ public abstract class Mouse {
 	private static boolean clicked = false;
 	private static boolean dragged = false;
 	private static boolean[] pressedButtons = {false, false, false};
+	
+	private static boolean countDragAsMove = false;
+	
+	
+	public static boolean doCountDragAsMove() {
+		return countDragAsMove;
+	}
+
+	public static void setCountDragAsMove(boolean countDragAsMove) {
+		Mouse.countDragAsMove = countDragAsMove;
+	}
+
 	static Interface window;
 
 	public Mouse(int defaultX, int defaultY, Interface win) {
@@ -35,6 +48,7 @@ public abstract class Mouse {
 			}
 		});
 		t.setName("Click4Thread");
+		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
 		
 		window.fireEvent("mouseClicked", x, y, button - 1);
@@ -50,17 +64,15 @@ public abstract class Mouse {
 		window.fireEvent("mouseReleased", x, y, button - 1);
 	}
 
-	public void mouseDragged(int button, int x, int y) {
-		dragged = true;
-//		screenX = m.getXOnScreen();
-//		screenY = m.getYOnScreen();
+	public void mouseDragged(int button, int x, int y, int screenX, int screenY) {
 		window.fireEvent("mouseDragged", x, y, button);
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (countDragAsMove) {
+			window.fireEvent("mouseMoved", x, y, screenX, screenY);
+			Mouse.screenX = screenX;
+			Mouse.x = x;
+			Mouse.screenY = screenY;
+			Mouse.y = y;
 		}
-		dragged = false;
 	}
 
 	public static void clearMouseVelocity() {
@@ -75,20 +87,6 @@ public abstract class Mouse {
 		Mouse.y = y;
 		
 		window.fireEvent("mouseMoved", x, y);
-		
-//		if (grab) {
-//			if (osx == 0) {
-//				//osx = window.getJFrame().getX() + (window.getJFrame().getWidth() / 2);
-//				//osy = window.getJFrame().getY() + (window.getJFrame().getHeight() / 2);
-//			}
-//			if (dx == 0) {
-//				//dx = (m.getXOnScreen() - osx) -  window.getJFrame().getX();
-//			}
-//			if (dy == 0) {
-//				//dy = (m.getYOnScreen() - osy) - window.getJFrame().getY();
-//			}
-//			grabRobot.mouseMove(osx, osy);
-//		}
 	}
 
 	public static int getDX() {
@@ -144,17 +142,17 @@ public abstract class Mouse {
 		return screenY;
 	}
 
-	public static void setCursorHidden(boolean hidden) {
+	public void setCursorHidden(boolean hidden) {
 		throw new UnsupportedOperationException("This method should be overriden.");
 	}
 	
-	public static void setGrabbed(boolean grab) {
+	public void setGrabbed(boolean grab) {
 		throw new UnsupportedOperationException("This method should be overriden.");
 	}
 
-//	@Deprecated
-//	public static void setCursor(Cursor cursor) {
-//		throw new UnsupportedOperationException("This method should be overriden.");
-//	}
+	//@Deprecated
+	public void setCursor(Texture cursor) {
+		throw new UnsupportedOperationException("This method should be overriden.");
+	}
 
 }
