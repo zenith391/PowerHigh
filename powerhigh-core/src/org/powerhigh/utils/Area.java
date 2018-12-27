@@ -2,7 +2,7 @@ package org.powerhigh.utils;
 
 public class Area {
 
-	private int x, y, width, height;
+	public int x, y, width, height;
 
 	public int getX() {
 		return x;

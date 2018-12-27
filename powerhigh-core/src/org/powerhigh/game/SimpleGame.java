@@ -56,7 +56,7 @@ public abstract class SimpleGame {
 					return "powerhigh-android";
 				}
 				if (this == JAVAFX) {
-					return "powerhigh-jfx";
+					return "powerhigh-javafx";
 				}
 				return null;
 			}
@@ -216,21 +216,17 @@ public abstract class SimpleGame {
 							exit(window);
 							a1 = true;
 						}
+						if (!launched) {
+							if (enableLaunchDebug) {
+								DebugLogger.logInfo("Game launched");
+							}
+							launched = true;
+						}
 					} catch (Throwable t) {
 						t.printStackTrace();
 					}
 				}
 			});
-			
-			while (true) {
-				Thread.sleep(1000 / 60);
-				if (!launched) {
-					if (enableLaunchDebug) {
-						DebugLogger.logInfo("Game launched");
-					}
-					launched = true;
-				}
-			}
 		} catch (Throwable t) {
 //			t.printStackTrace();
 //			Toolkit.getDefaultToolkit().beep();

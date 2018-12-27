@@ -129,5 +129,25 @@ public class JDrawer2D extends Drawer {
 	public boolean supportsTextEstimations() {
 		return true;
 	}
+
+	@Override
+	public void drawLine(int x, int y, int x2, int y2) {
+		g2d.drawLine(x, y, x2, y2);
+	}
+
+	@Override
+	public void drawRect(int x, int y, int width, int height) {
+		g2d.drawRect(x, y, width, height);
+	}
+
+	@Override
+	public void drawCircle(int x, int y, int radius) {
+		g2d.drawOval(x, y, radius, radius);
+	}
+
+	@Override
+	public void fillCircle(int x, int y, int radius) {
+		g2d.fillOval(x, y, radius, radius);
+	}
 	
 }

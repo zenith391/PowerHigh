@@ -21,7 +21,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
-// TODO use com.sun.media.jfxmediaimpl.AudioClipProvider.create for sound
+// POSSIBILITY: use com.sun.media.jfxmediaimpl.AudioClipProvider.create for sound
 public class JFXInterfaceImpl extends Interface {
 
 	public static Stage stage;
@@ -116,10 +116,10 @@ public class JFXInterfaceImpl extends Interface {
 				JFXApp app = new JFXApp();
 				Platform.runLater(() -> {
 					try {
-						System.out.println("initing..");
+						//System.out.println("initing..");
 						app.init();
 						app.start(new Stage());
-						System.out.println("inited :D");
+						//System.out.println("inited :D");
 					} catch (Exception e) {
 						System.out.println("JavaFX error:");
 						e.printStackTrace();
@@ -236,6 +236,20 @@ public class JFXInterfaceImpl extends Interface {
 	@Override
 	public int getHeight() {
 		return getSize().getHeight();
+	}
+	
+	@Override
+	public void setResizable(boolean resizable) {
+		Platform.runLater(() -> {
+			stage.setResizable(resizable);
+		});
+	}
+	
+	@Override
+	public void setTitle(String title) {
+		Platform.runLater(() -> {
+			stage.setTitle(title);
+		});
 	}
 
 	@Override

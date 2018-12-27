@@ -7,17 +7,32 @@ import org.powerhigh.graphics.Texture;
 import org.powerhigh.utils.Color;
 
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 
+/**
+ * Implementation properties:<br/>
+ * <li>
+ * 		<ul>jfx.smooth_scale: true, disable recommended for retro-themed games /!\ RGBA not supported in non-smooth mode</ul><br/>
+ * </li>
+ * @author zenith391
+ *
+ */
 public class GCDrawer extends Drawer {
 
 	private GraphicsContext gc;
 	private Color color;
 	private HashMap<Texture, WritableImage> texCache = new HashMap<>();
-
+	private boolean smooth;
+	
+	
 	public void setGC(GraphicsContext gc) {
 		this.gc = gc;
 	}
@@ -29,13 +44,31 @@ public class GCDrawer extends Drawer {
 
 	@Override
 	public void setColor(Color color) {
-		// System.out.println(color);
 		if (color != null) {
 			this.color = color;
 			gc.setFill(javafx.scene.paint.Color.rgb(color.getRed(), color.getGreen(), color.getBlue()));
+			gc.setStroke(javafx.scene.paint.Color.rgb(color.getRed(), color.getGreen(), color.getBlue()));
 		}
 	}
 
+	/**
+	 * Heavy and slow, to change. Does not supports RGBA
+	 * @param in
+	 * @param scaledWidth
+	 * @param scaledHeight
+	 * @return scaled image
+	 */
+	WritableImage nonSmoothScale(WritableImage in, int scaledWidth, int scaledHeight) {
+		ImageView imageView = new ImageView(in);
+		imageView.setFitWidth(scaledWidth);
+		imageView.setFitHeight(scaledHeight);
+		imageView.setSmooth(false);
+		Pane pane = new Pane(imageView);
+		pane.setCache(true);
+		Scene offScreenScene = new Scene(pane);
+		return imageView.snapshot(null, null);
+	}
+	
 	@Override
 	public Color getColor() {
 		return color;
@@ -43,7 +76,11 @@ public class GCDrawer extends Drawer {
 
 	@Override
 	public void drawTexture(int x, int y, Texture texture) {
-		drawTexture(x, y, texture.getWidth(), texture.getHeight(), texture);
+		if (texCache.get(texture) == null) {
+			texCache.put(texture, decodeTexture(texture));
+		}
+		
+		gc.drawImage(texCache.get(texture), x, y);
 	}
 
 	@Override
@@ -51,8 +88,13 @@ public class GCDrawer extends Drawer {
 		if (texCache.get(texture) == null) {
 			texCache.put(texture, decodeTexture(texture));
 		}
-		
-		gc.drawImage(texCache.get(texture), x, y, width, height);
+		smooth = !getImplementationProperties().getProperty("jfx.smooth_scale", "true")
+				.equalsIgnoreCase("true");
+		if (smooth) {
+			gc.drawImage(nonSmoothScale(texCache.get(texture), width, height), x, y);
+		} else {
+			gc.drawImage(texCache.get(texture), x, y, width, height);
+		}
 	}
 
 	private WritableImage decodeTexture(Texture t) {
@@ -126,6 +168,30 @@ public class GCDrawer extends Drawer {
 	@Override
 	public void restoreState() {
 		gc.restore();
+	}
+
+	@Override
+	public void drawLine(int x, int y, int x2, int y2) {
+		gc.beginPath();
+		gc.moveTo(x, y);
+		gc.lineTo(x2, y2);
+		gc.fill();
+		gc.closePath();
+	}
+
+	@Override
+	public void drawRect(int x, int y, int width, int height) {
+		gc.strokeRect(x, y, width, height);
+	}
+
+	@Override
+	public void drawCircle(int x, int y, int radius) {
+		gc.strokeOval(x, y, radius, radius);
+	}
+
+	@Override
+	public void fillCircle(int x, int y, int radius) {
+		gc.fillOval(x, y, radius, radius);
 	}
 
 }

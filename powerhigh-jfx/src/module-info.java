@@ -15,5 +15,6 @@ module powerhigh.jfx {
 	requires powerhigh.core;
 	
 	exports org.powerhigh.jfx;
+	exports org.powerhigh.jfx.input;
 	
 }

@@ -1,12 +1,18 @@
 package org.powerhigh.graphics;
 
+import java.util.Properties;
+
 import org.powerhigh.utils.Color;
 
 public abstract class Drawer {
 
-	protected boolean cacheEnabled = true;
+	protected static boolean cacheEnabled = true;
+	protected static Properties implProperties = new Properties();
 	
 	public abstract void fillRect(int x, int y, int width, int height);
+	public abstract void drawRect(int x, int y, int width, int height);
+	public abstract void drawCircle(int x, int y, int radius);
+	public abstract void fillCircle(int x, int y, int radius);
 	public abstract void setColor(Color color);
 	public abstract Color getColor();
 	public abstract void drawTexture(int x, int y, Texture texture);
@@ -21,6 +27,7 @@ public abstract class Drawer {
 	public abstract void clearCache();
 	public abstract void clearTextureFromCache(Texture texture);
 	public abstract void drawText(int x, int y, String string);
+	public abstract void drawLine(int x, int y, int x2, int y2);
 	
 	public abstract int getEstimatedWidth(String text);
 	public abstract int getEstimatedHeight();
@@ -49,12 +56,16 @@ public abstract class Drawer {
 	 */
 	public abstract void restoreState();
 	
-	public boolean isCacheEnabled() {
+	public static boolean isCacheEnabled() {
 		return cacheEnabled;
 	}
 	
-	public void setCacheEnabled(boolean cacheEnabled) {
-		this.cacheEnabled = cacheEnabled;
+	public static void setCacheEnabled(boolean cacheEnabled) {
+		Drawer.cacheEnabled = cacheEnabled;
+	}
+	
+	public static Properties getImplementationProperties() {
+		return implProperties;
 	}
 	
 }
