@@ -110,7 +110,8 @@ public class LGGLTest extends SimpleGame {
 	public void dbgsound() {
 		WavMusic music = null;
 		try {
-			music = new WavMusic(Audio.AUDIO_BIT_16, 1.0f, new File("Alonzo - Santana.wav"));
+			//System.out.println(Audio.AUDIO_BIT_16 | Audio.DVD_SPEED);
+			music = new WavMusic(Audio.AUDIO_BIT_16 | Audio.CD_SPEED, 1.0f, new File("Alonzo - Santana.wav"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -144,7 +145,6 @@ public class LGGLTest extends SimpleGame {
 
 	@Override
 	public void init(Interface win) {
-		//Audio.setImplementation(new SwingAudioImpl());
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_16);
 		} catch (LGGLException e) {
@@ -153,7 +153,7 @@ public class LGGLTest extends SimpleGame {
 		Rectangle rect = new Rectangle(100, 100, 100, 100, Color.YELLOW);
 		win.add(rect);
 		win.setViewportManager(new SizedViewport(800, 600));
-		server();
+		//server();
 		player = new Sprite();
 		fps = new Text();
 		box = new ParticleBox(512);

@@ -38,7 +38,6 @@ public class FileUIModel extends UIModel {
 			prop = new Properties();
 			prop.load(file);
 			ver = Integer.parseInt(prop.getProperty("version", "1"));
-			System.out.println(new File(parent + prop.getProperty("file", "ui_skin.png")));
 			atlas = TextureAtlas.getFrom(TextureLoader.getTexture(parent + prop.getProperty("file", "ui_skin.png")), Integer.parseInt(prop.getProperty("tileWidth")), Integer.parseInt(prop.getProperty("tileHeight")));
 		} catch (Exception e) {
 			System.err.println("Error loading FileUIModel of " + file);

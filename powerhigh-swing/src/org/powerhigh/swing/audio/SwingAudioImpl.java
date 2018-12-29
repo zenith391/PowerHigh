@@ -31,6 +31,7 @@ public class SwingAudioImpl extends AudioImplementation {
 	
 	public AudioFormat flagsToFormat(int flags) {
 		int bits = 0;
+		int speed = 41700;
 		if ((flags & Audio.AUDIO_BIT_8) == Audio.AUDIO_BIT_8) {
 			bits = 8;
 		}
@@ -40,8 +41,17 @@ public class SwingAudioImpl extends AudioImplementation {
 		if ((flags & Audio.AUDIO_BIT_24) == Audio.AUDIO_BIT_24) {
 			bits = 24;
 		}
+		if ((flags & Audio.CD_SPEED) == Audio.CD_SPEED) {
+			speed = 44100; // AWT doesn't support 44100, nobody knowns why
+		}
+		if ((flags & Audio.CUSTOM_SPEED) == Audio.CUSTOM_SPEED) {
+			/// TODO
+		}
+		if ((flags & Audio.DVD_SPEED) == Audio.DVD_SPEED) {
+			speed = 96000;
+		}
 		// 41700Hz for DVD speed
-		AudioFormat format = new AudioFormat(41700, bits, 2, true, false);
+		AudioFormat format = new AudioFormat(speed, bits, 2, true, false);
 		return format;
 	}
 	

@@ -98,7 +98,7 @@ public class GCDrawer extends Drawer {
 	}
 
 	private WritableImage decodeTexture(Texture t) {
-		System.out.println("Compiling texture..");
+		//System.out.println("Compiling texture..");
 		WritableImage img = new WritableImage(t.getWidth(), t.getHeight());
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {

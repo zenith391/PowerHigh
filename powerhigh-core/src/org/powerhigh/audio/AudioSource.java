@@ -9,7 +9,15 @@ public abstract class AudioSource {
 	
 	public AudioSource(int flags, float volume) {
 		this.volume = volume;
-		audioFlags = flags;
+		this.audioFlags = flags;
+	}
+	
+	public AudioSource(float volume) {
+		this(0, volume);
+	}
+	
+	public AudioSource() {
+		this(1.0f);
 	}
 	
 	public abstract boolean hasNextSample();
@@ -24,12 +32,22 @@ public abstract class AudioSource {
 		return audioFlags;
 	}
 	
+	public void setAudioFlags(int audioFlags) {
+		if (this.audioFlags != 0)
+			throw new IllegalStateException("Audio flags has arleady been set");
+		this.audioFlags = audioFlags;
+	}
+	
 	public void setVolume(float volume) {
 		this.volume = volume;
 	}
 	
 	public long getPosition() {
 		return position;
+	}
+	
+	public void setPosition(long position) {
+		this.position = position;
 	}
 	
 	public long getLenght() {

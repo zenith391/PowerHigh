@@ -24,6 +24,7 @@ public class WavMusic extends Music {
 	protected byte[] readNextSamples() {
 		byte[] sb = new byte[getFrameSize()];
 		try {
+			
 			ais.read(sb);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -35,6 +36,7 @@ public class WavMusic extends Music {
 		super(flags, volume);
 		try {
 			ais = AudioSystem.getAudioInputStream(f);
+			//System.out.println(ais.markSupported());
 			format = ais.getFormat();
 			length = ais.getFrameLength() * getFrameSize();
 		} catch (UnsupportedAudioFileException e) {

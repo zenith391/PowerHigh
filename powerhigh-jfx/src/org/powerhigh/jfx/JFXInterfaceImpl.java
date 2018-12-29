@@ -100,7 +100,7 @@ public class JFXInterfaceImpl extends Interface {
 			});
 			
 			//stage.show();
-			System.out.println("start ended");
+			//System.out.println("start ended");
 		}
 		
 	}
