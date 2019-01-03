@@ -14,7 +14,9 @@ public class RatioViewport extends ViewportManager {
 	
 	@Override
 	public Area getViewport(Interface win) {
-		return new Area((win.getWidth() / rW) * rW, (win.getHeight() / rH) * rH);
+		float hv = rW / (16 / 9);
+		int rh = (int) hv;
+		return new Area((win.getWidth() / rW) * rW, (win.getHeight() / rh) * rh);
 	}
 	
 }

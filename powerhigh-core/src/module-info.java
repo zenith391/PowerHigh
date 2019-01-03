@@ -1,7 +1,7 @@
 /**
  * @author zenith391
  * Main module of PowerHigh. Complementary modules usually
- * doesn't put the require of this module as transitive.
+ * doesn't have this module as a transitive.
  */
 module powerhigh.core {
 	
@@ -17,5 +17,6 @@ module powerhigh.core {
 	exports org.powerhigh.graphics.renderers.lightning;
 	exports org.powerhigh.input;
 	exports org.powerhigh.multiplayer;
+	exports org.powerhigh.cpak;
 	
 }

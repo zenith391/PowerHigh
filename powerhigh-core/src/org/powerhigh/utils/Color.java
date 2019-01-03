@@ -17,6 +17,20 @@ public class Color {
 		this.hasAlpha = false;
 	}
 	
+	public Color(int rgb, boolean alphaChannel) {
+		this.hasAlpha = alphaChannel;
+		if (!hasAlpha) {
+			setBlue((byte) rgb);
+			setGreen((byte) rgb >> 8);
+			setRed((byte) rgb >> 16);
+		} else {
+			setAlpha((byte) rgb);
+			setBlue((byte) rgb >> 8);
+			setGreen((byte) rgb >> 16);
+			setRed((byte) rgb >> 24);
+		}
+	}
+	
 	public Color(float r, float g, float b) {
 		this((int) r * 255, (int) g * 255, (int) b * 255);
 	}

@@ -26,7 +26,7 @@ public class Texture {
 	}
 	
 	public Color getColor(int x, int y) {
-		return new Color(0, 0, 0);
+		return new Color(getRGB(x, y), true);
 	}
 	
 	public Texture getSubTexture(int x, int y, int width, int height) {

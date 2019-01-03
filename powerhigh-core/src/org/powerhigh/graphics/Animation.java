@@ -100,6 +100,15 @@ public class Animation {
 		activeAnimations.remove(this);
 	}
 	
+	/**
+	 * The frame must arleady be loaded.
+	 * @param id
+	 * @return
+	 */
+	public Texture getFrame(int id) {
+		return loadedTextures[id];
+	}
+	
 	public void dispose() {
 		stop();
 		try {

@@ -1,27 +1,27 @@
 package test.org.powerhigh;
 
-import org.powerhigh.utils.Color;
-import org.powerhigh.utils.LGGLException;
-
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.powerhigh.Material;
 import org.powerhigh.SizedViewport;
 import org.powerhigh.audio.Audio;
+import org.powerhigh.cpak.CPakWriter;
 import org.powerhigh.game.SimpleGame;
 import org.powerhigh.graphics.Animation;
 import org.powerhigh.graphics.Drawer;
+import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.ParticleBlueprint;
 import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
 import org.powerhigh.graphics.ParticleBox;
-import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
 import org.powerhigh.graphics.renderers.lightning.Lightning;
 import org.powerhigh.input.AbstractKeyboard;
 import org.powerhigh.input.KeyCodes;
 import org.powerhigh.input.Mouse;
-import org.powerhigh.jfx.JFXInterfaceImpl;
 import org.powerhigh.multiplayer.Connection;
 import org.powerhigh.multiplayer.Server;
 import org.powerhigh.objects.Button;
@@ -29,8 +29,8 @@ import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
-import org.powerhigh.swing.audio.SwingAudioImpl;
-import org.powerhigh.swing.audio.WavMusic;
+import org.powerhigh.utils.Color;
+import org.powerhigh.utils.LGGLException;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class LGGLTest extends SimpleGame {
@@ -40,7 +40,7 @@ public class LGGLTest extends SimpleGame {
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
 	private boolean scaleUp;
-	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.JAVAFX, ImplementationSettings.Audio.AWT);
+	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
 
 	@Override
 	public void update(Interface win, double delta) {
@@ -108,14 +108,26 @@ public class LGGLTest extends SimpleGame {
 	}
 	
 	public void dbgsound() {
-		WavMusic music = null;
+//		WavMusic music = null;
+//		try {
+//			//System.out.println(Audio.AUDIO_BIT_16 | Audio.DVD_SPEED);
+//			music = new WavMusic(Audio.AUDIO_BIT_16 | Audio.CD_SPEED, 1.0f, new File("Alonzo - Santana.wav"));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		audio.playMusic(music);
 		try {
-			//System.out.println(Audio.AUDIO_BIT_16 | Audio.DVD_SPEED);
-			music = new WavMusic(Audio.AUDIO_BIT_16 | Audio.CD_SPEED, 1.0f, new File("Alonzo - Santana.wav"));
-		} catch (IOException e) {
+			CPakWriter writer = new CPakWriter(new FileOutputStream("dumbpack.cpak"), CPakWriter.GZIP_COMPRESSION);
+			HashMap<String, Object> entries = new HashMap<>();
+			entries.put("dummyId", 156145);
+			entries.put("dummyName", "Dummy pack");
+			entries.put("dummyData", "DDDDDDDAAAAAAAAAAAAAAATTTTTAAAAAAAA");
+			entries.put("dummyTexture", player.getAnimation().getCurrentSprite());
+			writer.writeCPakEntries(entries);
+			writer.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		audio.playMusic(music);
 	}
 	
 	public byte[] fromu16(int x) {
