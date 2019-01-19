@@ -53,7 +53,7 @@ public class WindowEventThread extends Thread {
 	}
 
 	public void run() {
-		setName("Update Thread");
+		setName("powerhigh-interface-thread");
 		long sleepTime = 1000 / 60;
 		while (!stop) {
 			long estimatedTime = 0;
@@ -77,7 +77,8 @@ public class WindowEventThread extends Thread {
 			}
 			long end = System.currentTimeMillis();
 			estimatedTime = end - start;
-			sleepTime = (1000 + estimatedTime) / targetFPS;
+			sleepTime = (1000 - (estimatedTime - (1000 / targetFPS))) / targetFPS;
+			if (sleepTime < 0) sleepTime = 0;
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {

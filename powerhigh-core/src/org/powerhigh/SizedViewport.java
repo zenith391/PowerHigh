@@ -11,6 +11,22 @@ public class SizedViewport extends ViewportManager {
 		this.w = w;
 		this.h = h;
 	}
+	
+	public void setWidth(int width) {
+		w = width;
+	}
+	
+	public void setHeight(int height) {
+		h = height;
+	}
+	
+	public int getWidth() {
+		return w;
+	}
+	
+	public int getHeight() {
+		return h;
+	}
 
 	@Override
 	public Area getViewport(Interface win) {

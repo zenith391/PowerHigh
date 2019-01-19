@@ -10,7 +10,7 @@ import org.powerhigh.objects.GameObject;
  * But this renderer does not have any optimizations. Not even for GameObjects not visible
  * to user space. And it don't even support post-processors, i let you do this <i>^_^</i>
  * @author zenith391
- * @see <code>org.lggl.graphics.renderers.IRenderer</code>
+ * @see <code>org.powerhigh.graphics.renderers.IRenderer</code>
  */
 public class SimpleRenderer implements IRenderer {
 
@@ -23,7 +23,7 @@ public class SimpleRenderer implements IRenderer {
 //		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (shouldRender(win, obj)) {
-				// TODO re-do per-object rotate
+				g.localRotate(obj.getRotation(), obj.getX(), obj.getY());
 				obj.paint(g, win);
 			}
 		}

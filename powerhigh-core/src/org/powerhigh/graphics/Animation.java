@@ -3,6 +3,7 @@ package org.powerhigh.graphics;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
@@ -21,17 +22,20 @@ public class Animation {
 	private ZipFile file;
 	private String fileName;
 	
+	static {
+		activeAnimations = Collections.synchronizedList(activeAnimations);
+	}
+	
 	/**
 	 * Accepts *.GAN (Game ANimation)
 	 * @param ani
 	 */
 	public Animation(File ani) throws IOException {
 		
-		if (animThread == null) {
+		if (animThread == null) { // The animation thread only get launched at the first animation instanced by the game.
 			animThread = new Thread(() -> {
 				while (true) {
 					// Generate only one animation thread
-					// This thread handle around 1000 animations. Which is a lot
 					for (Animation anim : activeAnimations) {
 						if (anim.loadedTextures == null) {
 							anim.loadedTextures = new Texture[anim.maxFrame];
@@ -59,7 +63,7 @@ public class Animation {
 					}
 				}
 			});
-			animThread.setName("Animation-Updater-Thread");
+			animThread.setName("powerhigh-animation-thread");
 			animThread.setPriority(Thread.MIN_PRIORITY); // Performance over animation speed accuracy
 			animThread.setDaemon(true);
 			animThread.start();
