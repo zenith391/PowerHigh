@@ -30,10 +30,10 @@ import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
 import org.powerhigh.utils.Color;
-import org.powerhigh.utils.LGGLException;
+import org.powerhigh.utils.PowerHighException;
 import org.powerhigh.utils.debug.DebugLogger;
 
-public class LGGLTest extends SimpleGame {
+public class PowerHighTest extends SimpleGame {
 
 	private Sprite player;
 	private Text fps;
@@ -159,7 +159,7 @@ public class LGGLTest extends SimpleGame {
 	public void init(Interface win) {
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_16);
-		} catch (LGGLException e) {
+		} catch (PowerHighException e) {
 			e.printStackTrace();
 		}
 		Rectangle rect = new Rectangle(100, 100, 100, 100, Color.YELLOW);
@@ -261,7 +261,7 @@ public class LGGLTest extends SimpleGame {
 	}
 
 	public static void main(String[] args) {
-		LGGLTest test = new LGGLTest();
+		PowerHighTest test = new PowerHighTest();
 		test.start();
 	}
 

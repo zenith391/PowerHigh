@@ -133,6 +133,6 @@ public class Color {
 	public static final Color CYAN = new    Color(0, 255, 255);
 	public static final Color YELLOW = new  Color(255, 255, 0);
 	public static final Color GRAY = new    Color(127, 127, 127);
-   public static final Color LIGHT_GRAY=new Color(157, 157, 157);
+    public static final Color LIGHT_GRAY=new Color(157, 157, 157);
 	
 }

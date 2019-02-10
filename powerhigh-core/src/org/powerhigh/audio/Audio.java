@@ -1,6 +1,6 @@
 package org.powerhigh.audio;
 
-import org.powerhigh.utils.LGGLException;
+import org.powerhigh.utils.PowerHighException;
 public class Audio {
 	
 	
@@ -26,7 +26,7 @@ public class Audio {
 	private int flags;
 	private static AudioImplementation impl;
 	
-	public Audio(int flags) throws LGGLException {
+	public Audio(int flags) throws PowerHighException {
 		masterVolume = 1.0f;
 		this.flags = flags;
 		
