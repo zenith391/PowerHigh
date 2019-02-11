@@ -8,13 +8,16 @@ package org.powerhigh.utils;
 public class Color {
 
 	private int r, g, b, a;
-	private boolean hasAlpha;
+	private boolean hasAlpha = false;
 	
 	public Color(int r, int g, int b) {
 		setRed(r);
 		setGreen(g);
 		setBlue(b);
-		this.hasAlpha = false;
+	}
+	
+	public Color(int rgb) {
+		this(rgb, false);
 	}
 	
 	public Color(int rgb, boolean alphaChannel) {
@@ -98,6 +101,7 @@ public class Color {
 		return hasAlpha;
 	}
 	
+	@Override
 	public Color clone() {
 		if (hasAlpha)
 			return new Color(r, g, b, a);

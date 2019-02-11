@@ -5,6 +5,7 @@ import org.powerhigh.multiplayer.ServerHandler;
 
 public class BasicServerHandler implements ServerHandler {
 
+	
 	@Override
 	public void handleFullPacket(Client cl, byte[] packet) {
 		byte type = packet[0];

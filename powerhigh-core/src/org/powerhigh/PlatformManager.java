@@ -21,7 +21,7 @@ public class PlatformManager {
 			platform = Platform.LINUX;
 		}
 		
-		if (name.contains("osx")) {
+		if (name.contains("macos")) {
 			platform = Platform.OSX;
 		}
 		

@@ -26,13 +26,13 @@ public abstract class GameObject {
 	private boolean visible = true;
 	protected Area hitbox = new Area(x, y, width, height);
 	protected Color color = Color.BLACK;
-	
+
 	protected Material material = new Material(); // default
-	
+
 	public Material getMaterial() {
 		return material;
 	}
-	
+
 	/**
 	 * Disposing a GameObject will mostly set it's variables to null so they can be cleaned (this GameObject) via Garbage Collector<br/>
 	 * <b>Note:</b> For performance reasons, this don't call System.gc(), It must be manually did
@@ -70,6 +70,7 @@ public abstract class GameObject {
 		this.rotation = rotation % 360;
 	}
 
+	@Override
 	public String toString() {
 		return getClass().getName() + "[x=" + x + ", y=" + y + ", width=" + width
 				+ ", height=" + height + "]";
@@ -123,7 +124,7 @@ public abstract class GameObject {
 
 	public boolean isColliding(GameObject g) {
 		//return getHitbox().intersects(g.getHitbox());
-		return false;
+		return false; // TODO
 	}
 
 	public boolean isVisible() {
@@ -135,8 +136,17 @@ public abstract class GameObject {
 	}
 
 	public void setSize(int w, int h) {
-		this.width = w;
-		this.height = h;
+		setWidth(w);
+		setHeight(h);
+	}
+
+	public void setPosition(int x, int y) {
+		setX(x);
+		setY(y);
+	}
+
+	public void setPosition(Area dim) {
+		setPosition(Math.max(dim.getX(), dim.getWidth()), Math.max(dim.getY(), dim.getHeight()));
 	}
 
 	public void setSize(Area dim) {

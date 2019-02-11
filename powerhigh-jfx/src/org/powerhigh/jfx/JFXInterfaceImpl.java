@@ -11,6 +11,7 @@ import org.powerhigh.jfx.input.JFXMouse;
 import org.powerhigh.jfx.input.JFXTexturePlugin;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
+import org.powerhigh.utils.Point;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -199,7 +200,6 @@ public class JFXInterfaceImpl extends Interface {
 	}
 	
 	
-	
 	@Override
 	public void update() {
 		if (visible) {
@@ -250,6 +250,26 @@ public class JFXInterfaceImpl extends Interface {
 		Platform.runLater(() -> {
 			stage.setTitle(title);
 		});
+	}
+	
+	@Override
+	public void setPosition(int x, int y) {
+		Platform.runLater(() -> {
+			stage.setX(x);
+			stage.setY(y);
+		});
+	}
+	
+	@Override
+	public Point getPosition() {
+		answer = null;
+		Platform.runLater(() -> {
+			answer = new Point((int) stage.getX(), (int) stage.getY());
+		});
+		while (answer == null) {
+			Thread.onSpinWait();
+		}
+		return (Point) answer;
 	}
 
 	@Override

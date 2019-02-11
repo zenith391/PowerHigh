@@ -9,6 +9,7 @@ import org.powerhigh.objects.Container;
 import org.powerhigh.objects.GameObject;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
+import org.powerhigh.utils.Point;
 
 public abstract class Interface {
 
@@ -135,6 +136,18 @@ public abstract class Interface {
 	
 	public void setTitle(String title) {
 		throw new UnsupportedOperationException(); // To be defined (or not) by implementation.
+	}
+	
+	public void setPosition(int x, int y) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public Point getPosition() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void setPosition(Point pos) {
+		setPosition(pos.getX(), pos.getY());
 	}
 	
 	public abstract void setSize(int width, int height);

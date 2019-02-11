@@ -1,8 +1,8 @@
 module powerhigh.tests {
 	
-	requires powerhigh.swing;
-	requires powerhigh.core;
-	requires powerhigh.jfx;
+	requires transitive powerhigh.swing;
+	requires transitive powerhigh.core;
+	requires transitive powerhigh.jfx;
 	
 	exports test.org.powerhigh;
 	

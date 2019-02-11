@@ -2,6 +2,8 @@ package org.powerhigh.swing;
 
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
+import org.powerhigh.utils.Point;
+
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -36,6 +38,14 @@ public class SwingInterfaceImpl extends Interface {
 	
 	public void setTitle(String title) {
 		win.setTitle(title);
+	}
+	
+	public void setPosition(int x, int y) {
+		win.setLocation(x, y);
+	}
+	
+	public Point getPosition() {
+		return new Point(win.getX(), win.getY());
 	}
 	
 	public void setResizable(boolean resizable) {

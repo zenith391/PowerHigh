@@ -1,6 +1,7 @@
 package org.powerhigh.objects;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
@@ -14,14 +15,13 @@ public class Container extends GameObject {
 	public void add(GameObject obj) {
 		if (obj == this) {
 			throw new IllegalArgumentException(
-					"Impossible to add container to itself ! (Cause: " + this + " == " + obj + ")");
+					"Cannot add container in itself");
 		}
-		if (obj == null) {
-			throw new NullPointerException();
-		}
+		Objects.requireNonNull(obj, "obj");
 		objects.add(obj);
 	}
-	
+
+	@Override
 	public void onEvent(String type, Object... args) {
 		if (type.equals("mousePressed")) {
 			GameObject[] a = objects.toArray(new GameObject[objects.size()]);
@@ -29,17 +29,19 @@ public class Container extends GameObject {
 			int my = (int) args[1];
 			focusedObj = null;
 			for (GameObject b : a) {
-				
+
 				if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
 					focusedObj = b;
 					break;
 				}
 			}
 		}
-		if (focusedObj != null)
+		if (focusedObj != null) {
 			focusedObj.onEvent(type, args);
+		}
 	}
-	
+
+	@Override
 	public void dispose() {
 		super.dispose();
 		for (GameObject obj : objects) {
@@ -48,7 +50,8 @@ public class Container extends GameObject {
 		objects = null;
 		focusedObj = null;
 	}
-	
+
+	@Override
 	public void setX(int x) {
 		int curX = getX();
 		for (GameObject obj : objects) {
@@ -57,7 +60,8 @@ public class Container extends GameObject {
 		}
 		super.setX(x);
 	}
-	
+
+	@Override
 	public void setY(int y) {
 		int curY = getY();
 		for (GameObject obj : objects) {
@@ -71,6 +75,7 @@ public class Container extends GameObject {
 		objects.remove(obj);
 	}
 
+	@Override
 	public void paint(Drawer g, Interface source) {
 		for (GameObject go : getObjects()) {
 			if (checkContent) {
@@ -97,12 +102,13 @@ public class Container extends GameObject {
 	public GameObject[] getObjects() {
 		return objects.toArray(new GameObject[objects.size()]);
 	}
-	
+
 	public void removeAll() {
 		objects = new ArrayList<GameObject>();
 		System.gc();
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		try {
