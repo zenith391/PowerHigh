@@ -5,6 +5,18 @@ public abstract class Music extends AudioSource {
 	public Music(int flags, float volume) {
 		super(flags, volume);
 	}
+	
+	public Music(int flags) {
+		this(flags, 1.0f);
+	}
+	
+	public Music(float volume) {
+		this(0, volume);
+	}
+	
+	public Music() {
+		this(0);
+	}
 
 	protected long position = -1;
 	protected long length = Integer.MAX_VALUE;

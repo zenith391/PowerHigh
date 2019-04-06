@@ -1,6 +1,7 @@
 package org.powerhigh.game;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
@@ -30,7 +31,7 @@ public abstract class SimpleGame {
 	private void dbg() {
 		String name = System.getProperty("os.name");
 		String ver = System.getProperty("os.version");
-		DebugLogger.logInfo("Operating System is " + name + "/" + ver);
+		DebugLogger.debug("Operating System is " + name + "/" + ver);
 	}
 	
 	public static class ImplementationSettings {
@@ -99,6 +100,7 @@ public abstract class SimpleGame {
 	 */
 	protected void implInit() {
 		is = getImplementationSettings();
+		Objects.requireNonNull(is, "implementationSettings");
 		String wcl = "";
 		String acl = "";
 		if (is.getInterfaceType() == ImplementationSettings.Interface.SWING) {
@@ -200,7 +202,7 @@ public abstract class SimpleGame {
 		try {
 			
 			if (enableLaunchDebug) {
-				DebugLogger.logInfo("Preparing game..");
+				DebugLogger.logInfo("Launching game..");
 				dbg();
 			}
 			

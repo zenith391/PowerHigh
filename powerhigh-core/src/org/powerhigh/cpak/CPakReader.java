@@ -28,6 +28,10 @@ public class CPakReader {
 		}
 	}
 	
+	public HashMap<String, Object> getEntries() {
+		return entries;
+	}
+	
 	public void readEntries() throws IOException {
 		int size = is.readInt();
 		for (int i = 0; i < size; i++) {

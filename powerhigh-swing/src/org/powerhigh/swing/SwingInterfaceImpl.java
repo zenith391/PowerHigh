@@ -79,6 +79,7 @@ public class SwingInterfaceImpl extends Interface {
 		fullscreenWidth = device.getDisplayMode().getWidth();
 		fullscreenHeight = device.getDisplayMode().getHeight();
 		fullscreen = false;
+		win.getRootPane().setDoubleBuffered(false);
 		super.init();
 	}
 	
@@ -87,11 +88,11 @@ public class SwingInterfaceImpl extends Interface {
 	@Override
 	public void update() {
 		super.update();
-		gamePanel.repaint();
 		if (oldViewport != viewport) {
 			oldViewport = viewport;
 			gamePanel.setBounds(viewport.getX(), viewport.getY(), viewport.getWidth(), viewport.getHeight());
 		}
+		gamePanel.repaint();
 	}
 	
 	@Override
@@ -158,6 +159,11 @@ public class SwingInterfaceImpl extends Interface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void setVisible(boolean visible) {
+		win.setVisible(visible);
 	}
 	
 	public boolean isFullscreen() {

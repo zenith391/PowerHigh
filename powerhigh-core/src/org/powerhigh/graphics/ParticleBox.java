@@ -55,6 +55,13 @@ public class ParticleBox extends GameObject {
 			particles[freeSlot] = p;
 		}
 	}
+	
+	public void removeAllParticles() {
+		for (int i = 0; i < particles.length; i++) {
+			particles[i] = null;
+		}
+		System.gc();
+	}
 
 	@Override
 	public void paint(Drawer g, Interface source) {

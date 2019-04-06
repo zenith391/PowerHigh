@@ -13,10 +13,11 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel(SwingInterfaceImpl intr) {
 		this.intr = intr;
+		this.setDoubleBuffered(false);
 	}
 	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	public void paint(Graphics g) {
+		//super.paint(g);
 		if (drawer2D == null) {
 			drawer2D = new JDrawer2D((Graphics2D) g);
 		} else {

@@ -29,10 +29,6 @@ public class Audio {
 	public Audio(int flags) throws PowerHighException {
 		masterVolume = 1.0f;
 		this.flags = flags;
-		
-//		if ((flags & AUDIO_BIT_8) == AUDIO_BIT_8) {
-//			System.out.println("8-bits music!");
-//		}
 	}
 	
 	public static void setImplementation(AudioImplementation impl) {
@@ -56,6 +52,10 @@ public class Audio {
 		} else {
 			impl.playFromSource(source, source.getAudioFlags());
 		}
+	}
+	
+	public void play(AudioSource source) {
+		playFromSource(source);
 	}
 	
 	public void playMusic(Music music) {

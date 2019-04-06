@@ -5,6 +5,18 @@ public abstract class Sound extends AudioSource {
 	public Sound(int flags, float volume) {
 		super(flags, volume);
 	}
+	
+	public Sound(int flags) {
+		this(flags, 1.0f);
+	}
+	
+	public Sound(float volume) {
+		this(0, volume);
+	}
+	
+	public Sound() {
+		this(0);
+	}
 
 	protected byte[][] samples;
 	
