@@ -11,7 +11,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <module>powerhigh-core</module>
         <module>powerhigh-jfx</module>
         <module>powerhigh-swing</module>
-        <module>powerhigh-tests</module>
         <module>powerhigh-network</module>
     </modules>
     <build>
