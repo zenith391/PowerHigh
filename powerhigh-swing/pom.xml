@@ -2,7 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>powerhigh-swing</artifactId>
   <version>0.99-ALPHA</version>
-  <name>PowerHigh</name>
+  <name>PowerHigh Swing</name>
+  <dependencies>
+      <dependency>
+          <groupId>org.zenith391.powerhigh</groupId>
+          <artifactId>powerhigh-core</artifactId>
+          <version>0.99-ALPHA</version>
+      </dependency>
+  </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
