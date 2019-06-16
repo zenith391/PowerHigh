@@ -9,7 +9,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <description>Library generator</description>
     <modules>
         <module>powerhigh-core</module>
-        <!--<module>powerhigh-jfx</module>-->
+        <module>powerhigh-jfx</module>
         <module>powerhigh-swing</module>
         <module>powerhigh-network</module>
     </modules>
