@@ -3,6 +3,7 @@ dist: trusty
 jdk: oraclejdk9
 before_deploy:
   - export TRAVIS_TAG="nightly $TRAVIS_BUILD_NUMBER"
+  - git tag $TRAVIS_TAG
 deploy:
   provider: releases
   api_key:
@@ -15,4 +16,3 @@ deploy:
     - "powerhigh-swing/target/powerhigh-swing-0.99-ALPHA.jar"
   on:
     repo: zenith391/PowerHigh
-    tags: true
