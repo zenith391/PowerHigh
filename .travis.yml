@@ -1,3 +1,6 @@
 language: java
 dist: trusty
 jdk: oraclejdk9
+  - export TRAVIS_TAG="nightly $TRAVIS_BUILD_NUMBER"
+    repo: zenith391/PowerHigh
+    tags: true
