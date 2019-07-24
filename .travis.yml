@@ -1,18 +1,3 @@
 language: java
 dist: trusty
 jdk: oraclejdk9
-before_deploy:
-  - export TRAVIS_TAG="nightly-$TRAVIS_BUILD_NUMBER"
-  - git tag $TRAVIS_TAG
-deploy:
-  provider: releases
-  api_key:
-    secure: SpLQmJ8XSwmO284nKeraLVwFWM2uetgF7CFQtICTZ6bQIoHW57XK0gQcMM2L1PO7UCFJoLMLHii+o38Df3L4qcad+M+wbWFX9TNkXHYxQhQisJ0mJb03KdItp1TyHFhfd/E5AIN9XxOHaNb19Kd5qtv6wLKJymLAXqWDzLk37aWSWtwu5Aj5ha0AxsjIYwn4U+dqE4cLe4zyokTUmH/LrqAtOLuWKgyGj0JgLiB0BITfoLwz4+9aURXs9cPpq2Uz8udRLlVOiDdLWXoimUYJXsbe9I0tl/WxCKS1Dj6myh327yRolbRLHlYWbbHD2gGaaKeXWnsbe3uaTrly0gx7pkzHBGePjAu0hkmvu4NDqNY+ofGpZd/3QScYrJdi9xOlaZPTs5989uDtN0BHOFBJxywiIcx6p6XfzZJTbQZAS9WiwQSa6NzI9DxaqaNNXiEQwrfPZbyngDPbijBqD1yyGquhYsRG8vtOBCRAnJycSaM1JW6A+hERA4mQqRehOM5U07zq0wrBHqzYR78vMxXaSjC7SmNxW5mxm4R4pCuQYiaBUa5BXrH53lQ1Nhj8YyBEGc4Hvh9u5OVY/EhWCXvPe130geGJNRWjB35Xu9xWzOGrD53Lq5zz2vOLHIlKIOcFdJDm6y1FksdjTuP+CNVQA2ZHzw7c56HcrE2xx5ppY2M=
-  skip_cleanup: true
-  file:
-    - "powerhigh-core/target/powerhigh-core-0.99-ALPHA.jar"
-    - "powerhigh-jfx/target/powerhigh-jfx-0.99-ALPHA.jar"
-    - "powerhigh-network/target/powerhigh-network-0.99-ALPHA.jar"
-    - "powerhigh-swing/target/powerhigh-swing-0.99-ALPHA.jar"
-  on:
-    repo: zenith391/PowerHigh
