@@ -9,12 +9,12 @@ public class JFXKeyboard extends AbstractKeyboard {
 		super(win);
 	}
 	
-	public void keyTyped(int keyCode) {
-		typeKey(transform(keyCode));
+	public void keyTyped(char ch, int keyCode) {
+		typeKey(ch, transform(keyCode));
 	}
 	
-	public void keyPressed(int keyCode) {
-		pressKey(transform(keyCode));
+	public void keyPressed(char ch, int keyCode) {
+		pressKey(ch, transform(keyCode));
 	}
 	
 	private int transform(int code) {
@@ -28,8 +28,8 @@ public class JFXKeyboard extends AbstractKeyboard {
 		return c;
 	}
 	
-	public void keyReleased(int keyCode) {
-		releaseKey(transform(keyCode));
+	public void keyReleased(char ch, int keyCode) {
+		releaseKey(ch, transform(keyCode));
 	}
 
 }

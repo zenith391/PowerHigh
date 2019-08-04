@@ -80,17 +80,17 @@ public class JFXInterfaceImpl extends Interface {
 			// Keyboard events
 			scene.setOnKeyPressed((e) -> {
 				service.submit(() -> {
-					instance.keyboard.keyPressed(e.getCode().getCode());
+					instance.keyboard.keyPressed(e.getCharacter().charAt(0), e.getCode().getCode());
 				});
 			});
 			scene.setOnKeyReleased((e) -> {
 				service.submit(() -> {
-					instance.keyboard.keyReleased(e.getCode().getCode());
+					instance.keyboard.keyReleased(e.getCharacter().charAt(0), e.getCode().getCode());
 				});
 			});
 			scene.setOnKeyTyped((e) -> {
 				service.submit(() -> {
-					instance.keyboard.keyTyped(e.getCode().getCode());
+					instance.keyboard.keyTyped(e.getCharacter().charAt(0), e.getCode().getCode());
 				});
 			});
 			

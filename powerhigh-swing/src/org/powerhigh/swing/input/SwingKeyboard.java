@@ -16,12 +16,12 @@ public class SwingKeyboard extends AbstractKeyboard implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		typeKey(transform(e.getKeyCode()));
+		typeKey(e.getKeyChar(), transform(e.getKeyCode()));
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		pressKey(transform(e.getKeyCode()));
+		pressKey(e.getKeyChar(), transform(e.getKeyCode()));
 	}
 	
 	private int transform(int code) {
@@ -37,7 +37,7 @@ public class SwingKeyboard extends AbstractKeyboard implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		releaseKey(transform(e.getKeyCode()));
+		releaseKey(e.getKeyChar(), transform(e.getKeyCode()));
 	}
 
 }

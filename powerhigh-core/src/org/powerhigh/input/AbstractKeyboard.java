@@ -13,22 +13,22 @@ public abstract class AbstractKeyboard extends KeyCodes {
 		this.win = win;
 	}
 
-	protected void pressKey(int key) {
+	protected void pressKey(char ch, int key) {
 		if (downKeys.indexOf(key) == -1) {
 			downKeys.add(key);
 		}
-		win.fireEvent("keyPressed", key, key);
+		win.fireEvent("keyPressed", ch, key);
 	}
 
-	protected void releaseKey(int key) {
+	protected void releaseKey(char ch, int key) {
 		if (downKeys.indexOf(key) != -1) {
 			downKeys.remove(downKeys.indexOf(key));
 		}
-		win.fireEvent("keyReleased", key, key);
+		win.fireEvent("keyReleased", ch, key);
 	}
 
-	protected void typeKey(int key) {
-		win.fireEvent("keyTyped", key, key);
+	protected void typeKey(char ch, int key) {
+		win.fireEvent("keyTyped", ch, key);
 	}
 	
 	public void setKeyDown(int key, boolean press) {
