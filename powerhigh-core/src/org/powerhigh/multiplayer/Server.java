@@ -29,7 +29,6 @@ public class Server {
 	public static Server connect(ServerHandler handler, int port) {
 		try {
 			DatagramSocket udp = new java.net.DatagramSocket(port);
-			//DatagramSocket udp = null;
 			ServerSocket tcp = new ServerSocket(port);
 			return new Server(handler, udp, tcp);
 		} catch (SocketException | UnknownHostException e) {

@@ -13,6 +13,8 @@ public abstract class Drawer {
 	public abstract void drawRect(int x, int y, int width, int height);
 	public abstract void drawCircle(int x, int y, int radius);
 	public abstract void fillCircle(int x, int y, int radius);
+	public abstract void drawOval(int x, int y, int width, int height);
+	public abstract void fillOval(int x, int y, int width, int height);
 	public abstract void setColor(Color color);
 	public abstract Color getColor();
 	public abstract void drawTexture(int x, int y, Texture texture);

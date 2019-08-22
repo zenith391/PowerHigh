@@ -101,7 +101,7 @@ public class PowerHighTest extends SimpleGame {
 //		if (win.getCamera().getScale() < 0.5d) {
 //			scaleUp = true;
 //		}
-//		win.getCamera().setRotation(win.getCamera().getRotation() + 1);
+		//win.getCamera().setRotation(win.getCamera().getRotation() + 1);
 //		if (win.getCamera().getRotation() > 360) {
 //			win.getCamera().setRotation(0);
 //		}

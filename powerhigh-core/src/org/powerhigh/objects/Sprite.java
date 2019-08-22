@@ -11,6 +11,14 @@ public class Sprite extends GameObject {
 	private Texture texture;
 	private Animation animation;
 	
+	/**
+	 * Sets the texture of this Sprite. Have more priority than Animation, so if
+	 * set will overwrite any existing animation. If null, animation, if defined,
+	 * will be used.<br/><br/>
+	 * 
+	 * The sprite, if texture isn't null, will resize to fit perfectly. 
+	 * @param texture
+	 */
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 		if (texture != null) {
@@ -19,7 +27,7 @@ public class Sprite extends GameObject {
 	}
 	
 	/**
-	 * Note: Animation bypass Texture property
+	 * <b>Note</b>: Texture bypass Animation property
 	 * @param anim
 	 */
 	public void setAnimation(Animation anim) {
@@ -34,9 +42,9 @@ public class Sprite extends GameObject {
 		return texture;
 	}
 
-	/** Will render a blue quad until you set an texture with setTexture(...) */
+	/** Will render a blue quad until you set an texture with {@link Sprite#setTexture(Texture)} */
 	public Sprite() {
-		this( (Texture) null);
+		this((Texture) null);
 	}
 	/** Will associate the following Texture object with this Sprite. */
 	public Sprite(Texture texture) {
@@ -53,6 +61,7 @@ public class Sprite extends GameObject {
 		if (animation != null)
 			animation.dispose();
 		animation = null;
+		texture = null;
 	}
 	
 

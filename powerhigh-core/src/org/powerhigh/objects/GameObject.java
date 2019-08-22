@@ -123,8 +123,7 @@ public abstract class GameObject {
 	}
 
 	public boolean isColliding(GameObject g) {
-		//return getHitbox().intersects(g.getHitbox());
-		return false; // TODO
+		return (g.x >= x && g.x < x + width) && (g.y >= y && g.y < y + height);
 	}
 
 	public boolean isVisible() {

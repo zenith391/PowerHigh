@@ -194,4 +194,14 @@ public class GCDrawer extends Drawer {
 		gc.fillOval(x, y, radius, radius);
 	}
 
+	@Override
+	public void drawOval(int x, int y, int width, int height) {
+		gc.strokeOval(x, y, width, height);
+	}
+
+	@Override
+	public void fillOval(int x, int y, int width, int height) {
+		gc.fillOval(x, y, width, height);
+	}
+
 }

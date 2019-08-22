@@ -207,7 +207,7 @@ public class SwingInterfaceImpl extends Interface {
 
 	@Override
 	public Area getSize() {
-		return new Area(win.getWidth(), win.getHeight());
+		return new Area(win.getRootPane().getWidth(), win.getRootPane().getHeight()); // return application size instdead of window size (that includes decorations where we can't draw)
 	}
 
 	@Override

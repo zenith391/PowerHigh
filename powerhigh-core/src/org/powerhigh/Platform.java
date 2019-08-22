@@ -10,5 +10,9 @@ public enum Platform {
 	public String getVersion() {
 		return System.getProperty("os.version");
 	}
+	
+	public static Platform getPlatform() {
+		return PlatformManager.getPlatform();
+	}
 
 }

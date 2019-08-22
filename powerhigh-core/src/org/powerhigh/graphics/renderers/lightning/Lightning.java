@@ -5,6 +5,7 @@ import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.renderers.IRenderer;
 import org.powerhigh.objects.GameObject;
 import org.powerhigh.utils.Area;
+import org.powerhigh.utils.Color;
 
 public final class Lightning implements IRenderer {
 
@@ -24,10 +25,10 @@ public final class Lightning implements IRenderer {
 
 				obj.paint(g, win);
 
-//				float a = obj.getMaterial().reflectance;
-//				a /= 2;
-//				g.setColor(new Color(.0f, 0f, 0f, a));
-//				g.fillRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
+				//float a = obj.getMaterial().reflectance;
+				//a /= 2;
+				//g.setColor(new Color(.0f, 0f, 0f, a));
+				//g.fillRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
 				g.restoreState();
 			}
 		}

@@ -132,7 +132,7 @@ public abstract class SimpleGame {
 				e.printStackTrace();
 			}
 		} catch (ClassNotFoundException e1) {
-			throw new IllegalArgumentException(is.getInterfaceType().toString() + " jar is not in dependencies");
+			throw new IllegalArgumentException("Unable to locate " + is.getInterfaceType().toString());
 		}
 		try {
 			audio = new Audio(Audio.AUDIO_BIT_24);
@@ -172,11 +172,9 @@ public abstract class SimpleGame {
 		implInit();
 		
 		// Load state
-		try {
+		/*try {
 			Thread.sleep(500); // To wait some implementations to init
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		} catch (InterruptedException e) {}*/
 		window.show();
 		window.setObjectContainer(c);
 		window.setSize(size);
