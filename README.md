@@ -16,7 +16,7 @@ To run the test and ensure PowerHigh works goodly,
 open a terminal and write following commands:
 ```sh
 cd <directory where you installed PowerHigh>
-java -cp powerhigh-core.jar;powerhigh-swing.jar;powerhigh-test.jar test.org.powerhigh.LGGLTest
+java -cp powerhigh-core.jar;powerhigh-swing.jar;powerhigh-test.jar test.org.powerhigh.PowerHighTest
 ```
 If you don't have "powerhigh-test.jar", don't worry, just download it.
 If you see a window opened with stuff on it, everything works and the JAR is ready to be used.
