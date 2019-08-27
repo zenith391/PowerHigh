@@ -18,11 +18,22 @@ public class ParticleBox extends GameObject {
 		Random r = new Random();
 		for (Particle p : particles) {
 			if (p != null) {
-				int y = r.nextInt(my * 2);
-				y -= my;
+				int y = r.nextInt(my * 2) - my;
 				int x = r.nextInt(mx);
 				p.setX(p.getX() + x);
 				p.setY(p.getY() + y);
+			}
+		}
+	}
+	
+	public void windRandom(int mx, int my) {
+		Random r = new Random();
+		for (Particle p : particles) {
+			if (p != null) {
+				float y = (float) r.nextInt(my * 2) - my*1.5f;
+				int x = r.nextInt(mx * 2) - mx;
+				p.setX(p.getX() - x);
+				p.setY(p.getY() + (int) y);
 			}
 		}
 	}
@@ -31,8 +42,7 @@ public class ParticleBox extends GameObject {
 		Random r = new Random();
 		for (Particle p : particles) {
 			if (p != null) {
-				int y = r.nextInt(my * 2);
-				y -= my;
+				int y = r.nextInt(my * 2) - my;
 				int x = r.nextInt(mx);
 				p.setX(p.getX() - x);
 				p.setY(p.getY() + y);

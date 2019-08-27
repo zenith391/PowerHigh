@@ -1,7 +1,6 @@
 package test.org.powerhigh;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,13 +38,11 @@ public class PowerHighTest extends SimpleGame {
 	private Text fps;
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
-	private boolean scaleUp;
 	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
 
 	@Override
 	public void update(Interface win, double delta) {
 		handleKeys(win, delta);
-//		throw new Error("Random error in random game.");
 	}
 	
 	public void exit(Interface win) {
@@ -69,42 +66,16 @@ public class PowerHighTest extends SimpleGame {
 				Interface.setRenderer(new Lightning());
 			}
 		}
-//		if (keyboard.isKeyDown(KeyCodes.KEY_ESCAPE)) {
-//			Mouse.setGrabbed(false);
-//			Mouse.setCursorHidden(false);
-//		}
-//		if (keyboard.isKeyDown(KeyCodes.KEY_E)) {
-//			Mouse.setGrabbed(true);
-//			Mouse.setCursorHidden(true);
-//		}
-//		
-		Particle p = new Particle(damageBlueprint, Mouse.getX(), Mouse.getY());
+		
+		Particle p = new Particle(damageBlueprint, 50, 500);
 		box.addParticle(p);
-		//System.out.println(delta);
 		if (!Double.isFinite(delta)) {
 			delta = 1d;
 		}
-		box.windRight((int)(10d*delta), (int)(5*delta));
+		box.windRandom((int)(4d*delta), (int)(5*delta));
+		
 		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
 		player.setRotation(player.getRotation() + 1);
-		win.getCamera().setXOffset(win.getCamera().getXOffset() + Mouse.getDX());
-		win.getCamera().setYOffset(win.getCamera().getYOffset() + Mouse.getDY());
-		Mouse.clearMouseVelocity();
-//		if (scaleUp) {
-//			win.getCamera().setScale(win.getCamera().getScale() + 0.01d);
-//		} else {
-//			win.getCamera().setScale(win.getCamera().getScale() - 0.01d);
-//		}
-//		if (win.getCamera().getScale() > 3) {
-//			scaleUp = false;
-//		}
-//		if (win.getCamera().getScale() < 0.5d) {
-//			scaleUp = true;
-//		}
-		//win.getCamera().setRotation(win.getCamera().getRotation() + 1);
-//		if (win.getCamera().getRotation() > 360) {
-//			win.getCamera().setRotation(0);
-//		}
 	}
 	
 	public void dbgsound() {
@@ -116,25 +87,6 @@ public class PowerHighTest extends SimpleGame {
 //			e.printStackTrace();
 //		}
 //		audio.playMusic(music);
-		try {
-			CPakWriter writer = new CPakWriter(new FileOutputStream("dumbpack.cpak"), CPakWriter.GZIP_COMPRESSION);
-			HashMap<String, Object> entries = new HashMap<>();
-			entries.put("dummyId", 156145);
-			entries.put("dummyName", "Dummy pack");
-			entries.put("dummyData", "DDDDDDDAAAAAAAAAAAAAAATTTTTAAAAAAAA");
-			entries.put("dummyTexture", player.getAnimation().getCurrentSprite());
-			writer.writeCPakEntries(entries);
-			writer.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public byte[] fromu16(int x) {
-		byte b2 = (byte) ((x % 256));
-		x = (x - x % 256)/256;
-		byte b1 = (byte) ((x % 256));
-		return new byte[] {b1, b2};
 	}
 	
 	public void server() {
@@ -149,7 +101,7 @@ public class PowerHighTest extends SimpleGame {
 				e.printStackTrace();
 			}
 			con.close();
-			//server.close();
+			server.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -162,8 +114,8 @@ public class PowerHighTest extends SimpleGame {
 		} catch (PowerHighException e) {
 			e.printStackTrace();
 		}
-		Rectangle rect = new Rectangle(100, 100, 100, 100, Color.YELLOW);
-		win.add(rect);
+		Rectangle firecamp = new Rectangle(25, 505, 70, 20, Color.LIGHT_GRAY);
+		win.add(firecamp);
 		win.setViewportManager(new SizedViewport(800, 600));
 		//server();
 		player = new Sprite();
@@ -171,7 +123,6 @@ public class PowerHighTest extends SimpleGame {
 		box = new ParticleBox(512);
 		box.setX(0);
 		box.setY(0);
-		box.setSize(1920, 1080);
 		ParticleRenderer damageRenderer = new ParticleRenderer() {
 
 			@Override
@@ -185,11 +136,8 @@ public class PowerHighTest extends SimpleGame {
 				Color c = new Color(255, 255, 255, a);
 				d.setColor(c);
 				int size = p.getBlueprint().getSize();
-//				if (a != 0) {
-//					int d = a / 100;
-//					if (d<1)d=1;
-//					size /= d;
-//				}
+				float dd = (float) a / 255;
+				size *= dd;
 				d.fillRect(p.getX(), p.getY(), size, size);
 			}
 			
