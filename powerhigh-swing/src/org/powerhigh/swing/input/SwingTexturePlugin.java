@@ -1,9 +1,14 @@
 package org.powerhigh.swing.input;
 
 import java.awt.AWTException;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.ImageCapabilities;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.io.FileInputStream;
@@ -86,7 +91,7 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 			e.printStackTrace();
 		}
 		VolatileImage vol = null;
-		boolean tryAccelerate = Boolean.parseBoolean(System.getProperty("powerhigh.swing.volatile", "false"));
+		boolean tryAccelerate = Boolean.parseBoolean(System.getProperty("powerhigh.swing.volatile", "true"));
 		try {
 			if (!tryAccelerate)
 				throw new AWTException("volatile image not enabled");
@@ -94,11 +99,19 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 					.getLocalGraphicsEnvironment()
 					.getDefaultScreenDevice()
 					.getDefaultConfiguration()
-					.createCompatibleVolatileImage(img.getWidth(), img.getHeight(), new ImageCapabilities(true), VolatileImage.BITMASK);
-			vol.getGraphics().drawImage(img, 0, 0, null); // copy image to it
+					.createCompatibleVolatileImage(img.getWidth(), img.getHeight(), img.getTransparency());
+			
+			Graphics2D g = vol.createGraphics();
+			if (vol.getTransparency() == Transparency.TRANSLUCENT)
+				g.setBackground(new Color(0, 0, 0, 0));
+			g.clearRect(0, 0, vol.getWidth(), vol.getHeight());
+			g.drawImage(img, 0, 0, null); // copy image to it
+			g.dispose();
 		} catch (HeadlessException | AWTException e) {
-			if (tryAccelerate)
+			if (tryAccelerate) {
+				System.err.println("Could not load volatile images.");
 				e.printStackTrace();
+			}
 			// could not accelerate
 			int[][] pixels = new int[img.getWidth()][img.getHeight()];
 			for (int x = 0; x < img.getWidth(); x++) {
