@@ -14,12 +14,13 @@ public class UISystem {
 	static {
 		if (uiModel == null) {
 			try {
-				File base = new File("base");
+				File base = new File(System.getProperty("powerhigh.ui.folder", "default_ui"));
 				if (base.exists()) {
-					uiModel = new FileUIModel(new InputStreamReader(new FileInputStream("base/base_ui_skin.ui")), 
-							"base/"); // Special case, inside .jar / project
+					uiModel = new FileUIModel(new InputStreamReader(new FileInputStream(
+							System.getProperty("powerhigh.ui.folder", "default_ui") + "/skin.cfg")), 
+							System.getProperty("powerhigh.ui.folder", "default_ui") + "/"); // Special case, inside .jar / project
 				} else {
-					DebugLogger.logWarn("No \"base\" folder!");
+					DebugLogger.logWarn("Cannot find the UI files.");
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

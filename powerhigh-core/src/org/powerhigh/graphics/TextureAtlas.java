@@ -15,6 +15,12 @@ public class TextureAtlas {
 		return atlas;
 	}
 	
+	public static TextureAtlas getFrom(Texture[][] atla) {
+		TextureAtlas atlas = new TextureAtlas();
+		atlas.atlas = atla;
+		return atlas;
+	}
+	
 	public Texture getSubtexture(int tx, int ty) {
 		return atlas[tx][ty];
 	}

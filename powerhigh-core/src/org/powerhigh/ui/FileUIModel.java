@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.Properties;
 
 import org.powerhigh.graphics.Texture;
@@ -15,6 +16,7 @@ public class FileUIModel extends UIModel {
 
 	private Properties prop;
 	private TextureAtlas atlas;
+	private HashMap<String, Texture> textures = new HashMap<>(); // for version 2, in separated
 	private int ver;
 	
 	public FileUIModel(File file) throws FileNotFoundException {
@@ -38,7 +40,25 @@ public class FileUIModel extends UIModel {
 			prop = new Properties();
 			prop.load(file);
 			ver = Integer.parseInt(prop.getProperty("version", "1"));
-			atlas = TextureAtlas.getFrom(TextureLoader.getTexture(parent + prop.getProperty("file", "ui_skin.png")), Integer.parseInt(prop.getProperty("tileWidth")), Integer.parseInt(prop.getProperty("tileHeight")));
+			if (ver == 1) {
+				atlas = TextureAtlas.getFrom(
+						TextureLoader.getTexture(parent + prop.getProperty("file", "skin.png")),
+						Integer.parseInt(prop.getProperty("tileWidth")), Integer.parseInt(prop.getProperty("tileHeight")));
+			} else {
+				boolean separate = Boolean.parseBoolean(prop.getProperty("separated", "false"));
+				if (separate) {
+					for (Object key : prop.keySet()) {
+						if (key.toString().startsWith("skin.")) {
+							String k = key.toString().substring(5);
+							textures.put(k, TextureLoader.getTexture(parent + prop.getProperty(key.toString())));
+						}
+					}
+				} else {
+					atlas = TextureAtlas.getFrom(
+							TextureLoader.getTexture(parent + prop.getProperty("file", "skin.png")),
+							Integer.parseInt(prop.getProperty("tileWidth")), Integer.parseInt(prop.getProperty("tileHeight")));
+				}
+			}
 		} catch (Exception e) {
 			System.err.println("Error loading FileUIModel of " + file);
 			e.printStackTrace();
@@ -56,6 +76,9 @@ public class FileUIModel extends UIModel {
 
 	@Override
 	public Texture getUI(String id) {
+		if (textures.containsKey(id)) {
+			return textures.get(id);
+		}
 		String sub = prop.getProperty("skin." + id);
 		if (sub == null)
 			return null;

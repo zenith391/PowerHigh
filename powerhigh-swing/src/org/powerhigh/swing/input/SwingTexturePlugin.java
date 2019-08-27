@@ -97,7 +97,7 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 					.createCompatibleVolatileImage(img.getWidth(), img.getHeight(), new ImageCapabilities(true), VolatileImage.BITMASK);
 			vol.getGraphics().drawImage(img, 0, 0, null); // copy image to it
 		} catch (HeadlessException | AWTException e) {
-			if (tryAccelerate || true)
+			if (tryAccelerate)
 				e.printStackTrace();
 			// could not accelerate
 			int[][] pixels = new int[img.getWidth()][img.getHeight()];
