@@ -1,6 +1,7 @@
 package org.powerhigh.swing;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -9,13 +10,14 @@ import java.util.WeakHashMap;
 
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Texture;
+import org.powerhigh.swing.input.SwingTexturePlugin.SwingGPUTexture;
 import org.powerhigh.utils.Color;
 
 public class JDrawer2D extends Drawer {
 
 	private Graphics2D g2d;
 	private AffineTransform state;
-	private Map<Texture, BufferedImage> cache = new WeakHashMap<>();
+	private Map<Texture, Image> cache = new WeakHashMap<>();
 	
 	public void setGraphics(Graphics2D g2d) {
 		if (this.g2d != null) {
@@ -55,7 +57,13 @@ public class JDrawer2D extends Drawer {
 		drawTexture(x, y, texture.getWidth(), texture.getHeight(), texture);
 	}
 	
-	private BufferedImage decodeTexture(Texture tex) {
+	private Image decodeTexture(Texture tex) {
+		if (tex.getAccelerator() != null) {
+			if (tex.getAccelerator() instanceof SwingGPUTexture) {
+				SwingGPUTexture g = (SwingGPUTexture) tex.getAccelerator();
+				return g.getImage(); // use the volatile image
+			}
+		}
 		BufferedImage img = new BufferedImage(tex.getWidth(), tex.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		for (int x = 0; x < tex.getWidth(); x++) {
 			for (int y = 0; y < tex.getHeight(); y++) {
@@ -98,7 +106,7 @@ public class JDrawer2D extends Drawer {
 
 	@Override
 	public void drawTexture(int x, int y, int width, int height, Texture texture) {
-		BufferedImage img = cache.get(texture);
+		Image img = cache.get(texture);
 		if (img == null) {
 			img = decodeTexture(texture);
 			if (cacheEnabled) {
