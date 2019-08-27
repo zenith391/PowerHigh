@@ -1,16 +1,15 @@
 package org.powerhigh.swing.input;
 
 import java.awt.AWTException;
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
-import java.awt.ImageCapabilities;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,18 +27,42 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 
 		VolatileImage img;
 		BufferedImage snapshot;
+		byte[] imageData;
+		
+		void checkContent() {
+			if (img.contentsLost()) {
+				System.out.println("Content Lost! Rebuilding image content..");
+				BufferedImage img = null;
+				try {
+					ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
+					img = ImageIO.read(bais);
+					bais.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				Graphics2D g = img.createGraphics();
+				if (img.getTransparency() == Transparency.TRANSLUCENT)
+					g.setBackground(new Color(0, 0, 0, 0));
+				g.clearRect(0, 0, img.getWidth(), img.getHeight());
+				g.drawImage(img, 0, 0, null); // copy image to it
+				g.dispose();
+			}
+		}
 		
 		public VolatileImage getImage() {
 			return img;
 		}
 		
-		SwingGPUTexture(VolatileImage img) {
+		SwingGPUTexture(VolatileImage img, byte[] imageData) { // storing image data uses less memory than storing each pixel.
 			this.img = img;
+			this.imageData = imageData;
+			checkContent();
 		}
 		
 		@Override
 		public int getRGB(int x, int y) {
 			if (snapshot == null) {
+				checkContent();
 				snapshot = img.getSnapshot();
 			}
 			return snapshot.getRGB(x, y);
@@ -77,6 +100,7 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 
 		@Override
 		public boolean isLost() {
+			checkContent();
 			return img.contentsLost();
 		}
 		
@@ -85,8 +109,12 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 	@Override
 	public Texture load(InputStream input) {
 		BufferedImage img = null;
+		byte[] imageData = null;
 		try {
-			img = ImageIO.read(input);
+			imageData = input.readAllBytes();
+			ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
+			img = ImageIO.read(bais);
+			bais.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,12 +123,12 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 		try {
 			if (!tryAccelerate)
 				throw new AWTException("volatile image not enabled");
-			vol = GraphicsEnvironment
+			GraphicsConfiguration conf = GraphicsEnvironment
 					.getLocalGraphicsEnvironment()
 					.getDefaultScreenDevice()
-					.getDefaultConfiguration()
-					.createCompatibleVolatileImage(img.getWidth(), img.getHeight(), img.getTransparency());
-			
+					.getDefaultConfiguration();
+			vol = conf.createCompatibleVolatileImage(img.getWidth(), img.getHeight(), img.getTransparency());
+			vol.validate(conf);
 			Graphics2D g = vol.createGraphics();
 			if (vol.getTransparency() == Transparency.TRANSLUCENT)
 				g.setBackground(new Color(0, 0, 0, 0));
@@ -121,7 +149,7 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 			}
 			return new Texture(pixels);
 		}
-		return new Texture(null, new SwingGPUTexture(vol));
+		return new Texture(null, new SwingGPUTexture(vol, imageData));
 	}
 
 	@Override
