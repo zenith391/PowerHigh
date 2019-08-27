@@ -51,7 +51,7 @@ public class KeyCodes {
 	
 	// Special characters
 	public static final int KEY_SPACE = 32;
-	public static final int KEY_ESCAPE = 0x1b;
+	public static final int KEY_ESCAPE = 27; //Previous: 0x1b
 	public static final int KEY_ENTER = 10;
 	
 	// Numbers

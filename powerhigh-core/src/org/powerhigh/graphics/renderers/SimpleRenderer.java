@@ -6,7 +6,7 @@ import org.powerhigh.objects.GameObject;
 
 /**
  * Yet it is the most simplest renderer. This renderer is a template for people
- * who would wish to create a custom renderer for LGGL.<br/>
+ * who would wish to create a custom renderer for PowerHigh.<br/>
  * But this renderer does not have any optimizations. Not even for GameObjects not visible
  * to user space. And it don't even support post-processors, i let you do this <i>^_^</i>
  * @author zenith391

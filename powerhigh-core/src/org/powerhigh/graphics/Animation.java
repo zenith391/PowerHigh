@@ -105,7 +105,7 @@ public class Animation {
 	}
 	
 	/**
-	 * The frame must arleady be loaded.
+	 * The frame must already be loaded.
 	 * @param id
 	 * @return
 	 */

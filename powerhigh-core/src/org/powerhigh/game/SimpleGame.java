@@ -26,7 +26,7 @@ public abstract class SimpleGame {
 
 	public abstract void init(Interface win);
 	
-	public void exit(Interface win) {}
+	public abstract void exit(Interface win);
 
 	private void dbg() {
 		String name = System.getProperty("os.name");
