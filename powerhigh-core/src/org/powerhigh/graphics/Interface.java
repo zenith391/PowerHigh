@@ -10,6 +10,7 @@ import org.powerhigh.objects.GameObject;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 import org.powerhigh.utils.Point;
+import org.powerhigh.utils.PowerHighException;
 
 public abstract class Interface {
 
@@ -148,6 +149,14 @@ public abstract class Interface {
 	
 	public void setPosition(Point pos) {
 		setPosition(pos.getX(), pos.getY());
+	}
+	
+	public void setPostProcessor(PostProcessor post) throws PowerHighException {
+		throw new PowerHighException("No shader implemented.");
+	}
+	
+	public PostProcessor getPostProcessor() {
+		return null;
 	}
 	
 	public abstract void setSize(int width, int height);

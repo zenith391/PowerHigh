@@ -1,6 +1,8 @@
 package test.org.powerhigh;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,12 +12,8 @@ import org.powerhigh.SizedViewport;
 import org.powerhigh.audio.Audio;
 import org.powerhigh.cpak.CPakWriter;
 import org.powerhigh.game.SimpleGame;
-import org.powerhigh.graphics.Animation;
-import org.powerhigh.graphics.Drawer;
-import org.powerhigh.graphics.Interface;
-import org.powerhigh.graphics.ParticleBlueprint;
+import org.powerhigh.graphics.*;
 import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
-import org.powerhigh.graphics.ParticleBox;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
 import org.powerhigh.graphics.renderers.lightning.Lightning;
 import org.powerhigh.input.AbstractKeyboard;
@@ -28,8 +26,7 @@ import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
-import org.powerhigh.utils.Color;
-import org.powerhigh.utils.PowerHighException;
+import org.powerhigh.utils.*;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class PowerHighTest extends SimpleGame {
@@ -42,7 +39,14 @@ public class PowerHighTest extends SimpleGame {
 
 	@Override
 	public void update(Interface win, double delta) {
+		delta = 1;
+		fps.setText("FPS: " + win.getFPS() + ", Sleep Time: " + win.getEventThread().getSleepTime() + ", Delta: " + win.getEventThread().getDelta());
 		handleKeys(win, delta);
+		
+		Particle p = new Particle(damageBlueprint, 50, 500);
+		box.addParticle(p);
+		box.windRandom((int)(4d*delta), (int)(5*delta));
+		player.setRotation(player.getRotation() + 1);
 	}
 	
 	public void exit(Interface win) {
@@ -56,26 +60,16 @@ public class PowerHighTest extends SimpleGame {
 		player.setY((int) (player.getY() + (input.getAxis("Vertical") * speed)));
 		if (keyboard.isKeyDown(KeyCodes.KEY_G)) {
 			if (!(Interface.getRenderer() instanceof SimpleRenderer)) {
-				DebugLogger.logInfo("Changed Renderer to: Simple (Fast, Unaccurate)");
+				DebugLogger.logInfo("Changed Renderer to: Simple (Just for tests)");
 				Interface.setRenderer(new SimpleRenderer());
 			}
 		}
 		if (keyboard.isKeyDown(KeyCodes.KEY_H)) {
 			if (!(Interface.getRenderer() instanceof Lightning)) {
-				DebugLogger.logInfo("Changed Renderer to: Lightning (Default, Accurate)");
+				DebugLogger.logInfo("Changed Renderer to: Lightning (Default)");
 				Interface.setRenderer(new Lightning());
 			}
 		}
-		
-		Particle p = new Particle(damageBlueprint, 50, 500);
-		box.addParticle(p);
-		if (!Double.isFinite(delta)) {
-			delta = 1d;
-		}
-		box.windRandom((int)(4d*delta), (int)(5*delta));
-		
-		fps.setText("FPS: " + win.getFPS() + ", SPF: " + win.getSPF() + ", Delta: " + win.getEventThread().getDelta());
-		player.setRotation(player.getRotation() + 1);
 	}
 	
 	public void dbgsound() {
@@ -158,7 +152,7 @@ public class PowerHighTest extends SimpleGame {
 		win.add(player);
 		
 		Button bt = new Button();
-		bt.setText("Musique !");
+		bt.setText("Hello World!");
 		bt.setX(100);
 		bt.setY(200);
 		fps.setY(24);
@@ -204,6 +198,17 @@ public class PowerHighTest extends SimpleGame {
 		win.add(fps);
 
 		win.add(box);
+		
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream("shaders/colors.s");
+			win.setPostProcessor(new PostProcessor(new String(fis.readAllBytes())));
+			fis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (PowerHighException e) {
+			e.printStackTrace();
+		}
 		
 		setFrameRate(60);
 	}

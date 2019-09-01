@@ -1,18 +1,30 @@
 package org.powerhigh.swing;
 
-import org.powerhigh.utils.Area;
-import org.powerhigh.utils.Color;
-import org.powerhigh.utils.Point;
+import org.powerhigh.utils.*;
 
+import java.awt.AWTEvent;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.PaintEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 
+import javax.script.Compilable;
+import javax.script.CompiledScript;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.script.SimpleScriptContext;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.PostProcessor;
 import org.powerhigh.graphics.TextureLoader;
 import org.powerhigh.input.Input;
 import org.powerhigh.swing.input.SwingKeyboard;
@@ -27,10 +39,13 @@ public class SwingInterfaceImpl extends Interface {
 	private int fullscreenWidth, fullscreenHeight;
 	private GraphicsDevice device;
 	private boolean closeRequest;
+	private boolean painted;
 	
 	private static GamePanel gamePanel;
 	private SwingKeyboard keyboard;
 	private SwingMouse mouse;
+	private PostProcessor postProcessor;
+	private CompiledScript shaderScript;
 	
 	public SwingInterfaceImpl() {
 		init();
@@ -92,17 +107,61 @@ public class SwingInterfaceImpl extends Interface {
 			oldViewport = viewport;
 			gamePanel.setBounds(viewport.getX(), viewport.getY(), viewport.getWidth(), viewport.getHeight());
 		}
-		gamePanel.repaint();
+		
+		try {
+			SwingUtilities.invokeAndWait(() -> {
+				gamePanel.repaint();
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void setBackground(Color color) {
-		win.setBackground(new java.awt.Color(color.getRed(), color.getGreen(), color.getBlue()));
+		win.setBackground(SwingUtils.phColorToAwtColor(color));
 	}
 
 	@Override
 	public Color getBackground() {
 		return new Color(win.getBackground().getRed(), win.getBackground().getGreen(), win.getBackground().getBlue());
+	}
+	
+	public PostProcessor getPostProcessor() {
+		return postProcessor;
+	}
+	
+	public void setPostProcessor(PostProcessor postProcessor) throws PowerHighException {
+		this.postProcessor = postProcessor;
+		if (postProcessor != null) {
+			ScriptEngine engine = new ScriptEngineManager().getEngineByExtension("js");
+			if (engine == null) {
+				throw new PowerHighException("No JavaScript engine found");
+			}
+			Compilable comp = null;
+			try {
+				comp = (Compilable) engine;
+			} catch (Exception e) {
+				throw new PowerHighException("The JavaScript engine cannot compile scripts", e);
+			}
+			try {
+				shaderScript = comp.compile(postProcessor.getShader());
+			} catch (ScriptException e) {
+				throw new PowerHighException("Could not compile PowerHigh shader", e);
+			}
+			ScriptContext ctx = new SimpleScriptContext();
+			try {
+				shaderScript.eval(ctx);
+			} catch (ScriptException e) {
+				throw new PowerHighException("Could not evaluate PowerHigh shdaer", e);
+			}
+		} else {
+			shaderScript = null;
+		}
+	}
+	
+	public CompiledScript getScript() {
+		return shaderScript;
 	}
 	
 	public void setFullscreenSize(int width, int height) {
@@ -112,7 +171,7 @@ public class SwingInterfaceImpl extends Interface {
 	
 	public void setFullscreen(boolean fullscreen) {
 		try {
-			if (System.getProperty("sun.java2d.opengl", "false").equals("true")) {
+			if (System.getProperty("sun.java2d.opengl", "false").equals("true") && System.getProperty("os.name").toLowerCase().contains("windows")) {
 				legacyFullscreen = true;
 			}
 			if (fullscreen == true) {

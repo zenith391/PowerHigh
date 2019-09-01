@@ -15,6 +15,7 @@ public class WindowEventThread extends Thread {
 	private double delta;
 
 	private long lastTick;
+	private long sleepTime = 1000 / 60;
 
 	private Runnable runnable = null;
 
@@ -30,6 +31,10 @@ public class WindowEventThread extends Thread {
 
 	public double getDelta() {
 		return delta;
+	}
+	
+	public long getSleepTime() {
+		return sleepTime;
 	}
 
 	public void setFrameRate(int frames) {
@@ -54,7 +59,6 @@ public class WindowEventThread extends Thread {
 
 	public void run() {
 		setName("powerhigh-interface-thread");
-		long sleepTime = 1000 / 60;
 		while (!stop) {
 			long estimatedTime = 0;
 			if (targetFPS > 0) {
@@ -65,6 +69,7 @@ public class WindowEventThread extends Thread {
 				fps = frames;
 				frames = 0;
 				delta = (double) targetFPS / (double) fps;
+				if (Double.isInfinite(delta)) delta = 0d;
 			}
 			if (runnable != null) {
 				runnable.run();

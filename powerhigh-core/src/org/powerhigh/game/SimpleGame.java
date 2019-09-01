@@ -228,16 +228,6 @@ public abstract class SimpleGame {
 				}
 			});
 		} catch (Throwable t) {
-//			t.printStackTrace();
-//			Toolkit.getDefaultToolkit().beep();
-//			Component parent = window.getJFrame().getContentPane();
-//			if (!window.isVisible()) {
-//				parent = null;
-//			}
-//			ErrorBox.create()
-//				.throwable(t)
-//					.show(parent);
-//			System.exit(1);
 			t.printStackTrace();
 		}
 	}

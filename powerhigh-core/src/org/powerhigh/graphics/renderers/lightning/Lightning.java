@@ -5,18 +5,16 @@ import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.renderers.IRenderer;
 import org.powerhigh.objects.GameObject;
 import org.powerhigh.utils.Area;
-import org.powerhigh.utils.Color;
 
 public final class Lightning implements IRenderer {
 
-	private boolean pp = true;
+	private boolean pp = false;
 
 	private void render(Interface win, Drawer g, Area rect) {
 		g.setColor(win.getBackground());
 		g.fillRect(0, 0, rect.getWidth(), rect.getHeight());
 		g.localRotate(Math.toRadians(win.getCamera().getRotation()), win.getWidth() / 2, win.getHeight() / 2);
 		g.translate(win.getCamera().getXOffset(), win.getCamera().getYOffset());
-//		g.scale(win.getCamera().getScale(), win.getCamera().getScale());
 		for (GameObject obj : win.getObjects()) {
 			if (obj.isVisible() && shouldRender(rect, obj)) {
 				g.saveState();
@@ -24,11 +22,6 @@ public final class Lightning implements IRenderer {
 						obj.getY() + (obj.getHeight() / 2));
 
 				obj.paint(g, win);
-
-				//float a = obj.getMaterial().reflectance;
-				//a /= 2;
-				//g.setColor(new Color(.0f, 0f, 0f, a));
-				//g.fillRect(obj.getX(), obj.getY(), obj.getWidth(), obj.getHeight());
 				g.restoreState();
 			}
 		}
