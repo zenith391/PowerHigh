@@ -2,6 +2,8 @@ package org.powerhigh.swing;
 
 import org.powerhigh.utils.*;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import java.awt.AWTEvent;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
@@ -12,9 +14,11 @@ import java.awt.event.PaintEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.Supplier;
 
 import javax.script.Compilable;
 import javax.script.CompiledScript;
+import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -45,7 +49,11 @@ public class SwingInterfaceImpl extends Interface {
 	private SwingKeyboard keyboard;
 	private SwingMouse mouse;
 	private PostProcessor postProcessor;
+	
 	private CompiledScript shaderScript;
+	private Invocable shaderInvocable;
+	private ScriptEngine shaderEngine;
+	private Object shaderThiz;
 	
 	public SwingInterfaceImpl() {
 		init();
@@ -149,15 +157,27 @@ public class SwingInterfaceImpl extends Interface {
 			} catch (ScriptException e) {
 				throw new PowerHighException("Could not compile PowerHigh shader", e);
 			}
-			ScriptContext ctx = new SimpleScriptContext();
+			engine.put("time", (Supplier<Long>) () -> {
+				return System.currentTimeMillis();
+			});
 			try {
-				shaderScript.eval(ctx);
-			} catch (ScriptException e) {
+				shaderThiz = shaderScript.eval();
+			} catch (Exception e) {
 				throw new PowerHighException("Could not evaluate PowerHigh shdaer", e);
 			}
+			shaderInvocable = (Invocable) engine;
+			shaderEngine = engine;
 		} else {
 			shaderScript = null;
 		}
+	}
+	
+	public boolean hasMethod(String name) {
+		return shaderEngine.get(name) != null;
+	}
+	
+	public Object invokeShader(String name, Object... args) throws Exception {
+		return shaderInvocable.invokeFunction(name, args);
 	}
 	
 	public CompiledScript getScript() {
@@ -266,7 +286,7 @@ public class SwingInterfaceImpl extends Interface {
 
 	@Override
 	public Area getSize() {
-		return new Area(win.getRootPane().getWidth(), win.getRootPane().getHeight()); // return application size instdead of window size (that includes decorations where we can't draw)
+		return new Area(getWidth(), getHeight());
 	}
 
 	@Override

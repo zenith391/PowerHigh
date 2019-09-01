@@ -103,11 +103,6 @@ public class PowerHighTest extends SimpleGame {
 
 	@Override
 	public void init(Interface win) {
-		try {
-			audio = new Audio(Audio.AUDIO_BIT_16);
-		} catch (PowerHighException e) {
-			e.printStackTrace();
-		}
 		Rectangle firecamp = new Rectangle(25, 505, 70, 20, Color.LIGHT_GRAY);
 		win.add(firecamp);
 		win.setViewportManager(new SizedViewport(800, 600));
@@ -193,8 +188,8 @@ public class PowerHighTest extends SimpleGame {
 		});
 		
 		win.add(bt);
-		win.add(stj);
-		win.add(sts);
+		//win.add(stj);
+		//win.add(sts);
 		win.add(fps);
 
 		win.add(box);
@@ -202,15 +197,11 @@ public class PowerHighTest extends SimpleGame {
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream("shaders/colors.s");
-			win.setPostProcessor(new PostProcessor(new String(fis.readAllBytes())));
+			//win.setPostProcessor(new PostProcessor(new String(fis.readAllBytes())));
 			fis.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (PowerHighException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		setFrameRate(60);
 	}
 
 	public static void main(String[] args) {

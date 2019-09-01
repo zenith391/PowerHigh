@@ -19,14 +19,18 @@ public class JDrawer2D extends Drawer {
 	private AffineTransform state;
 	private Map<Texture, Image> cache = new WeakHashMap<>();
 	
-	public void setGraphics(Graphics2D g2d) {
-		if (this.g2d != null) {
+	public void setGraphics(Graphics2D g2d, boolean dispose) {
+		if (this.g2d != null && dispose) {
 			this.g2d.dispose();
 		}
 		this.g2d = g2d;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+	}
+	
+	public void setGraphics(Graphics2D g2d) {
+		setGraphics(g2d, true);
 	}
 	
 	public JDrawer2D(Graphics2D g2d) {
