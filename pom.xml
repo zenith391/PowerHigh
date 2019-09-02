@@ -4,14 +4,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <groupId>org.zenith391.powerhigh</groupId>
     <artifactId>powerhigh</artifactId>
     <name>PowerHigh</name>
-    <version>0.99</version>
+    <version>0.99-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>Library generator</description>
+    <description>The whole PowerHigh game engine.</description>
     <modules>
         <module>powerhigh-core</module>
         <module>powerhigh-jfx</module>
         <module>powerhigh-swing</module>
         <module>powerhigh-network</module>
+        <module>powerhigh-tiled</module>
     </modules>
     <build>
         <plugins>
