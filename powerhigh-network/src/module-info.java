@@ -4,6 +4,7 @@
  */
 module powerhigh.network {
 	requires powerhigh.core;
-	exports org.powerhigh.graphics.renderers.nawork;
-	//exports org.powerhigh.nawork;
+	
+	exports org.powerhigh.multiplayer;
+	exports org.powerhigh.multiplayer.channel;
 }

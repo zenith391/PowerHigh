@@ -9,17 +9,18 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import org.powerhigh.utils.BitOps;
+
 public class Connection {
 
 	private DatagramSocket udp;
 	private Socket tcp;
-	private InetAddress addr;
 	
 	/**
-	 * Note: Both UDP and TCP ports must be free.
+	 * As it uses both of them, TCP and UDP port given must be free.
 	 * @param address
 	 * @param port
-	 * @return
+	 * @return Connection object
 	 */
 	public static Connection connect(String address, int port) {
 		try {
@@ -36,10 +37,14 @@ public class Connection {
 		return null;
 	}
 	
+	/**
+	 * Manual instanciator for providing a custom DatagramSocket and a custom Socket.
+	 * @param udp
+	 * @param tcp
+	 */
 	public Connection(DatagramSocket udp, Socket tcp) {
 		this.tcp = tcp;
 		this.udp = udp;
-		addr = udp.getInetAddress();
 	}
 	
 	public void close() throws IOException {
@@ -48,24 +53,26 @@ public class Connection {
 	}
 	
 	/**
-	 * Sends an unstable packet that goes through UDP protocol, the packet might be incomplete (unusable) or lost
+	 * Sends an unstable packet that goes through the UDP protocol, the packet might be incomplete (unusable) or lost
 	 * @param packet
 	 * @throws IOException
 	 */
-	public void sendPacket(byte[] packet) throws IOException {
-		System.out.println(packet);
+	public void sendUnstablePacket(byte[] packet) throws IOException {
 		DatagramPacket pck = new DatagramPacket(packet, packet.length);
 		udp.send(pck);
 	}
 	
 	/**
-	 * Sends a stable packet that goes through TCP protocol
+	 * Sends a stable packet that goes through the TCP protocol.
 	 * @param packet
 	 * @throws IOException
 	 */
-	public void sendStablePacket(byte[] packet) throws IOException {
+	public void sendPacket(byte[] packet) throws IOException {
 		OutputStream os = tcp.getOutputStream();
-		os.write(packet);
+		byte[] newPacket = new byte[4 + packet.length];
+		System.arraycopy(packet, 0, newPacket, 4, packet.length);
+		BitOps.putInt(newPacket, 0, packet.length);
+		os.write(newPacket);
 		os.flush();
 	}
 	

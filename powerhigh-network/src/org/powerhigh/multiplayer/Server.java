@@ -2,7 +2,6 @@ package org.powerhigh.multiplayer;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -12,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Server {
-
-	private ServerHandler handler;
 	private DatagramSocket udp;
 	private ServerSocket tcp;
 	private Thread th;
@@ -21,7 +18,7 @@ public class Server {
 	
 	
 	/**
-	 * Note: Both UDP and TCP serverports must be free.
+	 * Both UDP and TCP server ports must be free.
 	 * @param address
 	 * @param port
 	 * @return
@@ -40,34 +37,33 @@ public class Server {
 	}
 	
 	public Server(ServerHandler handler, DatagramSocket udp, ServerSocket tcp) {
-		this.handler = handler;
 		this.tcp = tcp;
 		this.udp = udp;
 		clients = new ArrayList<Client>();
 		th = new Thread(() -> {
+			int num = 1;
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
 					Socket s = tcp.accept();
-					System.out.println(s);
 					Client client = new Client(new HashMap<String, Object>(), s.getInetAddress(), s);
 					clients.add(client);
 					
 					ClientListener listener = new ClientListener(handler, client);
 					Runnable run = listener.getListener();
 					Thread t = new Thread(run);
-					t.setName("Client-" + client.getInetAddress());
+					t.setName("Client-Handler-" + num);
 					t.setPriority(1);
 					t.start();
+					num++;
 				} catch (SocketException e) {
 					return;
 				}
 				catch (IOException e) {
 					e.printStackTrace();
 				}
-				
 			}
+			Thread.currentThread().interrupt();
 		});
-		th.setDaemon(true);
 		th.setName("Server-TCPSocketThread");
 		th.setPriority(1);
 		th.start();

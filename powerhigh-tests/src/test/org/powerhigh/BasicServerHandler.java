@@ -1,22 +1,28 @@
 package test.org.powerhigh;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
 import org.powerhigh.multiplayer.Client;
 import org.powerhigh.multiplayer.ServerHandler;
+import org.powerhigh.multiplayer.channel.Channel;
 
 public class BasicServerHandler implements ServerHandler {
 
 	
 	@Override
-	public void handleFullPacket(Client cl, byte[] packet) {
-		byte type = packet[0];
-		byte arg1 = packet[1];
-		if (type == 1) {
-			System.out.println("Received byte: " + arg1 + ", with a packet from type " + type);
+	public void handleFullPacket(Client cl, Channel ch, byte[] packet) {
+		String str = new String(packet);
+		System.out.println("Echoeing \"" + str + "\"");
+		try {
+			ch.write(ByteBuffer.wrap(packet));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void handleUnsafePacket(Client cl, byte[] packet) {
+	public void handleUnsafePacket(Client cl, Channel ch, byte[] packet) {
 		// Ignored
 	}
 

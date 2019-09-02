@@ -1,5 +1,7 @@
 package org.powerhigh.multiplayer;
 
+import org.powerhigh.multiplayer.channel.Channel;
+
 public interface ServerHandler {
 
 	/**
@@ -8,12 +10,12 @@ public interface ServerHandler {
 	 * Packet types are TCP packets and full UDP packets checked with a checksum.
 	 * @param packet
 	 */
-	public void handleFullPacket(Client cl, byte[] packet);
+	public void handleFullPacket(Client cl, Channel ch, byte[] packet);
 	
 	/**
 	 * Handle all packets, if sended through UDP, they might appear incomplete
 	 * @param packet
 	 */
-	public void handleUnsafePacket(Client cl, byte[] packet);
+	public void handleUnsafePacket(Client cl, Channel ch, byte[] packet);
 	
 }
