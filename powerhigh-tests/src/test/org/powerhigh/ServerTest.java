@@ -10,6 +10,7 @@ public class ServerTest {
 		Server server = Server.connect(handler, 4444);
 		Connection conn = Connection.connect("localhost", 4444);
 		conn.sendPacket("Hello, World.".getBytes("UTF-8"));
+		conn.sendPacket("The server echoes eveything!".getBytes("UTF-8"));
 		server.close();
 		conn.close();
 	}

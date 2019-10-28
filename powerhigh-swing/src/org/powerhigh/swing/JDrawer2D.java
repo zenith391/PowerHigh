@@ -1,14 +1,19 @@
 package org.powerhigh.swing;
 
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.powerhigh.graphics.Drawer;
+import org.powerhigh.graphics.Font;
 import org.powerhigh.graphics.Texture;
 import org.powerhigh.swing.input.SwingTexturePlugin.SwingGPUTexture;
 import org.powerhigh.utils.Color;
@@ -18,6 +23,8 @@ public class JDrawer2D extends Drawer {
 	private Graphics2D g2d;
 	private AffineTransform state;
 	private Map<Texture, Image> cache = new WeakHashMap<>();
+	private Map<Font, java.awt.Font> fonts = new WeakHashMap<>();
+	private Font font;
 	
 	public void setGraphics(Graphics2D g2d, boolean dispose) {
 		if (this.g2d != null && dispose) {
@@ -170,6 +177,30 @@ public class JDrawer2D extends Drawer {
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		g2d.fillOval(x, y, width, height);
+	}
+
+	@Override
+	public Font getFont() {
+		return font;
+	}
+
+	@Override
+	public void setFont(Font font) {
+		this.font = font;
+		if (font.getFamily() == null) {
+			if (!fonts.containsKey(font) || fonts.get(font).getSize2D() == font.getSize()) {
+				try {
+					fonts.put(font, java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File(font.getPath()))
+							.deriveFont(font.getSize()));
+				} catch (FontFormatException | IOException e) {
+					System.err.println("Invalid font " + font.getPath());
+				}
+			}
+			g2d.setFont(fonts.get(font));
+		} else {
+			g2d.setFont(java.awt.Font.getFont(font.getFamily())
+					.deriveFont(font.getSize()));
+		}
 	}
 	
 }

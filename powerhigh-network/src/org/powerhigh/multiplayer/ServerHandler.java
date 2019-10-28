@@ -13,9 +13,9 @@ public interface ServerHandler {
 	public void handleFullPacket(Client cl, Channel ch, byte[] packet);
 	
 	/**
-	 * Handle all packets, if sended through UDP, they might appear incomplete
+	 * Handle incomplete packets, if sended through UDP, they might appear incomplete
 	 * @param packet
 	 */
-	public void handleUnsafePacket(Client cl, Channel ch, byte[] packet);
+	public void handleIncompletePacket(Client cl, Channel ch, byte[] packet);
 	
 }

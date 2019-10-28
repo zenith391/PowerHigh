@@ -22,7 +22,7 @@ public class BasicServerHandler implements ServerHandler {
 	}
 
 	@Override
-	public void handleUnsafePacket(Client cl, Channel ch, byte[] packet) {
+	public void handleIncompletePacket(Client cl, Channel ch, byte[] packet) {
 		// Ignored
 	}
 

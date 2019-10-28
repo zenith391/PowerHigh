@@ -29,6 +29,8 @@ public abstract class Drawer {
 	public abstract void clearCache();
 	public abstract void clearTextureFromCache(Texture texture);
 	public abstract void drawText(int x, int y, String string);
+	public abstract Font getFont();
+	public abstract void setFont(Font font);
 	public abstract void drawLine(int x, int y, int x2, int y2);
 	
 	public abstract int getEstimatedWidth(String text);
