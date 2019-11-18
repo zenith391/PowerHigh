@@ -28,8 +28,8 @@ public class Container extends GameObject {
 			int mx = (int) args[0];
 			int my = (int) args[1];
 			focusedObj = null;
-			for (GameObject b : a) {
-
+			for (int i = a.length-1; i >= 0; i--) { // in part with rendering
+				GameObject b = a[i];
 				if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
 					focusedObj = b;
 					break;
