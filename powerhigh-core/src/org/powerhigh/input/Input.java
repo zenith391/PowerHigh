@@ -31,16 +31,16 @@ public class Input {
 
 	private boolean useDelta = true;
 	
-	private Map<Integer, Float> keysAxisHorizental = null;
+	private Map<Integer, Float> keysAxisHorizontal = null;
 	private Map<Integer, Float> keysAxisVertical = null;
 	
 	public Input(Interface win) {
 		this.win = win;
-		keysAxisHorizental = new HashMap<>();
+		keysAxisHorizontal = new HashMap<>();
 		keysAxisVertical = new HashMap<>();
-		keysAxisHorizental.put(KeyCodes.KEY_Q, -1.0f);
-		keysAxisHorizental.put(KeyCodes.KEY_A, -1.0f);
-		keysAxisHorizental.put(KeyCodes.KEY_D, 1.0f);
+		keysAxisHorizontal.put(KeyCodes.KEY_Q, -1.0f);
+		keysAxisHorizontal.put(KeyCodes.KEY_A, -1.0f);
+		keysAxisHorizontal.put(KeyCodes.KEY_D, 1.0f);
 		keysAxisVertical.put(KeyCodes.KEY_Z, -1.0f);
 		keysAxisVertical.put(KeyCodes.KEY_W, -1.0f);
 		keysAxisVertical.put(KeyCodes.KEY_S, 1.0f);
@@ -59,13 +59,13 @@ public class Input {
 	}
 	
 	public void removeAllAxisTriggers() {
-		keysAxisHorizental.clear();
+		keysAxisHorizontal.clear();
 		keysAxisVertical.clear();
 	}
 	
 	public void registerAxisTrigger(String axis, int keyCode, float value) {
-		if (axis.equals("Horizental")) {
-			keysAxisHorizental.put(keyCode, value);
+		if (axis.equals("Horizontal")) {
+			keysAxisHorizontal.put(keyCode, value);
 		}
 		if (axis.equals("Vertical")) {
 			keysAxisVertical.put(keyCode, value);
@@ -74,10 +74,10 @@ public class Input {
 	
 	public float getAxis(String axis) {
 		float ax = 0.0f;
-		if (axis.equals("Horizental")) {
-			for (int i : keysAxisHorizental.keySet()) {
+		if (axis.equals("Horizontal")) {
+			for (int i : keysAxisHorizontal.keySet()) {
 				if (key.isKeyDown(i)) {
-					ax = keysAxisHorizental.get(i);
+					ax = keysAxisHorizontal.get(i);
 				}
 			}
 		}

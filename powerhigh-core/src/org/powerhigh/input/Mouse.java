@@ -67,11 +67,11 @@ public abstract class Mouse {
 	public void mouseDragged(int button, int x, int y, int screenX, int screenY) {
 		window.fireEvent("mouseDragged", x, y, button);
 		if (countDragAsMove) {
-			window.fireEvent("mouseMoved", x, y, screenX, screenY);
 			Mouse.screenX = screenX;
 			Mouse.x = x;
 			Mouse.screenY = screenY;
 			Mouse.y = y;
+			window.fireEvent("mouseMoved", x, y, screenX, screenY);
 		}
 	}
 

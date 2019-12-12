@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>powerhigh-tiled</artifactId>
   <version>0.99-ALPHA</version>
-  <name>PowerHighT Tiled</name>
+  <name>PowerHigh Tiled</name>
   <dependencies>
       <dependency>
           <groupId>io.zenith391.powerhigh</groupId>

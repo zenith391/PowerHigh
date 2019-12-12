@@ -1,29 +1,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.zenith391.powerhigh</groupId>
-    <artifactId>powerhigh</artifactId>
-    <name>PowerHigh</name>
-    <version>0.99-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <description>The whole PowerHigh game engine.</description>
-    <modules>
-        <module>powerhigh-core</module>
-        <module>powerhigh-jfx</module>
-        <module>powerhigh-swing</module>
-        <module>powerhigh-network</module>
-        <module>powerhigh-tiled</module>
-    </modules>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <release>9</release>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.zenith391.powerhigh</groupId>
+	<artifactId>powerhigh</artifactId>
+	<name>PowerHigh</name>
+	<version>0.99-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<description>The whole PowerHigh game engine.</description>
+	<modules>
+		<module>powerhigh-core</module>
+		<!--<module>powerhigh-jfx</module>-->
+		<module>powerhigh-swing</module>
+		<module>powerhigh-network</module>
+		<module>powerhigh-tiled</module>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<release>9</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

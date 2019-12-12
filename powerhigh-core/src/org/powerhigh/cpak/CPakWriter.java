@@ -10,10 +10,10 @@ import java.util.zip.GZIPOutputStream;
 import org.powerhigh.graphics.Texture;
 
 /**
+ * Binary format for game data.<br/>
  * Supported objects:<br/>
  * <ul>
  * <li>Texture</li>
- * <li>Anything serializable</li>
  * </ul>
  * @author zenith391
  *
@@ -30,7 +30,7 @@ public class CPakWriter {
 	 * Compressions:
 	 * <ol start="0">
 	 * <li>GZIP compression</li>
-	 * <li>Deflate compression</li>
+	 * <li>Deflate (zlib) compression</li>
 	 * <li>No compression</li>
 	 * </ol>
 	 * @param out
@@ -76,9 +76,6 @@ public class CPakWriter {
 						out.writeInt(tex.getRGB(x, y));
 					}
 				}
-			} else {
-				out.write(0);
-				out.writeObject(obj);
 			}
 		}
 	}

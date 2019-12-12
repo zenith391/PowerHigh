@@ -23,6 +23,11 @@ public class FileUIModel extends UIModel {
 		this(new FileReader(file), file.getParent());
 	}
 	
+	/**
+	 * Supports only version 1
+	 * @param file Reader
+	 * @param img InputStream
+	 */
 	public FileUIModel(Reader file, InputStream img) {
 		try {
 			prop = new Properties();
@@ -35,6 +40,11 @@ public class FileUIModel extends UIModel {
 		}
 	}
 	
+	/**
+	 * Supports version 1 and 2.
+	 * @param file Reader
+	 * @param parent String, the path to parent directory of the file
+	 */
 	public FileUIModel(Reader file, String parent) {
 		try {
 			prop = new Properties();
