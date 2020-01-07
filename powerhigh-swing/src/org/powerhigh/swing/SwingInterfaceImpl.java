@@ -48,12 +48,6 @@ public class SwingInterfaceImpl extends Interface {
 	private static GamePanel gamePanel;
 	private SwingKeyboard keyboard;
 	private SwingMouse mouse;
-	private PostProcessor postProcessor;
-	
-	private CompiledScript shaderScript;
-	private Invocable shaderInvocable;
-	private ScriptEngine shaderEngine;
-	private Object shaderThiz;
 	
 	public SwingInterfaceImpl() {
 		init();
@@ -136,52 +130,11 @@ public class SwingInterfaceImpl extends Interface {
 	}
 	
 	public PostProcessor getPostProcessor() {
-		return postProcessor;
+		return null;
 	}
 	
 	public void setPostProcessor(PostProcessor postProcessor) throws PowerHighException {
-		this.postProcessor = postProcessor;
-		if (postProcessor != null) {
-			ScriptEngine engine = new ScriptEngineManager().getEngineByExtension("js");
-			if (engine == null) {
-				throw new PowerHighException("No JavaScript engine found");
-			}
-			Compilable comp = null;
-			try {
-				comp = (Compilable) engine;
-			} catch (Exception e) {
-				throw new PowerHighException("The JavaScript engine cannot compile scripts", e);
-			}
-			try {
-				shaderScript = comp.compile(postProcessor.getShader());
-			} catch (ScriptException e) {
-				throw new PowerHighException("Could not compile PowerHigh shader", e);
-			}
-			engine.put("time", (Supplier<Long>) () -> {
-				return System.currentTimeMillis();
-			});
-			try {
-				shaderThiz = shaderScript.eval();
-			} catch (Exception e) {
-				throw new PowerHighException("Could not evaluate PowerHigh shdaer", e);
-			}
-			shaderInvocable = (Invocable) engine;
-			shaderEngine = engine;
-		} else {
-			shaderScript = null;
-		}
-	}
-	
-	public boolean hasMethod(String name) {
-		return shaderEngine.get(name) != null;
-	}
-	
-	public Object invokeShader(String name, Object... args) throws Exception {
-		return shaderInvocable.invokeFunction(name, args);
-	}
-	
-	public CompiledScript getScript() {
-		return shaderScript;
+		
 	}
 	
 	public void setFullscreenSize(int width, int height) {
@@ -271,12 +224,12 @@ public class SwingInterfaceImpl extends Interface {
 
 	@Override
 	public int getWidth() {
-		return win.getWidth();
+		return win.getRootPane().getWidth(); // returning actual visible width (and not borders)
 	}
 
 	@Override
 	public int getHeight() {
-		return win.getHeight();
+		return win.getRootPane().getHeight(); // returning actual visible height (and not title bar)
 	}
 
 	@Override

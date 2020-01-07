@@ -2,20 +2,12 @@ package org.powerhigh.audio;
 
 public abstract class Sound extends AudioSource {
 	
-	public Sound(int flags, float volume) {
-		super(flags, volume);
-	}
-	
-	public Sound(int flags) {
-		this(flags, 1.0f);
-	}
-	
 	public Sound(float volume) {
-		this(0, volume);
+		super(volume);
 	}
 	
 	public Sound() {
-		this(0);
+		this(1f);
 	}
 
 	protected byte[][] samples;

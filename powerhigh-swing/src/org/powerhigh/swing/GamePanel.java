@@ -6,7 +6,13 @@ import java.awt.Composite;
 import java.awt.CompositeContext;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.PaintContext;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Raster;
@@ -72,7 +78,39 @@ public class GamePanel extends JPanel {
 	public void paint(Graphics g) {
 		//super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-		
+		g2d.setPaint(new Paint() {
+
+			@Override
+			public int getTransparency() {
+				return Transparency.TRANSLUCENT;
+			}
+
+			@Override
+			public PaintContext createContext(ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds,
+					AffineTransform xform, RenderingHints hints) {
+				System.out.println("new context");
+				return new PaintContext() {
+
+					@Override
+					public void dispose() {
+						
+					}
+
+					@Override
+					public ColorModel getColorModel() {
+						return cm;
+					}
+
+					@Override
+					public Raster getRaster(int x, int y, int w, int h) {
+						System.out.println("raster " + x + ", " + y + ", " + w + ", " + h);
+						return null;
+					}
+					
+				};
+			}
+			
+		});
 		if (drawer2D == null) {
 			drawer2D = new JDrawer2D(g2d);
 		} else {
@@ -81,32 +119,8 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
-		try {
-			if (intr.getPostProcessor() != null && intr.hasMethod("color")) {
-				if (img == null || img.getWidth() != intr.getWidth() || img.getHeight() != intr.getHeight())
-					img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-				drawer2D.setGraphics(img.createGraphics(), false);
-				SwingInterfaceImpl.getRenderer().render(intr, drawer2D);
-				for (int y = 0; y < img.getHeight(); y++) {
-					for (int x = 0; x < img.getWidth(); x++) {
-						int rgb = img.getRGB(x, y);
-						int red = (rgb >> 16) & 0xFF;
-						int green = (rgb >> 8) & 0xFF;
-						int blue = rgb & 0xFF;
-						int[] array = unpackIntArray((ScriptObjectMirror)
-								intr.invokeShader("color", x, y, red, green, blue));
-						rgb = array[0];
-						rgb = (rgb << 8) + array[1];
-						rgb = (rgb << 8) + array[2];
-						img.setRGB(x, y, rgb);
-					}
-				}
-				g2d.drawImage(img, 0, 0, null);
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		g2d.setColor(Color.BLACK);
+		g2d.fillRect(0, 0, getWidth(), getHeight());
 		SwingInterfaceImpl.getRenderer().render(intr, drawer2D);
 	}
 	

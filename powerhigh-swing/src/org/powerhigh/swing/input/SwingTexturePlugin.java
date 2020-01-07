@@ -32,10 +32,10 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 		void checkContent() {
 			if (img.contentsLost()) {
 				System.out.println("Content Lost! Rebuilding image content..");
-				BufferedImage img = null;
+				BufferedImage i = null;
 				try {
 					ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
-					img = ImageIO.read(bais);
+					i = ImageIO.read(bais);
 					bais.close();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -44,7 +44,7 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 				if (img.getTransparency() == Transparency.TRANSLUCENT)
 					g.setBackground(new Color(0, 0, 0, 0));
 				g.clearRect(0, 0, img.getWidth(), img.getHeight());
-				g.drawImage(img, 0, 0, null); // copy image to it
+				g.drawImage(i, 0, 0, null); // copy image to it
 				g.dispose();
 			}
 		}
@@ -70,7 +70,9 @@ public class SwingTexturePlugin implements TextureLoader.TextureLoaderPlugin {
 
 		@Override
 		public void setRGB(int x, int y, int rgb) {
-			
+			Graphics2D g2d = img.createGraphics();
+			g2d.setColor(new Color(rgb));
+			g2d.fillRect(x, y, 1, 1);
 		}
 
 		@Override

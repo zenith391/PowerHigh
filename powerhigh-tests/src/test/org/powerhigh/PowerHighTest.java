@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.powerhigh.Material;
 import org.powerhigh.SizedViewport;
 import org.powerhigh.game.SimpleGame;
 import org.powerhigh.graphics.*;
@@ -18,7 +17,9 @@ import org.powerhigh.objects.Particle;
 import org.powerhigh.objects.Rectangle;
 import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
+import org.powerhigh.swing.audio.WavMusic;
 import org.powerhigh.utils.*;
+import org.powerhigh.audio.*;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class PowerHighTest extends SimpleGame {
@@ -47,8 +48,8 @@ public class PowerHighTest extends SimpleGame {
 
 	public void handleKeys(Interface win, double delta) {
 		AbstractKeyboard keyboard = win.getInput().getKeyboard();
-		int speed = (int) (5d * delta);
-		player.setX((int) (player.getX() + (input.getAxis("Horizental") * speed)));
+		int speed = 5;
+		player.setX((int) (player.getX() + (input.getAxis("Horizontal") * speed)));
 		player.setY((int) (player.getY() + (input.getAxis("Vertical") * speed)));
 		if (keyboard.isKeyDown(KeyCodes.KEY_G)) {
 			if (!(Interface.getRenderer() instanceof SimpleRenderer)) {
@@ -61,6 +62,16 @@ public class PowerHighTest extends SimpleGame {
 				DebugLogger.logInfo("Changed Renderer to: Lightning (Default)");
 				Interface.setRenderer(new Lightning());
 			}
+		}
+	}
+	
+	public void audio() {
+		try {
+			WavMusic m = new WavMusic(1f, new File("Alonzo - Santana.wav"));
+			audio.play(m);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -96,8 +107,6 @@ public class PowerHighTest extends SimpleGame {
 		damageBlueprint = new ParticleBlueprint(10, (short)255, damageRenderer);
 		player.setSize(128, 128);
 		player.setColor(Color.YELLOW);
-		player.setMaterial(new Material(0.2f));
-		//player.centerTo(win);
 		try {
 			player.setAnimation(new Animation(new File("Dumb Man.gan")));
 			player.getAnimation().start();
@@ -154,15 +163,6 @@ public class PowerHighTest extends SimpleGame {
 		win.add(fps);
 
 		win.add(box);
-		
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream("shaders/colors.s");
-			//win.setPostProcessor(new PostProcessor(new String(fis.readAllBytes())));
-			fis.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void main(String[] args) {

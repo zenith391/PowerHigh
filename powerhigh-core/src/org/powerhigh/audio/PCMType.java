@@ -1,0 +1,10 @@
+package org.powerhigh.audio;
+
+public enum PCMType {
+
+	SIGNED_BIG_ENDIAN,
+	UNSIGNED_BIG_ENDIAN,
+	SIGNED_LITTLE_ENDIAN,
+	UNSIGNED_LITTLE_ENDIAN;
+	
+}

@@ -135,7 +135,7 @@ public abstract class SimpleGame {
 			throw new IllegalArgumentException("Unable to locate " + is.getInterfaceType().toString());
 		}
 		try {
-			audio = new Audio(Audio.AUDIO_BIT_24);
+			audio = new Audio();
 			if (aimpl != null)
 				Audio.setImplementation(aimpl);
 			if (enableLaunchDebug)

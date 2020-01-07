@@ -1,21 +1,13 @@
 package org.powerhigh.audio;
 
 public abstract class Music extends AudioSource {
-
-	public Music(int flags, float volume) {
-		super(flags, volume);
-	}
-	
-	public Music(int flags) {
-		this(flags, 1.0f);
-	}
 	
 	public Music(float volume) {
-		this(0, volume);
+		super(volume);
 	}
 	
 	public Music() {
-		this(0);
+		this(1f);
 	}
 
 	protected long position = -1;

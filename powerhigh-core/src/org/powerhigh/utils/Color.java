@@ -3,7 +3,6 @@ package org.powerhigh.utils;
 /**
  * 24-bit (RGB) / 32-bit (RGBA) color class.
  * @author zenith391
- *
  */
 public class Color {
 

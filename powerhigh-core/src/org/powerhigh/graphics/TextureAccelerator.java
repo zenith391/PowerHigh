@@ -2,7 +2,7 @@ package org.powerhigh.graphics;
 
 /**
  * Class for implementations to accelerate texture writing, reading and showing
- * (by removing the need of a "converted image" buffer)
+ * (by removing the need of a converted image buffer)
  */
 public abstract class TextureAccelerator {
 
@@ -19,7 +19,7 @@ public abstract class TextureAccelerator {
 	public abstract boolean isFullyAccelerated();
 	
 	/**
-	 * Try accelerating (stocking in GPU) the whole texture.
+	 * Try accelerating (stocking in accelerator) the whole texture.
 	 * @return succeeded
 	 */
 	public abstract boolean tryAccelerate();
@@ -31,7 +31,7 @@ public abstract class TextureAccelerator {
 	public abstract boolean canLose();
 	
 	/**
-	 * Whether the accelerator has lost the texture (and thus it isn't accelerated anymore).
+	 * Whether the accelerator has lost the texture (and so it isn't accelerated anymore).
 	 * In those cases the texture should be recovered by the implementation.
 	 * @return has been lost
 	 */

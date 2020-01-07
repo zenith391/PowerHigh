@@ -113,6 +113,10 @@ public class Animation {
 		return loadedTextures[id];
 	}
 	
+	public int getLength() {
+		return maxFrame;
+	}
+	
 	public void dispose() {
 		stop();
 		try {
