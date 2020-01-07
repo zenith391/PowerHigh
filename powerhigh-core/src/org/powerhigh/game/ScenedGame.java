@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.powerhigh.objects.Scene;
 
-public abstract class ScenedGame extends SimpleGame {
+public abstract class ScenedGame extends AbstractGame {
 
 	private Map<String, Scene> loadedScenes = new HashMap<>();
 	private Scene currentScene;

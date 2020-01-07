@@ -1,11 +1,10 @@
 package test.org.powerhigh;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.powerhigh.SizedViewport;
-import org.powerhigh.game.SimpleGame;
+import org.powerhigh.game.AbstractGame;
 import org.powerhigh.graphics.*;
 import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
@@ -22,7 +21,7 @@ import org.powerhigh.utils.*;
 import org.powerhigh.audio.*;
 import org.powerhigh.utils.debug.DebugLogger;
 
-public class PowerHighTest extends SimpleGame {
+public class PowerHighTest extends AbstractGame {
 
 	private Sprite player;
 	private Text fps;

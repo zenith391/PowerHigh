@@ -13,7 +13,7 @@ import org.powerhigh.objects.Container;
 import org.powerhigh.utils.Area;
 import org.powerhigh.utils.debug.DebugLogger;
 
-public abstract class SimpleGame {
+public abstract class AbstractGame {
 
 	protected Interface window = null;
 	protected Audio audio = null;
