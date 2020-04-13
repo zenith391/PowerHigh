@@ -37,13 +37,12 @@ public class JFXInterfaceImpl extends Interface {
 	static JFXInterfaceImpl instance;
 	private JFXMouse mouse;
 	private JFXKeyboard keyboard;
+	private static BorderPane pane;
+	private static Scene scene;
 	
 	private Object platformLock = new Object();
 	
 	public static class JFXApp extends Application {
-
-		private BorderPane pane;
-		private Scene scene;
 		
 		public JFXApp() {
 			
@@ -52,7 +51,7 @@ public class JFXInterfaceImpl extends Interface {
 		@Override
 		public void start(Stage primaryStage) throws Exception {
 			pane = new BorderPane();
-			scene = new Scene(pane, 620, 480);
+			scene = new Scene(pane, 800, 600);
 			gameCanvas = new Canvas();
 			pane.setTop(gameCanvas);
 			ExecutorService service = Executors.newSingleThreadExecutor();
@@ -166,7 +165,7 @@ public class JFXInterfaceImpl extends Interface {
 					}
 				});
 				try {
-					platformLock.wait(0);
+					platformLock.wait();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -238,7 +237,7 @@ public class JFXInterfaceImpl extends Interface {
 	@Override
 	public Area getSize() {
 		return (Area) resultOnPlatform(() -> {
-			return new Area((int) stage.getWidth(), (int) stage.getHeight());
+			return new Area((int) pane.getWidth(), (int) pane.getHeight());
 		});
 	}
 
@@ -254,14 +253,14 @@ public class JFXInterfaceImpl extends Interface {
 	
 	@Override
 	public void setResizable(boolean resizable) {
-		Platform.runLater(() -> {
+		runOnPlatform(() -> {
 			stage.setResizable(resizable);
 		});
 	}
 	
 	@Override
 	public void setTitle(String title) {
-		Platform.runLater(() -> {
+		runOnPlatform(() -> {
 			stage.setTitle(title);
 		});
 	}
