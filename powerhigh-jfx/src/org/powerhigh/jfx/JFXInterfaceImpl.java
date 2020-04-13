@@ -2,6 +2,7 @@ package org.powerhigh.jfx;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Supplier;
 
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.TextureLoader;
@@ -21,7 +22,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-
 // POSSIBILITY: use com.sun.media.jfxmediaimpl.AudioClipProvider.create for sound
 public class JFXInterfaceImpl extends Interface {
 
@@ -37,6 +37,8 @@ public class JFXInterfaceImpl extends Interface {
 	static JFXInterfaceImpl instance;
 	private JFXMouse mouse;
 	private JFXKeyboard keyboard;
+	
+	private Object platformLock = new Object();
 	
 	public static class JFXApp extends Application {
 
@@ -99,9 +101,6 @@ public class JFXInterfaceImpl extends Interface {
 			stage.setOnCloseRequest((event) -> {
 				closeRequested = true;
 			});
-			
-			//stage.show();
-			//System.out.println("start ended");
 		}
 		
 	}
@@ -117,24 +116,21 @@ public class JFXInterfaceImpl extends Interface {
 				JFXApp app = new JFXApp();
 				Platform.runLater(() -> {
 					try {
-						//System.out.println("initing..");
 						app.init();
 						app.start(new Stage());
-						//System.out.println("inited :D");
 					} catch (Exception e) {
 						System.out.println("JavaFX error:");
 						e.printStackTrace();
 					}
 				});
 				Platform.requestNextPulse();
-				System.out.println("exit");
 			}
 		});
 		t.start();
 		try {
 			t.join(1000);
 		} catch (InterruptedException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		drawer = new GCDrawer();
 		init();
@@ -149,6 +145,35 @@ public class JFXInterfaceImpl extends Interface {
 	public Color getBackground() {
 		return background;
 	}
+	
+	public void runOnPlatform(Runnable runnable) {
+		if (Platform.isFxApplicationThread()) {
+			runnable.run();
+		} else {
+			Platform.runLater(runnable);
+		}
+	}
+	
+	public Object resultOnPlatform(Supplier<Object> func) {
+		if (Platform.isFxApplicationThread()) {
+			return func.get();
+		} else {
+			synchronized (platformLock) {
+				Platform.runLater(() -> {
+					answer = func.get();
+					synchronized (platformLock) {
+						platformLock.notifyAll();
+					}
+				});
+				try {
+					platformLock.wait(0);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			return answer;
+		}
+	}
 
 	@Override
 	public void show() {
@@ -159,7 +184,7 @@ public class JFXInterfaceImpl extends Interface {
 			Input.setMouseImpl(mouse);
 			Input.setKeyboardImpl(instance.keyboard);
 		}
-		Platform.runLater(() -> {
+		runOnPlatform(() -> {
 			if (stage != null)
 				stage.show();
 		});
@@ -168,7 +193,7 @@ public class JFXInterfaceImpl extends Interface {
 
 	@Override
 	public void hide() {
-		Platform.runLater(() -> {
+		runOnPlatform(() -> {
 			stage.hide();
 		});
 	}
@@ -180,23 +205,17 @@ public class JFXInterfaceImpl extends Interface {
 
 	@Override
 	public boolean isVisible() {
-		answer = null;
-		Platform.runLater(() -> {
-			answer = stage.isShowing();
+		return (Boolean) resultOnPlatform(() -> {
+			return stage.isShowing();
 		});
-		while (answer == null) {
-			Thread.onSpinWait();
-		}
-		return (Boolean) answer;
 	}
 
 	@Override
 	public void setSize(int width, int height) {
-		Platform.runLater(() -> {
+		runOnPlatform(() -> {
 			stage.setWidth(width);
 			stage.setHeight(height);
 		});
-		System.out.println("Hello World!");
 	}
 	
 	
@@ -218,14 +237,9 @@ public class JFXInterfaceImpl extends Interface {
 
 	@Override
 	public Area getSize() {
-		answer = null;
-		Platform.runLater(() -> {
-			answer = new Area((int) stage.getWidth(), (int) stage.getHeight());
+		return (Area) resultOnPlatform(() -> {
+			return new Area((int) stage.getWidth(), (int) stage.getHeight());
 		});
-		while (answer == null) {
-			Thread.onSpinWait();
-		}
-		return (Area) answer;
 	}
 
 	@Override
@@ -262,14 +276,9 @@ public class JFXInterfaceImpl extends Interface {
 	
 	@Override
 	public Point getPosition() {
-		answer = null;
-		Platform.runLater(() -> {
-			answer = new Point((int) stage.getX(), (int) stage.getY());
+		return (Point) resultOnPlatform(() -> {
+			return new Point((int) stage.getX(), (int) stage.getY());
 		});
-		while (answer == null) {
-			Thread.onSpinWait();
-		}
-		return (Point) answer;
 	}
 
 	@Override

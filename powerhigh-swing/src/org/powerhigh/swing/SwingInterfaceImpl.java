@@ -2,30 +2,13 @@ package org.powerhigh.swing;
 
 import org.powerhigh.utils.*;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
-import java.awt.AWTEvent;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.PaintEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.util.function.Supplier;
 
-import javax.script.Compilable;
-import javax.script.CompiledScript;
-import javax.script.Invocable;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import javax.script.SimpleScriptContext;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.graphics.PostProcessor;
@@ -43,7 +26,7 @@ public class SwingInterfaceImpl extends Interface {
 	private int fullscreenWidth, fullscreenHeight;
 	private GraphicsDevice device;
 	private boolean closeRequest;
-	private boolean painted;
+	volatile boolean paintQueued;
 	
 	private static GamePanel gamePanel;
 	private SwingKeyboard keyboard;
@@ -96,7 +79,6 @@ public class SwingInterfaceImpl extends Interface {
 		fullscreenWidth = device.getDisplayMode().getWidth();
 		fullscreenHeight = device.getDisplayMode().getHeight();
 		fullscreen = false;
-		win.getRootPane().setDoubleBuffered(false);
 		super.init();
 	}
 	
@@ -110,13 +92,16 @@ public class SwingInterfaceImpl extends Interface {
 			gamePanel.setBounds(viewport.getX(), viewport.getY(), viewport.getWidth(), viewport.getHeight());
 		}
 		
-		try {
-			SwingUtilities.invokeAndWait(() -> {
-				gamePanel.repaint();
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			e.printStackTrace();
+		gamePanel.repaint();
+		while (paintQueued) {
+			try {
+				if (!isVisible()) break;
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
+		paintQueued = true;
 	}
 	
 	@Override

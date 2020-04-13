@@ -20,10 +20,12 @@ public abstract class Drawer {
 	public abstract void drawTexture(int x, int y, Texture texture);
 	
 	/**
-	 * Draws a resized-version of the texture (platform-dependent for better performances)
+	 * Draws a resized version of the texture (platform-dependent for better performances)
 	 * @param x
 	 * @param y
-	 * @param string
+	 * @param width
+	 * @param height
+	 * @param texture
 	 */
 	public abstract void drawTexture(int x, int y, int width, int height, Texture texture);
 	public abstract void clearCache();

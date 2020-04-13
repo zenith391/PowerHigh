@@ -4,7 +4,7 @@ import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 
 /**
- * On screen key
+ * On-screen key
  */
 public class ScreenButton extends GameObject {
 

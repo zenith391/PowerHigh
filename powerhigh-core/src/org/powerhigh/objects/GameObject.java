@@ -48,7 +48,12 @@ public abstract class GameObject {
 	public void setMaterial(Material material) {
 		this.material = material;
 	}
-
+	
+	/**
+	 * Method called when the GameObject have to be painted on the Interface using the Drawer.
+	 * @param drawer
+	 * @param source
+	 */
 	public abstract void paint(Drawer drawer, Interface source);
 
 	public void onEvent(String type, Object... args) {
@@ -62,10 +67,18 @@ public abstract class GameObject {
 		return x;
 	}
 
+	/**
+	 * Returns the rotation in degrees.
+	 * @return rotation
+	 */
 	public int getRotation() {
 		return rotation;
 	}
-
+	
+	/**
+	 * Set rotation in degrees. Rotation is modulated by 360° to not overflow.
+	 * @param rotation
+	 */
 	public void setRotation(int rotation) {
 		this.rotation = rotation % 360;
 	}

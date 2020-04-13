@@ -21,10 +21,18 @@ public class Input {
 	
 	private int lastUserX, lastUserY;
 	
+	/**
+	 * The last X position the user input device was located at.
+	 * @return last X position
+	 */
 	public int getLastUserX() {
 		return lastUserX;
 	}
 
+	/**
+	 * The last Y position the user input device was located at.
+	 * @return last Y position
+	 */
 	public int getLastUserY() {
 		return lastUserY;
 	}
@@ -50,19 +58,37 @@ public class Input {
 		return key;
 	}
 	
+	/**
+	 * Set whether the axis value should vary with delta.
+	 * Avoids slowering down when FPS lower and fastening when FPS increases.
+	 * @param vary
+	 */
 	public void setVaryWithDelta(boolean vary) {
 		useDelta = vary;
 	}
 	
+	/**
+	 * Get the mouse if available, otherwise returns <code>null</code>.
+	 * @return
+	 */
 	public Mouse getMouse() {
 		return mouse;
 	}
 	
+	/**
+	 * Remove all trigger keys for all axis.
+	 */
 	public void removeAllAxisTriggers() {
 		keysAxisHorizontal.clear();
 		keysAxisVertical.clear();
 	}
 	
+	/**
+	 * Register trigger key for an axis.
+	 * @param axis
+	 * @param keyCode
+	 * @param value
+	 */
 	public void registerAxisTrigger(String axis, int keyCode, float value) {
 		if (axis.equals("Horizontal")) {
 			keysAxisHorizontal.put(keyCode, value);

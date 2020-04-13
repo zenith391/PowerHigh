@@ -1,5 +1,4 @@
 /**
- * CPak compression and decompression classes.<br/>
- * CPak stands for Content PAcKage
+ * Content PAcKages compression and decompression classes.<br/>
  */
 package org.powerhigh.cpak;

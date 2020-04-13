@@ -1,20 +1,10 @@
 /**
- * 
- */
-/**
- * @author zenith391
- * 
+ * JavaFX rendering module. Automatically imports <code>powerhigh-core</code> if not present.
  */
 module powerhigh.jfx {
-	
-	requires transitive javafx.graphics;
-	requires transitive javafx.base;
 	requires transitive javafx.controls;
-	requires transitive javafx.media;
-	
-	requires powerhigh.core;
+	requires transitive powerhigh.core;
 	
 	exports org.powerhigh.jfx;
 	exports org.powerhigh.jfx.input;
-	
 }

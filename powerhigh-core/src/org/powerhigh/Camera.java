@@ -6,10 +6,18 @@ public class Camera {
 	private double rotation;
 	private double scale = 1.0f;
 	
+	/**
+	 * Get camera rotation in degrees.
+	 * @return
+	 */
 	public double getRotation() {
 		return rotation;
 	}
-
+	
+	/**
+	 * Set camera rotation in degrees.
+	 * @param rotation
+	 */
 	public void setRotation(double rotation) {
 		this.rotation = rotation;
 	}

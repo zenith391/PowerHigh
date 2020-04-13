@@ -89,10 +89,18 @@ public abstract class Mouse {
 		window.fireEvent("mouseMoved", x, y);
 	}
 
+	/**
+	 * Get the Delta-X since last {@link Mouse#clearMouseVelocity()}.
+	 * @return
+	 */
 	public static int getDX() {
 		return dx;
 	}
 
+	/**
+	 * Get the Delta-Y since last {@link Mouse#clearMouseVelocity()}.
+	 * @return
+	 */
 	public static int getDY() {
 		return dy;
 	}

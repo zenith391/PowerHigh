@@ -3,35 +3,26 @@ package org.powerhigh.jfx;
 import java.util.HashMap;
 
 import org.powerhigh.graphics.Drawer;
+import org.powerhigh.graphics.Font;
 import org.powerhigh.graphics.Texture;
 import org.powerhigh.utils.Color;
 
-import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 
 /**
  * Implementation properties:<br/>
  * <li>
- * 		<ul>jfx.smooth_scale: true, disable recommended for retro-themed games /!\ RGBA not supported in non-smooth mode</ul><br/>
+ * 		<ul><code>jfx.linear_filtering</code>: <code>true</code> - enable or disable linear filtering for textures
  * </li>
- * @author zenith391
- *
  */
 public class GCDrawer extends Drawer {
 
 	private GraphicsContext gc;
 	private Color color;
 	private HashMap<Texture, WritableImage> texCache = new HashMap<>();
-	private boolean smooth;
-	
 	
 	public void setGC(GraphicsContext gc) {
 		this.gc = gc;
@@ -50,24 +41,6 @@ public class GCDrawer extends Drawer {
 			gc.setStroke(javafx.scene.paint.Color.rgb(color.getRed(), color.getGreen(), color.getBlue()));
 		}
 	}
-
-	/**
-	 * Heavy and slow, to change. Does not supports RGBA
-	 * @param in
-	 * @param scaledWidth
-	 * @param scaledHeight
-	 * @return scaled image
-	 */
-	WritableImage nonSmoothScale(WritableImage in, int scaledWidth, int scaledHeight) {
-		ImageView imageView = new ImageView(in);
-		imageView.setFitWidth(scaledWidth);
-		imageView.setFitHeight(scaledHeight);
-		imageView.setSmooth(false);
-		Pane pane = new Pane(imageView);
-		pane.setCache(true);
-		Scene offScreenScene = new Scene(pane);
-		return imageView.snapshot(null, null);
-	}
 	
 	@Override
 	public Color getColor() {
@@ -79,7 +52,6 @@ public class GCDrawer extends Drawer {
 		if (texCache.get(texture) == null) {
 			texCache.put(texture, decodeTexture(texture));
 		}
-		
 		gc.drawImage(texCache.get(texture), x, y);
 	}
 
@@ -88,17 +60,11 @@ public class GCDrawer extends Drawer {
 		if (texCache.get(texture) == null) {
 			texCache.put(texture, decodeTexture(texture));
 		}
-		smooth = !getImplementationProperties().getProperty("jfx.smooth_scale", "true")
-				.equalsIgnoreCase("true");
-		if (smooth) {
-			gc.drawImage(nonSmoothScale(texCache.get(texture), width, height), x, y);
-		} else {
-			gc.drawImage(texCache.get(texture), x, y, width, height);
-		}
+		gc.setImageSmoothing(getImplementationProperties().getProperty("jfx.linear_filtering", "true").equalsIgnoreCase("false"));
+		gc.drawImage(texCache.get(texture), x, y, width, height);
 	}
 
 	private WritableImage decodeTexture(Texture t) {
-		//System.out.println("Compiling texture..");
 		WritableImage img = new WritableImage(t.getWidth(), t.getHeight());
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
@@ -134,7 +100,7 @@ public class GCDrawer extends Drawer {
 
 	@Override
 	public int getEstimatedHeight() {
-		Text theText = new Text("a");
+		Text theText = new Text("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234568790");
 		theText.setFont(gc.getFont());
 		return (int) theText.getBoundsInLocal().getHeight();
 	}
@@ -146,7 +112,6 @@ public class GCDrawer extends Drawer {
 
 	@Override
 	public void localRotate(double radians, int orx, int ory) {
-		// gc.rotate(Math.toDegrees(radians));
 		rotate(Math.toDegrees(radians), orx, ory);
 	}
 
@@ -202,6 +167,16 @@ public class GCDrawer extends Drawer {
 	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		gc.fillOval(x, y, width, height);
+	}
+
+	@Override
+	public Font getFont() {
+		return null;
+	}
+
+	@Override
+	public void setFont(Font font) {
+		
 	}
 
 }

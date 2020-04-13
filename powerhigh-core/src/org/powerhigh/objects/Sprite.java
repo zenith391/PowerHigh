@@ -6,6 +6,9 @@ import org.powerhigh.graphics.Texture;
 import org.powerhigh.utils.Color;
 import org.powerhigh.graphics.Interface;
 
+/**
+ * Object able to display a texture or an animation.
+ */
 public class Sprite extends GameObject {
 	
 	private Texture texture;
@@ -42,15 +45,15 @@ public class Sprite extends GameObject {
 		return texture;
 	}
 
-	/** Will render a blue quad until you set an texture with {@link Sprite#setTexture(Texture)} */
+	/** Will render a blue quad until you set a texture with {@link Sprite#setTexture(Texture)} */
 	public Sprite() {
 		this((Texture) null);
 	}
-	/** Will associate the following Texture object with this Sprite. */
+	/** Will associate the following {@link org.powerhigh.graphics.Texture} object with this Sprite. */
 	public Sprite(Texture texture) {
 		setTexture(texture);
 	}
-	/** Will associate the following Animation object with this Sprite. */
+	/** Will associate the following {@link org.powerhigh.graphics.Animation} object with this Sprite. */
 	public Sprite(Animation anim) {
 		setAnimation(anim);
 	}
@@ -79,6 +82,5 @@ public class Sprite extends GameObject {
 			g.fillRect(x, y, width, height);
 		}
 	}
-	
 
 }

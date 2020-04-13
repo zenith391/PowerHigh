@@ -9,16 +9,32 @@ public class Color {
 	private int r, g, b, a;
 	private boolean hasAlpha = false;
 	
+	/**
+	 * Create a color from RGB components ranging from 0 to 255 without alpha channel.
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
 	public Color(int r, int g, int b) {
 		setRed(r);
 		setGreen(g);
 		setBlue(b);
 	}
 	
+	/**
+	 * Create a color from a 24-bit RGB integer.
+	 * @param rgb
+	 */
 	public Color(int rgb) {
 		this(rgb, false);
 	}
 	
+	/**
+	 * Create a color from a RGB integer, with optional alpha channel support on the last 8 bits,
+	 * effectively supporting RGB and RGBA.
+	 * @param rgb
+	 * @param alphaChannel
+	 */
 	public Color(int rgb, boolean alphaChannel) {
 		this.hasAlpha = alphaChannel;
 		if (!hasAlpha) {
@@ -33,14 +49,32 @@ public class Color {
 		}
 	}
 	
+	/**
+	 * Create a color from RGB components ranging from 0 to 1 without alpha channel.
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
 	public Color(float r, float g, float b) {
 		this((int) r * 255, (int) g * 255, (int) b * 255);
 	}
 	
+	/**
+	 * Create a color from RGBA components ranging from 0 to 1.
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
 	public Color(float r, float g, float b, float a) {
 		this((int) r * 255, (int) g * 255, (int) b * 255, (int) a * 255);
 	}
 	
+	/**
+	 * Create a color from RGBA components ranging from 0 to 255.
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
 	public Color(int r, int g, int b, int a) {
 		this(r, g, b);
 		setAlpha(a);
@@ -85,7 +119,7 @@ public class Color {
 	
 	/**
 	 * Change alpha value of the current color object.
-	 * If the color did'nt had alpha component, it will be added
+	 * If the color didn't had an alpha channel, it will be added
 	 * @param alpha
 	 */
 	public void setAlpha(int alpha) {
@@ -109,10 +143,10 @@ public class Color {
 	}
 	
 	/**
-	 * "mix" 2 colors by creating an average value of the components of the target color.
+	 * "Mix" 2 colors by averaging the components of this color with the second color.
 	 * If the current color or the target color have an alpha component, the final color will also have one.
-	 * Changes are not applied to the current object, instead a clone is created and returned.
-	 * @param x
+	 * Changes are not applied to the current object, a clone is created and returned.
+	 * @param x second Color
 	 * @return A clone using averaged components.
 	 */
 	public Color mix(Color x) {
@@ -127,15 +161,55 @@ public class Color {
 	}
 	
 	
+	/**
+	 * Color with RGB value 0,0,0
+	 */
 	public static final Color BLACK = new   Color(0, 0, 0);
+	
+	/**
+	 * Color with RGB value 255,0,0
+	 */
 	public static final Color RED = new     Color(255, 0, 0);
+	
+	/**
+	 * Color with RGB value 0,255,0
+	 */
 	public static final Color GREEN = new   Color(0, 255, 0);
+	
+	/**
+	 * Color with RGB value 0,0,255
+	 */
 	public static final Color BLUE = new    Color(0, 0, 255);
+	
+	/**
+	 * Color with RGB value 255,255,255
+	 */
 	public static final Color WHITE = new   Color(255, 255, 255);
+	
+	/**
+	 * Color with RGB value 0,0,0
+	 * (todo, do not use!)
+	 */
 	public static final Color MAGENTA = new Color(0, 0, 0);
+	
+	/**
+	 * Color with RGB value 0,255,255
+	 */
 	public static final Color CYAN = new    Color(0, 255, 255);
+	
+	/**
+	 * Color with RGB value 255,255,0
+	 */
 	public static final Color YELLOW = new  Color(255, 255, 0);
+	
+	/**
+	 * Color with RGB value 127,127,127
+	 */
 	public static final Color GRAY = new    Color(127, 127, 127);
+	
+	/**
+	 * Color with RGB value 157,157,157
+	 */
     public static final Color LIGHT_GRAY=new Color(157, 157, 157);
 	
 }

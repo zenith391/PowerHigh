@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import org.powerhigh.SizedViewport;
-import org.powerhigh.game.AbstractGame;
 import org.powerhigh.graphics.*;
 import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
@@ -18,7 +17,7 @@ import org.powerhigh.objects.Sprite;
 import org.powerhigh.objects.Text;
 import org.powerhigh.swing.audio.WavMusic;
 import org.powerhigh.utils.*;
-import org.powerhigh.audio.*;
+import org.powerhigh.game.AbstractGame;
 import org.powerhigh.utils.debug.DebugLogger;
 
 public class PowerHighTest extends AbstractGame {
@@ -27,8 +26,8 @@ public class PowerHighTest extends AbstractGame {
 	private Text fps;
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
-	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
-
+	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.JAVAFX, ImplementationSettings.Audio.AWT);
+	
 	@Override
 	public void update(Interface win, double delta) {
 		delta = 1;
