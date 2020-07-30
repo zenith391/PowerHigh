@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Font;
 import org.powerhigh.graphics.Texture;
+import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 
 import javafx.scene.canvas.GraphicsContext;
@@ -23,6 +24,7 @@ public class GCDrawer extends Drawer {
 	private GraphicsContext gc;
 	private Color color;
 	private HashMap<Texture, WritableImage> texCache = new HashMap<>();
+	private Area clip;
 	
 	public void setGC(GraphicsContext gc) {
 		this.gc = gc;
@@ -177,6 +179,17 @@ public class GCDrawer extends Drawer {
 	@Override
 	public void setFont(Font font) {
 		
+	}
+
+	@Override
+	public Area getClip() {
+		return clip;
+	}
+
+	@Override
+	public void setClip(Area area) {
+		gc.rect(area.x, area.y, area.width, area.height);
+		gc.clip();
 	}
 
 }

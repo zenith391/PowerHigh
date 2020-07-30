@@ -1,9 +1,13 @@
 package org.powerhigh.objects;
 
 import org.powerhigh.utils.Color;
-
+import org.powerhigh.components.MeshRender;
+import org.powerhigh.components.Renderer;
+import org.powerhigh.components.Transform;
 import org.powerhigh.graphics.Drawer;
-import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.IMeshRenderer;
+import org.powerhigh.graphics.Material;
+import org.powerhigh.math.Vector2;
 
 public class Oval extends GameObject {
 
@@ -22,20 +26,23 @@ public class Oval extends GameObject {
 	}
 
 	public Oval(int x, int y, int width, int height, Color c) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		color = c;
-	}
-	
-	@Override
-	public void paint(Drawer g, Interface source) {
-		g.setColor(getColor());
-		if (!filled)
-			g.drawOval(x, y, width, height);
-		else
-			g.fillOval(x, y, width, height);
+		Transform t = addComponent(Transform.class);
+		t.position.set(x, y);
+		t.size.set(width, height);
+		
+		Renderer r = addComponent(Renderer.class);
+		r.material = new Material(c);
+		
+		MeshRender render = addComponent(MeshRender.class);
+		render.meshRenderer = new IMeshRenderer() {
+
+			@Override
+			public void render(Renderer r, Vector2 size, Drawer d) {
+				System.out.println("render");
+				d.fillOval(0, 0, (int) size.x, (int) size.y);
+			}
+			
+		};
 	}
 	
 }

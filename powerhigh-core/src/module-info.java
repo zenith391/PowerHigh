@@ -7,6 +7,8 @@ module powerhigh.core {
 	
 	exports org.powerhigh.objects;
 	exports org.powerhigh.ui;
+	exports org.powerhigh.components;
+	exports org.powerhigh.math;
 	exports org.powerhigh.utils;
 	exports org.powerhigh.graphics;
 	exports org.powerhigh;

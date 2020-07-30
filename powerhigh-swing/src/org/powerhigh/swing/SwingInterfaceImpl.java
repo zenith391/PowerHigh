@@ -33,6 +33,7 @@ public class SwingInterfaceImpl extends Interface {
 	private SwingMouse mouse;
 	
 	public SwingInterfaceImpl() {
+		super();
 		init();
 	}
 	
@@ -93,6 +94,7 @@ public class SwingInterfaceImpl extends Interface {
 		}
 		
 		gamePanel.repaint();
+		/*
 		while (paintQueued) {
 			try {
 				if (!isVisible()) break;
@@ -101,6 +103,7 @@ public class SwingInterfaceImpl extends Interface {
 				e.printStackTrace();
 			}
 		}
+		*/
 		paintQueued = true;
 	}
 	

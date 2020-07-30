@@ -58,4 +58,16 @@ public class Area {
 		this(src.x, src.y, src.width, src.height);
 	}
 	
+	public boolean equals(Object o) {
+		if (o instanceof Area) {
+			Area area = (Area) o;
+			return area.x == x && area.y == y && area.width == width && area.height == height;
+		}
+		return false;
+	}
+	
+	public String toString() {
+		return "Area[x="+x+", y="+y+", width="+width+", height="+height+"]";
+	}
+	
 }

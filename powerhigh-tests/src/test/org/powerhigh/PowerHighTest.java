@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.powerhigh.SizedViewport;
+import org.powerhigh.components.Renderer;
+import org.powerhigh.components.Transform;
 import org.powerhigh.graphics.*;
 import org.powerhigh.graphics.ParticleBlueprint.ParticleRenderer;
 import org.powerhigh.graphics.renderers.SimpleRenderer;
@@ -26,7 +28,7 @@ public class PowerHighTest extends AbstractGame {
 	private Text fps;
 	private ParticleBox box;
 	private ParticleBlueprint damageBlueprint;
-	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.JAVAFX, ImplementationSettings.Audio.AWT);
+	private ImplementationSettings impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
 	
 	@Override
 	public void update(Interface win, double delta) {
@@ -37,7 +39,7 @@ public class PowerHighTest extends AbstractGame {
 		Particle p = new Particle(damageBlueprint, 50, 500);
 		box.addParticle(p);
 		box.windRandom((int)(4d*delta), (int)(5*delta));
-		player.setRotation(player.getRotation() + 1);
+		player.getTransform().rotation += 1;
 	}
 	
 	public void exit(Interface win) {
@@ -47,20 +49,9 @@ public class PowerHighTest extends AbstractGame {
 	public void handleKeys(Interface win, double delta) {
 		AbstractKeyboard keyboard = win.getInput().getKeyboard();
 		int speed = 5;
-		player.setX((int) (player.getX() + (input.getAxis("Horizontal") * speed)));
-		player.setY((int) (player.getY() + (input.getAxis("Vertical") * speed)));
-		if (keyboard.isKeyDown(KeyCodes.KEY_G)) {
-			if (!(Interface.getRenderer() instanceof SimpleRenderer)) {
-				DebugLogger.logInfo("Changed Renderer to: Simple (Just for tests)");
-				Interface.setRenderer(new SimpleRenderer());
-			}
-		}
-		if (keyboard.isKeyDown(KeyCodes.KEY_H)) {
-			if (!(Interface.getRenderer() instanceof Lightning)) {
-				DebugLogger.logInfo("Changed Renderer to: Lightning (Default)");
-				Interface.setRenderer(new Lightning());
-			}
-		}
+		Transform t = player.getTransform();
+		t.position.x += input.getAxis("Horizontal") * speed;
+		t.position.y += input.getAxis("Vertical") * speed;
 	}
 	
 	public void audio() {
@@ -68,7 +59,6 @@ public class PowerHighTest extends AbstractGame {
 			WavMusic m = new WavMusic(1f, new File("Alonzo - Santana.wav"));
 			audio.play(m);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -81,8 +71,6 @@ public class PowerHighTest extends AbstractGame {
 		player = new Sprite();
 		fps = new Text();
 		box = new ParticleBox(512);
-		box.setX(0);
-		box.setY(0);
 		ParticleRenderer damageRenderer = new ParticleRenderer() {
 
 			@Override
@@ -104,12 +92,11 @@ public class PowerHighTest extends AbstractGame {
 		};
 		damageBlueprint = new ParticleBlueprint(10, (short)255, damageRenderer);
 		player.setSize(128, 128);
-		player.setColor(Color.YELLOW);
 		try {
 			player.setAnimation(new Animation(new File("Dumb Man.gan")));
 			player.getAnimation().start();
-		} catch (IOException e2) {
-			e2.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 			player.setSize(128, 128);
 		}
 		win.setBackground(Color.CYAN);
@@ -120,7 +107,10 @@ public class PowerHighTest extends AbstractGame {
 		bt.setX(100);
 		bt.setY(200);
 		fps.setY(24);
-		fps.setColor(Color.WHITE);
+		//fps.setColor(Color.WHITE);
+		Renderer r = fps.getComponent(Renderer.class);
+		r.material.setColor(Color.WHITE);
+		
 		bt.setWidth(100);
 		bt.setHeight(60);
 		bt.addAction(new Runnable() {
@@ -137,27 +127,8 @@ public class PowerHighTest extends AbstractGame {
 			}
 
 		});
-		Button stj = new Button("Switch to JavaFX");
-		stj.setX(400);
-		stj.setY(100);
-		stj.setSize(100, 60);
-		stj.addAction(() -> {
-			impl = new ImplementationSettings(ImplementationSettings.Interface.JAVAFX, ImplementationSettings.Audio.AWT);
-			restartImplementation();
-		});
-		
-		Button sts = new Button("Switch to Swing");
-		sts.setX(550);
-		sts.setY(100);
-		sts.setSize(100, 60);
-		sts.addAction(() -> {
-			impl = new ImplementationSettings(ImplementationSettings.Interface.SWING, ImplementationSettings.Audio.AWT);
-			restartImplementation();
-		});
 		
 		win.add(bt);
-		//win.add(stj);
-		//win.add(sts);
 		win.add(fps);
 
 		win.add(box);

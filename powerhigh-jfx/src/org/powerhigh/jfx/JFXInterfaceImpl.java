@@ -153,7 +153,8 @@ public class JFXInterfaceImpl extends Interface {
 		}
 	}
 	
-	public Object resultOnPlatform(Supplier<Object> func) {
+	@SuppressWarnings("unchecked")
+	public <T> T resultOnPlatform(Supplier<T> func) {
 		if (Platform.isFxApplicationThread()) {
 			return func.get();
 		} else {
@@ -170,7 +171,7 @@ public class JFXInterfaceImpl extends Interface {
 					e.printStackTrace();
 				}
 			}
-			return answer;
+			return (T) answer;
 		}
 	}
 
@@ -229,14 +230,14 @@ public class JFXInterfaceImpl extends Interface {
 				gameCanvas.setHeight(getViewport().getHeight());
 				GraphicsContext gc = gameCanvas.getGraphicsContext2D();
 				drawer.setGC(gc);
-				JFXInterfaceImpl.getRenderer().render(JFXInterfaceImpl.this, drawer);
+				Interface.singleInstance.render(drawer);
 			});
 		}
 	}
 
 	@Override
 	public Area getSize() {
-		return (Area) resultOnPlatform(() -> {
+		return resultOnPlatform(() -> {
 			return new Area((int) pane.getWidth(), (int) pane.getHeight());
 		});
 	}
@@ -275,7 +276,7 @@ public class JFXInterfaceImpl extends Interface {
 	
 	@Override
 	public Point getPosition() {
-		return (Point) resultOnPlatform(() -> {
+		return resultOnPlatform(() -> {
 			return new Point((int) stage.getX(), (int) stage.getY());
 		});
 	}

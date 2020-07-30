@@ -3,6 +3,7 @@ package org.powerhigh.swing;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -16,6 +17,7 @@ import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Font;
 import org.powerhigh.graphics.Texture;
 import org.powerhigh.swing.input.SwingTexturePlugin.SwingGPUTexture;
+import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 
 public class JDrawer2D extends Drawer {
@@ -198,6 +200,18 @@ public class JDrawer2D extends Drawer {
 			g2d.setFont(java.awt.Font.getFont(font.getFamily())
 					.deriveFont(font.getSize()));
 		}
+	}
+
+	@Override
+	public Area getClip() {
+		Rectangle r = g2d.getClipBounds();
+		return new Area(r.x, r.y, r.width, r.height);
+	}
+
+	@Override
+	public void setClip(Area area) {
+		System.out.println("set clip to " + area);
+		g2d.setClip(area.x, area.y, 1000, 1000);
 	}
 	
 }

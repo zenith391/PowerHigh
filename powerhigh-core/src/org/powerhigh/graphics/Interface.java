@@ -1,9 +1,15 @@
 package org.powerhigh.graphics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.powerhigh.Camera;
 import org.powerhigh.ViewportManager;
-import org.powerhigh.graphics.renderers.IRenderer;
-import org.powerhigh.graphics.renderers.lightning.Lightning;
+import org.powerhigh.components.ComponentSystem;
+import org.powerhigh.components.Renderer;
+import org.powerhigh.components.RendererSystem;
 import org.powerhigh.input.Input;
 import org.powerhigh.objects.Container;
 import org.powerhigh.objects.GameObject;
@@ -18,27 +24,38 @@ public abstract class Interface {
 	protected WindowEventThread thread = new WindowEventThread(this);
 	protected ViewportManager viewportManager;
 	protected Area viewport = new Area(0, 0, 0, 0);
+	protected Map<Class<? extends ComponentSystem>, List<GameObject>> archetypes = new HashMap<>();
 	
 	private Container objectContainer;
 	
 	private Camera camera;
 	
+	/**
+	 * The only instance that can be used through the current process.
+	 */
+	public static Interface singleInstance;
+	
+	public static Map<Class<? extends ComponentSystem>, List<GameObject>> getArchetypesMap() {
+		if (singleInstance == null) {
+			throw new IllegalStateException("An interface must have been init before getting archetypes.");
+		}
+		return singleInstance.archetypes;
+	}
+	
+	public Interface() {
+		if (singleInstance != null) {
+			throw new RuntimeException("There can only be one Interface instance.");
+		}
+		singleInstance = this;
+	}
+	
 	public Container getObjectContainer() {
 		return objectContainer;
 	}
 
-	private static IRenderer render;
-
-	public static IRenderer getRenderer() {
-		return render;
-	}
-
-	public static void setRenderer(IRenderer render) {
-		Interface.render = render;
-	}
-
-	public boolean shouldRender(GameObject obj) {
-		return render.shouldRender(this, obj);
+	public boolean isVisible(GameObject obj) {
+		//return render.shouldRender(this, obj);
+		return true;
 	}
 
 	public int getFPS() {
@@ -81,8 +98,6 @@ public abstract class Interface {
 	}
 
 	protected void init() {
-		if (render == null)
-			setRenderer(new Lightning());
 		thread.start();
 		objectContainer = new Container();
 		camera = new Camera();
@@ -158,37 +173,27 @@ public abstract class Interface {
 	public PostProcessor getPostProcessor() {
 		return null;
 	}
-	
-	public abstract void setSize(int width, int height);
-	
-	public void setSize(Area size) {
-		setSize(size.getWidth(), size.getHeight());
-	}
-	
-	public abstract Area getSize();
 
 	public void update() {
-		if (viewport != null) {
-			
-			// Re-working on this
-			if (viewportManager != null) {
-				viewport = viewportManager.getViewport(this);
-			}
-//			Rectangle view = viewport.getViewport(this);
-//			if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
-//				view = new Rectangle(getWidth(), getHeight());
-//			}
-//			if (!view.equals(panel.getBounds())) {
-//				if (!viewport.getSpecialProperties().containsKey("stretchToWindow")) {
-//					setViewport(view.x, view.y, view.width, view.height);
-//					panel.setStretch(false);
-//				} else {
-//					if (viewport.getSpecialProperties().containsKey("stretchToWindow")) {
-//						setViewport(view.x, view.y, getWidth(), getHeight());
-//						panel.setStretch(true);
-//					}
-//				}
-//			}
+		if (viewportManager != null) {
+			viewport = viewportManager.getViewport(this);
+		}
+	}
+	
+	public void render(Drawer g) {
+		List<GameObject> renderables = archetypes.get(RendererSystem.class);
+		g.localRotate(Math.toRadians(camera.getRotation()), getWidth() / 2, getHeight() / 2);
+		g.translate(camera.getXOffset(), camera.getYOffset());
+		
+		List<Renderer> components = new ArrayList<>(renderables.size());
+		for (GameObject go : renderables) {
+			Renderer r = go.getComponent(Renderer.class);
+			components.add(r);	
+		}
+		Renderer[] array = components.toArray(new Renderer[components.size()]);
+		if (array.length > 0) {
+			RendererSystem rs = RendererSystem.INSTANCE;
+			rs.render(array, 0, array.length, g);
 		}
 	}
 
@@ -204,8 +209,44 @@ public abstract class Interface {
 		}
 	}
 
+	/**
+	 * This returns the actual <b>drawable</b> width, excluding space
+	 * the game cannot draw to like windows borders
+	 * @return drawable width
+	 */
 	public abstract int getWidth();
+	
+	/**
+	 * This returns the actual <b>drawable</b> height, excluding space
+	 * the game cannot draw to like title bar or app bar.
+	 * @return drawable height
+	 */
 	public abstract int getHeight();
+	
+	/**
+	 * This returns the actual <b>drawable</b> area, excluding space
+	 * the game cannot draw to like title bar, app bar and window borders.
+	 * @return drawable size
+	 */
+	public Area getSize() {
+		return new Area(getWidth(), getHeight());
+	}
+	
+	/**
+	 * This sets the <b>window</b> size to <code>width</code> and
+	 * <code>height</code>, as this sets the window size, {@link #getSize()}
+	 * will probably not return the same size as inputted unless the window
+	 * is undecorated and without borders
+	 * 
+	 * @param width new window width
+	 * @param height new window height
+	 * @see #getSize()
+	 */
+	public abstract void setSize(int width, int height);
+	
+	public void setSize(Area size) {
+		setSize(size.getWidth(), size.getHeight());
+	}
 
 	public void fireEvent(String type, Object... args) {
 		objectContainer.onEvent(type, args);

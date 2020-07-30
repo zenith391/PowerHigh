@@ -10,12 +10,13 @@ public class WindowEventThread extends Thread {
 	private int targetFPS = 60;
 	private int frames;
 	private int fps;
+	public long estimatedTime;
 	private boolean stop;
 
 	private double delta;
 
 	private long lastTick;
-	private long sleepTime = 1000 / 60;
+	private long sleepTime = 1000 / targetFPS;
 
 	private Runnable runnable = null;
 
@@ -60,10 +61,6 @@ public class WindowEventThread extends Thread {
 	public void run() {
 		setName("powerhigh-interface-thread");
 		while (!stop) {
-			long estimatedTime = 0;
-			if (targetFPS > 0) {
-				estimatedTime = 1000 / targetFPS;
-			}
 			if (lastTick < System.currentTimeMillis()) {
 				lastTick = System.currentTimeMillis() + 1000;
 				fps = frames;

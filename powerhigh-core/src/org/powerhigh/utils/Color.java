@@ -31,7 +31,7 @@ public class Color {
 	
 	/**
 	 * Create a color from a RGB integer, with optional alpha channel support on the last 8 bits,
-	 * effectively supporting RGB and RGBA.
+	 * effectively supporting RGB and ARGB.
 	 * @param rgb
 	 * @param alphaChannel
 	 */

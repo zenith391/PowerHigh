@@ -2,25 +2,27 @@ package org.powerhigh.multiplayer;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 
 public class Client {
 
 	private HashMap<String, Object> data;
-	private InetAddress address;
-	private Socket tcpSocket;
+	private SocketAddress address;
+	private SocketChannel tcpSocket;
 	
-	public Client(HashMap<String, Object> savedData, InetAddress addr, Socket tcp) {
+	public Client(HashMap<String, Object> savedData, SocketAddress addr, SocketChannel tcp) {
 		tcpSocket = tcp;
 		address = addr;
 		data = savedData;
 	}
 	
-	public InetAddress getInetAddress() {
+	public SocketAddress getInetAddress() {
 		return address;
 	}
 	
-	public Socket getTcpSocket() {
+	public SocketChannel getTcpSocket() {
 		return tcpSocket;
 	}
 	

@@ -1,10 +1,16 @@
 package org.powerhigh.objects;
 
+import org.powerhigh.components.MeshRender;
+import org.powerhigh.components.Renderer;
+import org.powerhigh.components.Transform;
 import org.powerhigh.graphics.Animation;
 import org.powerhigh.graphics.Drawer;
+import org.powerhigh.graphics.IMeshRenderer;
 import org.powerhigh.graphics.Texture;
+import org.powerhigh.math.Vector2;
 import org.powerhigh.utils.Color;
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.Material;
 
 /**
  * Object able to display a texture or an animation.
@@ -25,7 +31,9 @@ public class Sprite extends GameObject {
 	public void setTexture(Texture texture) {
 		this.texture = texture;
 		if (texture != null) {
-			setSize(texture.getWidth(), texture.getHeight());
+			Transform t = getTransform();
+			t.size.x = texture.getWidth();
+			t.size.y = texture.getHeight();
 		}
 	}
 	
@@ -47,14 +55,43 @@ public class Sprite extends GameObject {
 
 	/** Will render a blue quad until you set a texture with {@link Sprite#setTexture(Texture)} */
 	public Sprite() {
-		this((Texture) null);
+		addComponent(Transform.class);
+		
+		Renderer r = addComponent(Renderer.class);
+		r.material = new Material(Color.WHITE);
+		
+		MeshRender render = addComponent(MeshRender.class);
+		render.meshRenderer = new IMeshRenderer() {
+
+			@Override
+			public void render(Renderer r, Vector2 size, Drawer d) {
+				int width = (int) size.x;
+				int height = (int) size.y;
+				if (texture != null) {
+					d.drawTexture(0, 0, width, height, texture);
+				}
+				else if (animation != null) {
+					if (animation.getCurrentSprite() != null)
+						d.drawTexture(0, 0, width, height, animation.getCurrentSprite());
+				}
+				else {
+					d.setColor(Color.BLUE);
+					d.fillRect(0, 0, width, height);
+				}
+			}
+			
+		};
 	}
+	
 	/** Will associate the following {@link org.powerhigh.graphics.Texture} object with this Sprite. */
 	public Sprite(Texture texture) {
+		this();
 		setTexture(texture);
 	}
+	
 	/** Will associate the following {@link org.powerhigh.graphics.Animation} object with this Sprite. */
 	public Sprite(Animation anim) {
+		this();
 		setAnimation(anim);
 	}
 	
@@ -65,22 +102,6 @@ public class Sprite extends GameObject {
 			animation.dispose();
 		animation = null;
 		texture = null;
-	}
-	
-
-	@Override
-	public void paint(Drawer g, Interface source) {
-		if (texture != null) {
-			g.drawTexture(x, y, width, height, texture);
-		}
-		else if (animation != null) {
-			if (animation.getCurrentSprite() != null)
-				g.drawTexture(x, y, width, height, animation.getCurrentSprite());
-		}
-		else {
-			g.setColor(Color.BLUE);
-			g.fillRect(x, y, width, height);
-		}
 	}
 
 }

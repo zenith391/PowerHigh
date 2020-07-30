@@ -2,6 +2,7 @@ package org.powerhigh.graphics;
 
 import java.util.Properties;
 
+import org.powerhigh.utils.Area;
 import org.powerhigh.utils.Color;
 
 public abstract class Drawer {
@@ -18,6 +19,9 @@ public abstract class Drawer {
 	public abstract void setColor(Color color);
 	public abstract Color getColor();
 	public abstract void drawTexture(int x, int y, Texture texture);
+	
+	public abstract Area getClip();
+	public abstract void setClip(Area area);
 	
 	/**
 	 * Draws a resized version of the texture (platform-dependent for better performances)

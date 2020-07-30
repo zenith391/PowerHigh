@@ -1,13 +1,18 @@
 package org.powerhigh.objects;
 
+import org.powerhigh.components.MeshRender;
+import org.powerhigh.components.Renderer;
+import org.powerhigh.components.Transform;
 import org.powerhigh.graphics.Drawer;
+import org.powerhigh.graphics.IMeshRenderer;
 import org.powerhigh.graphics.Interface;
+import org.powerhigh.graphics.Material;
+import org.powerhigh.math.Vector2;
 import org.powerhigh.utils.Color;
 
 public class Text extends GameObject {
 
 	Object font;
-	Color color;
 	String text;
 
 	public Text(int x, int y, String text, Color color) {
@@ -27,28 +32,39 @@ public class Text extends GameObject {
 	}
 
 	public Text(int x, int y, String text, Color color, Object font) {
-		this.x = x;
-		this.y = y;
+		Transform t = addComponent(Transform.class);
+		t.position.set(x, y);
+		
+		Renderer r = addComponent(Renderer.class);
+		r.material = new Material(color);
+		
+		MeshRender mr = addComponent(MeshRender.class);
+		mr.meshRenderer = new IMeshRenderer() {
+
+			@Override
+			public void render(Renderer r, Vector2 size, Drawer d) {
+				paint(d);
+			}
+			
+		};
+		
 		this.text = text;
-		this.color = color;
 		this.font = font;
 	}
 
-	@Override
-	public void paint(Drawer g, Interface source) {
-		g.setColor(color);
+	public void paint(Drawer g) {
 		if (!text.contains("\n")) {
-			width = g.getEstimatedWidth(text);
-			g.drawText(x, y + g.getEstimatedHeight(), text);
-			height = g.getEstimatedHeight();
+			getTransform().size.x = g.getEstimatedWidth(text);
+			g.drawText(0, 0 + g.getEstimatedHeight(), text);
+			getTransform().size.y = g.getEstimatedHeight();
 		} else {
-			width = 0;
-			int txtY = y + g.getEstimatedHeight();
-			height = g.getEstimatedHeight() * text.split("\n").length;
+			getTransform().size.x = 0;
+			int txtY = g.getEstimatedHeight();
+			getTransform().size.y = g.getEstimatedHeight() * text.split("\n").length;
 			for (String str : text.split("\n")) {
-				g.drawText(x, txtY, str);
+				g.drawText(0, txtY, str);
 				txtY += g.getEstimatedHeight();
-				width = Math.max(width, g.getEstimatedWidth(str));
+				getTransform().size.x = Math.max(getTransform().size.x, g.getEstimatedWidth(str));
 			}
 		}
 	}
@@ -63,16 +79,6 @@ public class Text extends GameObject {
 
 	public void setFont(Object font) {
 		this.font = font;
-	}
-
-	@Override
-	public Color getColor() {
-		return color;
-	}
-
-	@Override
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	public String getText() {

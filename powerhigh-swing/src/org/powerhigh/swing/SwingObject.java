@@ -26,7 +26,7 @@ public class SwingObject extends GameObject {
 		if (Mouse.getX() != mouseLastPos.x || Mouse.getY() != mouseLastPos.y) {
 			mouseLastPos = new Point(Mouse.getX(), Mouse.getY());
 			for (MouseMotionListener lis : content.getMouseMotionListeners()) {
-				lis.mouseMoved(new MouseEvent(content, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, Mouse.getX() - x, Mouse.getY() - y, 1, false));
+				lis.mouseMoved(new MouseEvent(content, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), MouseEvent.BUTTON1_DOWN_MASK, Mouse.getX() - getX(), Mouse.getY() - getY(), 1, false));
 			}
 		}
 		if (hasEntered) {
@@ -47,7 +47,7 @@ public class SwingObject extends GameObject {
 		content.setSize(new Dimension(getSize().getWidth(), getSize().getHeight()));
 		BufferedImage img = new BufferedImage(content.getWidth(), content.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
 		content.paint(img.createGraphics());
-		g.drawTexture(x, y, SwingUtils.toTexture(img));
+		g.drawTexture(getX(), getY(), SwingUtils.toTexture(img));
 	}
 	
 	public void onEvent(String name, Object... args) {

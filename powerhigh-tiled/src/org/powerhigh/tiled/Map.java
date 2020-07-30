@@ -1,11 +1,30 @@
 package org.powerhigh.tiled;
 
+import org.powerhigh.graphics.Drawer;
+
 public class Map {
 
 	int[][] tile;
-	Tileset tileset;
+	int width, height;
+	Tileset[] tilesets;
+	MapOrientation orientation;
+	boolean infinite;
 	
-	public int getTileId(int x, int y) {
+	/**
+	 * Get the {@link Tileset} for tile global ID.
+	 * @param gid
+	 * @return tileset
+	 */
+	public Tileset getTileset(int gid) {
+		for (Tileset ts : tilesets) {
+			if (gid >= ts.firstGlobalId && gid < ts.firstGlobalId+ts.tiles.length) {
+				return ts;
+			}
+		}
+		return null;
+	}
+	
+	public int getTileGId(int x, int y) {
 		return tile[x][y];
 	}
 	
@@ -14,19 +33,37 @@ public class Map {
 	}
 	
 	public Tile getTile(int x, int y) {
-		return tileset.getTile(getTileId(x, y)-1);
+		int gid = getTileGId(x, y);
+		Tileset ts = getTileset(gid);
+		if (ts != null) {
+			return ts.tiles[gid - ts.firstGlobalId];
+		} else {
+			return null;
+		}
 	}
 	
-	public Tileset getTileset() {
-		return tileset;
+	public Tileset[] getTilesets() {
+		return tilesets;
 	}
 	
 	public int getWidth() {
-		return tile.length;
+		return width;
 	}
 	
 	public int getHeight() {
-		return tile[0].length;
+		return height;
+	}
+	
+	public MapOrientation getOrientation() {
+		return orientation;
+	}
+	
+	public boolean isInfinite() {
+		return infinite;
+	}
+	
+	public void draw(Drawer d) {
+		
 	}
 	
 }

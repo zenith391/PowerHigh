@@ -4,6 +4,7 @@ import org.powerhigh.utils.Color;
 import java.util.ArrayList;
 
 import org.powerhigh.graphics.Texture;
+import org.powerhigh.components.Transform;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 import org.powerhigh.input.Mouse;
@@ -24,6 +25,8 @@ public class Button extends GameObject {
 	private boolean p;
 	
 	public Button() {
+		addComponent(Transform.class);
+		
 		setSize(60, 60);
 		normal = UISystem.getUI("button-normal");
 		pressed = UISystem.getUI("button-pressed");

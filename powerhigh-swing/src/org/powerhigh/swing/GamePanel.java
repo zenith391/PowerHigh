@@ -13,6 +13,8 @@ import java.awt.image.WritableRaster;
 
 import javax.swing.JPanel;
 
+import org.powerhigh.graphics.Interface;
+
 public class GamePanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
@@ -58,7 +60,6 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel(SwingInterfaceImpl intr) {
 		this.intr = intr;
-		this.setDoubleBuffered(false);
 	}
 	
 	public void paint(Graphics g) {
@@ -72,9 +73,9 @@ public class GamePanel extends JPanel {
 			}
 		}
 		
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(SwingUtils.phColorToAwtColor(Interface.singleInstance.getBackground()));
 		g2d.fillRect(0, 0, getWidth(), getHeight());
-		SwingInterfaceImpl.getRenderer().render(intr, drawer2D);
+		Interface.singleInstance.render(drawer2D);
 		intr.paintQueued = false;
 	}
 	

@@ -3,6 +3,7 @@ package org.powerhigh.objects;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.powerhigh.components.Transform;
 import org.powerhigh.graphics.Drawer;
 import org.powerhigh.graphics.Interface;
 
@@ -12,6 +13,10 @@ public class Container extends GameObject {
 	protected boolean checkContent = true;
 	protected GameObject focusedObj;
 
+	public Container() {
+		addComponent(Transform.class);
+	}
+	
 	public void add(GameObject obj) {
 		if (obj == this) {
 			throw new IllegalArgumentException(
@@ -30,9 +35,11 @@ public class Container extends GameObject {
 			focusedObj = null;
 			for (int i = a.length-1; i >= 0; i--) { // in part with rendering
 				GameObject b = a[i];
-				if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
-					focusedObj = b;
-					break;
+				if (b.hasComponent(Transform.class)) {
+					if (mx > b.getX() && my > b.getY() && mx < b.getX() + b.getWidth() && my < b.getY() + b.getHeight()) {
+						focusedObj = b;
+						break;
+					}
 				}
 			}
 		}
@@ -92,7 +99,7 @@ public class Container extends GameObject {
 					go.setX(getX());
 				}
 			}
-			boolean render = source.shouldRender(go);
+			boolean render = source.isVisible(go);
 			if (render) {
 				go.paint(g, source);
 			}
@@ -111,17 +118,11 @@ public class Container extends GameObject {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		try {
-			if (objects.get(0) != null) {
-				builder.append("Container [objects=");
-			}
-		} catch (Exception e) {
-			builder.append("Container [");
-		}
+		builder.append("Container [objects=[");
 		for (GameObject obj : objects) {
 			builder.append(obj.toString() + ";");
 		}
-		builder.append("]");
+		builder.append("]]");
 		return builder.toString();
 	}
 }

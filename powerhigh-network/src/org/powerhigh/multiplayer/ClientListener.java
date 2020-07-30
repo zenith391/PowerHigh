@@ -1,13 +1,13 @@
 package org.powerhigh.multiplayer;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.SocketChannel;
 
 import org.powerhigh.multiplayer.channel.impl.BiChannelImpl;
-import org.powerhigh.utils.BitOps;
 
-public class ClientListener {
+public class ClientListener implements Runnable {
 
 	private Client client;
 	private ServerHandler handler;
@@ -17,39 +17,34 @@ public class ClientListener {
 		this.client = client;
 	}
 	
-	public Runnable getListener() {
-		return () -> {
-			Socket sock = client.getTcpSocket();
-			InputStream is = null;
-			try {
-				BiChannelImpl ch = new BiChannelImpl(sock);
-				is = sock.getInputStream();
-				while (!sock.isClosed()) {
-					byte[] sizeInt = new byte[4];
-					int read = is.read(sizeInt);
+	public void run() {
+		SocketChannel sock = client.getTcpSocket();
+		try {
+			BiChannelImpl ch = new BiChannelImpl(sock);
+			ByteBuffer sizeInt = ByteBuffer.allocateDirect(4);
+			sizeInt.order(ByteOrder.BIG_ENDIAN);
+			while (sock.isOpen()) {
+				int read = sock.read(sizeInt.rewind());
+				if (read == -1) {
+					sock.close();
+					break;
+				}
+				int size = sizeInt.getInt(0);
+				ByteBuffer tcpPacket = ByteBuffer.allocateDirect(size);
+				
+				while (tcpPacket.position() < tcpPacket.limit()) {
+					read = sock.read(tcpPacket);
 					if (read == -1) {
 						sock.close();
 						break;
 					}
-					int size = BitOps.getInt(sizeInt, 0);
-					byte[] tcpPacket = new byte[size];
-					int off = 0;
-					
-					while (tcpPacket.length - off > 0) {
-						read = is.read(tcpPacket, off, tcpPacket.length - off);
-						if (read == -1) {
-							sock.close();
-							break;
-						}
-						off += read;
-					}
-					
-					handler.handleFullPacket(client, ch, tcpPacket);
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
+				
+				handler.handleFullPacket(client, ch, tcpPacket.flip().asReadOnlyBuffer());
 			}
-		};
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -10,23 +10,38 @@ import org.powerhigh.graphics.TextureLoader;
 import org.powerhigh.utils.debug.DebugLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Very basic Tiled map parser that only works with CSV maps. More support coming soon
+ * Very basic Tiled map parser that only works with CSV maps.<br/>
+ * It doesn't supports:
+ * <ul>
+ *   <li>Infinite maps</li>
+ *   <li>Objects</li>
+ *   <li>Multiple layers</li>
+ *   <li>Tile offsets</li>
+ *   <li>Tile animations</li>
+ *   <li>Base64 encoding</li>
+ *   <li>Compression</li>
+ * </ul>
  */
 public class MapParser {
 
 	public static Tileset loadTileset(File file) throws Exception {
-		Tileset ts = new Tileset();
-		ArrayList<Tile> tiles = new ArrayList<>();
-		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
 		factory.setIgnoringComments(true);
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.parse(file);
 		Element tsNode = (Element) doc.getElementsByTagName("tileset").item(0);
+		
+		return loadTileset(file, tsNode);
+	}
+	
+	public static Tileset loadTileset(File file, Element tsNode) throws Exception {
+		Tileset ts = new Tileset();
+		ArrayList<Tile> tiles = new ArrayList<>();
 		
 		NodeList list = tsNode.getElementsByTagName("tile");
 		for (int i = 0; i < list.getLength(); i++) {
@@ -54,20 +69,36 @@ public class MapParser {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document doc = builder.parse(file);
 		Element mapNode = (Element) doc.getElementsByTagName("map").item(0);
+		NamedNodeMap attr = mapNode.getAttributes();
 		
-		int width = Integer.parseInt(mapNode.getAttributes().getNamedItem("width").getNodeValue());
-		int height = Integer.parseInt(mapNode.getAttributes().getNamedItem("height").getNodeValue());
+		map.orientation = MapOrientation.valueOf(attr.getNamedItem("orientation").getNodeValue());
+		
+		int width = Integer.parseInt(attr.getNamedItem("width").getNodeValue());
+		int height = Integer.parseInt(attr.getNamedItem("height").getNodeValue());
 		
 		DebugLogger.debug("Map size: " + width + "x" + height);
 		
-		Node tileset = mapNode.getElementsByTagName("tileset").item(0);
-		File tsSource = new File(file.getCanonicalPath(), tileset.getAttributes().getNamedItem("source").getNodeValue());
+		ArrayList<Tileset> tilesets = new ArrayList<Tileset>();
 		
-		DebugLogger.debug("Tileset Path: " + tsSource);
+		NodeList tilesetNodes = mapNode.getElementsByTagName("tileset");
 		
-		Tileset ts = loadTileset(tsSource);
+		for (int i = 0; i < tilesetNodes.getLength(); i++) {
+			Element tileset = (Element) tilesetNodes.item(i);
+			Tileset ts = null;
+			if (tileset.hasAttribute("source")) {
+				File tsSource = new File(file.getCanonicalPath(), tileset.getAttributes().getNamedItem("source").getNodeValue());
+				DebugLogger.debug("Tileset Path: " + tsSource);
+				ts = loadTileset(tsSource);
+			} else {
+				ts = loadTileset(file, tileset);
+			}
+			tilesets.add(ts);
+		}
+		
 		map.tile = new int[width][height];
-		map.tileset = ts;
+		map.width = width;
+		map.height = height;
+		map.tilesets = tilesets.toArray(new Tileset[tilesets.size()]);
 		
 		Element data = (Element) ((Element) mapNode.getElementsByTagName("layer").item(0)).getElementsByTagName("data").item(0);
 		String[] lines = data.getTextContent().substring(1).split("\n");

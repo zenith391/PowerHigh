@@ -2,32 +2,37 @@ package org.powerhigh.multiplayer;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.channels.AsynchronousCloseException;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Server {
 	private DatagramSocket udp;
-	private ServerSocket tcp;
+	private ServerSocketChannel tcp;
 	private Thread th;
 	private List<Client> clients;
 	
 	
 	/**
-	 * Both UDP and TCP server ports must be free.
+	 * As it uses both of them, TCP and UDP ports must be free.
 	 * @param address
 	 * @param port
 	 * @return
 	 */
-	public static Server connect(ServerHandler handler, int port) {
+	public static Server listen(ServerHandler handler, int port) {
 		try {
-			DatagramSocket udp = new java.net.DatagramSocket(port);
-			ServerSocket tcp = new ServerSocket(port);
-			return new Server(handler, udp, tcp);
+			DatagramSocket udp = new DatagramSocket(port);
+			InetSocketAddress local = new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
+			return new Server(handler, udp, ServerSocketChannel.open().bind(local));
 		} catch (SocketException | UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -36,26 +41,23 @@ public class Server {
 		return null;
 	}
 	
-	public Server(ServerHandler handler, DatagramSocket udp, ServerSocket tcp) {
+	public Server(ServerHandler handler, DatagramSocket udp, ServerSocketChannel tcp) {
 		this.tcp = tcp;
 		this.udp = udp;
 		clients = new ArrayList<Client>();
 		th = new Thread(() -> {
-			int num = 1;
+			int num = 0;
 			while (!Thread.currentThread().isInterrupted()) {
 				try {
-					Socket s = tcp.accept();
-					Client client = new Client(new HashMap<String, Object>(), s.getInetAddress(), s);
+					SocketChannel s = tcp.accept();
+					Client client = new Client(new HashMap<String, Object>(), s.getRemoteAddress(), s);
 					clients.add(client);
 					
 					ClientListener listener = new ClientListener(handler, client);
-					Runnable run = listener.getListener();
-					Thread t = new Thread(run);
-					t.setName("Client-Handler-" + num);
-					t.setPriority(1);
+					Thread t = new Thread(listener);
+					t.setName("Client-Handler-" + num++);
 					t.start();
-					num++;
-				} catch (SocketException e) {
+				} catch (AsynchronousCloseException e) { // interrupted
 					return;
 				}
 				catch (IOException e) {
